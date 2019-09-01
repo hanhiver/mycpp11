@@ -12,10 +12,10 @@ int main()
 	typedef ratio<25, 15> AlsoFiveThirds;
 	cout << AlsoFiveThirds::num << "/" << AlsoFiveThirds::den << endl;
 
-	ratio<42, 42> one;
+	typedef ratio<42, 42> one;
 	cout << one::num << "/" << one::den << endl;
 
-	ratio<0> zero;
+	typedef ratio<0> zero;
 	cout << zero::num << "/" << zero::den << endl;
 
 	typedef ratio<7, -3> Neg;
