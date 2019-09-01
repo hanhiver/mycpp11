@@ -5,7 +5,7 @@ using namespace std;
 
 int main()
 {
-	unordered_multiset<sting> cities {
+	unordered_multiset<string> cities {
 		"braunschweig", "Hanover", "frankfurt", "New York", 
 		"Chicago", "Toronto", "Paris", "frankfurt"
 	};
