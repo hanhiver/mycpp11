@@ -21,7 +21,7 @@ int main()
     std::thread threads[10];
     
     std::cout << "Test without mutex lock." << std::endl;
-7
+
     for (int i=0; i<10; ++i)
     {
         threads[i] = std::thread(print_thread_id, i+1);
