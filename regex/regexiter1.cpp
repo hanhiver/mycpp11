@@ -15,6 +15,7 @@ int main()
 
     // iterate over all matches. 
     sregex_iterator pos (data.cbegin(), data.cend(), reg);
+    // Define the empty iterator to end the loop.
     sregex_iterator end; 
 
     for ( ; pos!=end; ++pos)
