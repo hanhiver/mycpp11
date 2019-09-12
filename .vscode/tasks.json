@@ -30,7 +30,7 @@
         {
             "label": "Run",
             "type": "shell",
-            "command": "./${fileBasenameNoExtension}",
+            "command": "${fileDirname}/${fileBasenameNoExtension}",
             "dependsOn": [
                 "Build C++11"
             ],
