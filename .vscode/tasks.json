@@ -9,10 +9,10 @@
             "command": "g++",
             "args": [
                 "-std=c++11",
-                "-lpthread",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
-                "${file}"
+                "${file}",
+                "-lpthread",
             ],
             "group": {
                 "kind": "build",
