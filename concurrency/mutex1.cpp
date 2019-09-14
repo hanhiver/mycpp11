@@ -46,5 +46,6 @@ int main()
     auto f4 = std::async(std::launch::async, print_lock, 
                          "Greeting from a second thread. ");
     print_lock("Greeting from the main thread. ");
-    
+
+    std::cout << std::endl; 
 }
