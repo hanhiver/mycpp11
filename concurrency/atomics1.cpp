@@ -35,6 +35,7 @@ void consumer()
 
 int main()
 {
+    std::cout << std::boolalpha << readyFlag.is_lock_free() << std::endl;
     // start provider and consumer. 
     auto p = std::async(std::launch::async, provider);
     auto c = std::async(std::launch::async, consumer);
