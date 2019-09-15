@@ -1,0 +1,56 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build C++11",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-std=c++11",
+                "-g",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}",
+                "${file}",
+                "-lpthread",
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            }
+        },
+        {
+            "label": "Run",
+            "type": "shell",
+            "command": "${fileDirname}/${fileBasenameNoExtension}",
+            "dependsOn": [
+                "Build C++11"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$eslint-compact"
+            ]
+        },
+        {
+            "label": "echo",
+            "type": "shell",
+            "command": "echo Hello"
+        }
+    ]
+}
