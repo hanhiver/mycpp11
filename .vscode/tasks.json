@@ -9,6 +9,7 @@
             "command": "g++",
             "args": [
                 "-std=c++11",
+                "-g",
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
                 "${file}",
