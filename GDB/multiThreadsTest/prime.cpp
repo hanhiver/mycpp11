@@ -20,15 +20,15 @@ int prepVect(int num)
 
 int worker(int filterN)
 {
-    for (int i=filterN; i<=allNum.size(); i+=filterN)
+    for (int i=2*filterN; i<=allNum.size()+1; i+=filterN)
     {   
-        if (allNum[i] == 0)
+        if (allNum[i-1] == 0)
         {
             continue; 
         }
 
         lk.lock();
-        allNum[i] = 0;
+        allNum[i-1] = 0;
         lk.unlock(); 
     }
 
@@ -53,12 +53,14 @@ int main(int argc, char* argv[])
 
     vector<future<int>> threadVect; 
 
-    for (int i=2; i<num/2; ++i)
+    for (int i=2; i<=num/2; ++i)
     {
         future<int> result = async(launch::async, worker, i);
         threadVect.push_back(move(result));
+        //worker(i);
     }
 
+    
     for (auto& elem : threadVect)
     {
         elem.get();
