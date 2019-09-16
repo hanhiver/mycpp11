@@ -1,18 +1,19 @@
 #include <iostream>
+#include <strstream>
 
-#include <evpp/http/http_server.h>
+#include "../evpp/http/http_server.h"
 
 void DefaultHandler(evpp::EventLoop* loop, 
-                    const evpp::http::ContexPtr& ctx, 
+                    const evpp::http::ContextPtr& ctx, 
                     const evpp::http::HTTPSendResponseCallback& cb)
 {
     std::stringstream oss;
-    oss << "func=" << __FUNCTION__ << " OK"
+    oss << "func=" << __FUNCTION__ << " OK" << "\n"
         << " ip=" << ctx->remote_ip() << "\n"
         << " uri=" << ctx->uri() << "\n"
         << " body=" << ctx->body().ToString() << "\n";
 
-    ctx->AddresponseHeader("Content-Type", "application/octet-stream");
+    ctx->AddResponseHeader("Content-Type", "application/octet-stream");
     ctx->AddResponseHeader("Server", "evpp");
     cb(oss.str());
 }
