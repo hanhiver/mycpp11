@@ -7,6 +7,7 @@ void DefaultHandler(evpp::EventLoop* loop,
                     const evpp::http::ContextPtr& ctx, 
                     const evpp::http::HTTPSendResponseCallback& cb)
 {
+    std::cout << "Request recieved from: " << ctx->remote_ip() << std::endl;
     std::stringstream oss;
     oss << "func=" << __FUNCTION__ << " OK" << "\n"
         << " ip=" << ctx->remote_ip() << "\n"
@@ -32,6 +33,7 @@ int main(int argc, char* argv[])
                               const evpp::http::ContextPtr& ctx, 
                               const evpp::http::HTTPSendResponseCallback& cb)
                               {
+                                  std::cout << "Echo request received from: " << ctx->remote_ip() << std::endl;
                                   cb(ctx->body().ToString());
                               } );
     server.Init(ports);
