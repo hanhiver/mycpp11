@@ -21,4 +21,7 @@ int main()
 
     auto my_add_2 = std::bind(&my_add, std::placeholders::_1, 10, 100); 
     cout << "my_add_2():     " << my_add_2(a) << endl;
+
+    auto my_add_3 = std::bind(&my_add, 10, 100, 1000); 
+    cout << "my_add_3():     " << my_add_3() << endl;
 }
