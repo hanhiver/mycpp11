@@ -1,0 +1,7 @@
+cmake_minimum_required (VERSION 2.8)
+project(Async2)
+aux_source_directory(. DIR_SRCS)
+target_link_libraries(<thread> pthread)
+MESSAGE(STATUS "This is BINARY dir " ${Async2_BINARY_DIR})
+MESSAGE(STATUS "This is SOURCE dir " ${Async2_SOURCE_DIR})
+add_executable(async2 ${DIR_SRCS})
