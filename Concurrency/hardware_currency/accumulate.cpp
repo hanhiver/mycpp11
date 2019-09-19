@@ -59,8 +59,6 @@ int main()
         vect.push_back(i);
     }
 
-    
-    
     std::cout << "Normal accumulate: " << std::endl;
     auto start = std::chrono::system_clock::now();
     long long res = std::accumulate(vect.cbegin(), vect.cend(), 0);
