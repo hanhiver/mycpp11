@@ -14,6 +14,13 @@ void insert_int(threadsafe_queue<int> th, int num)
     }
 }
 
+void pop_int(threadsafe_queue<int> th)
+{
+    int x;
+    th.wait_and_pop(x);
+    std::cout << "Got one: " << x << std::endl;
+}
+
 int main()
 {
     threadsafe_queue<int> th; 
@@ -30,7 +37,9 @@ int main()
 
     std::cout << a << " " << b << std::endl;
     */
+    std::thread t2(pop_int, th);
     
+    /*
     for (int i=0; i<5; ++i)
     {
         std::cout << "Try to get one. " << std::endl;
@@ -39,8 +48,9 @@ int main()
         std::cout << x << " ";
     }
     std::cout << std::endl;
-
+    */
     t1.join();
+    t2.join();
     
     return 0;
 }
