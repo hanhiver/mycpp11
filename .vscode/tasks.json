@@ -13,7 +13,7 @@
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}",
                 "${file}",
-                "-lpthread",
+                "-pthread",
             ],
             "group": {
                 "kind": "build",

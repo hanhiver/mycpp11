@@ -26,7 +26,7 @@ public:
 
     void print()
     {
-        std::call_once(init_flag, &initOnce::init_vect), this);
+        std::call_once(init_flag, &initOnce::init_vect, this);
         for (auto& elem : vect)
         {
             std::cout << elem << "\t";
@@ -38,17 +38,17 @@ public:
 int main()
 {
     initOnce io; 
-    io.print();
-    /*
+    //io.print();
+    
     std::vector<std::thread> threads;
 
     for (int i=0; i<4; ++i)
     {
-        threads.push_back(std::thread(io.print));
+        threads.push_back(std::move(std::thread(io.print)));
     }
 
     for (auto& t : threads)
     {
         t.join();
-    }*/
+    }
 }
