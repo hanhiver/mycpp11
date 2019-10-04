@@ -21,8 +21,10 @@ int main()
     std::packaged_task<void(int)> t1(helloThread);
     t1(2);
     
-    sayHello()(5);
-    std::packaged_task<int(int)> t2(sayHello());
+    sayHello sh = sayHello();
+    sh(5);
+
+    std::packaged_task<int(int)> t2(sh);
     t2(5);
     /*
     std::future<int> f = task.get_future();

@@ -99,12 +99,15 @@ T parallel_accumulate(Iterator first,Iterator last,T init)
     {
         Iterator block_end=block_start;
         std::advance(block_end,block_size);
-        std::packaged_task<T(Iterator,Iterator)> task(accumulate_block<Iterator,T>());
+        //auto ab_tmp = accumulate_block<Iterator, T>();
+        std::packaged_task<T(Iterator,Iterator)> task(std::move(accumulate_block<Iterator,T>()));
+        //std::packaged_task<T(Iterator,Iterator)> task(ab_tmp);
         futures[i]=task.get_future();
         threads[i]=std::thread(std::move(task),block_start,block_end);
         block_start=block_end;
     }
-    T last_result=accumulate_block()(block_start,last);
+    auto ab = accumulate_block<Iterator, T>();
+    T last_result=ab(block_start,last);
 
     std::for_each(threads.begin(),threads.end(),
                   std::mem_fn(&std::thread::join));
