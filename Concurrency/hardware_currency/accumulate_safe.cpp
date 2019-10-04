@@ -32,35 +32,51 @@ T parallel_accumulate(Iterator first, Iterator last, T init)
     unsigned long const num_threads = 
                     std::min(hardware_threads != 0 ? hardware_threads : 2, max_threads);
     unsigned long const block_size = length / num_threads;
+    std::cout << "Using " << num_threads << " threads. " << std::endl; 
 
     std::vector<std::future<T>> futures(num_threads - 1);
     std::vector<std::thread> threads(num_threads - 1);
 
     Iterator block_start = first;
-    for (unsigned long i=0; i<(num_threads-1); ++i)
-    {
-        Iterator block_end = block_start;
-        std::advance(block_end, block_size);
-        std::packaged_task<T(Iterator, Iterator)> task(std::move(accumulate_block<Iterator, T>()));
-        //std::packaged_task<T(Iterator, Iterator)> task(accumulate_block<Iterator, T>());
-        futures[i] = task.get_future();
-        threads[i] = std::thread(std::move(task), block_start, block_end);
-        block_start = block_end;
-    }
-    //auto ab = accumulate_block<Iterator, T>();
-    //T last_result = ab(block_start, last);
-    T last_result = accumulate_block<Iterator, T>()(block_start, last);
-    
-    std::for_each(threads.begin(), threads.end(), 
-                  std::mem_fn(&std::thread::join));
-
     T result = init;
-    for (unsigned long i=0; i<(num_threads-1); ++i)
-    {
-        result += futures[i].get();
-    }
 
-    result += last_result;
+    try
+    {
+        for (unsigned long i=0; i<(num_threads-1); ++i)
+        {
+            Iterator block_end = block_start;
+            std::advance(block_end, block_size);
+            std::packaged_task<T(Iterator, Iterator)> task(std::move(accumulate_block<Iterator, T>()));
+            //std::packaged_task<T(Iterator, Iterator)> task(accumulate_block<Iterator, T>());
+            futures[i] = task.get_future();
+            threads[i] = std::thread(std::move(task), block_start, block_end);
+            block_start = block_end;
+        }
+        //auto ab = accumulate_block<Iterator, T>();
+        //T last_result = ab(block_start, last);
+        T last_result = accumulate_block<Iterator, T>()(block_start, last);
+        
+        std::for_each(threads.begin(), threads.end(), 
+                    std::mem_fn(&std::thread::join));
+
+        for (unsigned long i=0; i<(num_threads-1); ++i)
+        {
+            result += futures[i].get();
+        }
+
+        result += last_result;
+    }
+    catch(...)
+    {
+        for (unsigned int i=0; i<threads.size(); ++i)
+        {
+            if (threads[i].joinable())
+            {
+                threads[i].join();
+            }
+            throw;
+        }
+    }
     return result;
 }
 
