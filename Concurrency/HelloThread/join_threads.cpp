@@ -6,7 +6,7 @@
 class join_threads
 {
 private:
-    std::vector<std::thread> _threads;
+    std::vector<std::thread>& _threads;
 
 public:
     join_threads(std::vector<std::thread>& threads) : _threads(threads)
@@ -32,14 +32,11 @@ void sayHello(int index, std::string str)
 int main()
 {
     std::vector<std::thread> threads;
+
+    join_threads joiner(threads);
     for (unsigned int i=0; i<5; ++i)
     {
         threads.push_back(std::move(std::thread(sayHello, i, "dhan")));
-    }
-
-    for (auto& elem : threads)
-    {
-        elem.join();
     }
 
     return 0;

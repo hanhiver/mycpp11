@@ -19,7 +19,7 @@ struct accumulate_block
 class join_threads
 {
 private:
-    std::vector<std::thread> _threads; 
+    std::vector<std::thread>& _threads; 
 
 public:
     join_threads(std::vector<std::thread>& threads) : 
@@ -60,7 +60,7 @@ T parallel_accumulate(Iterator first, Iterator last, T init)
 
     std::vector<std::future<T>> futures(num_threads - 1);
     std::vector<std::thread> threads(num_threads - 1);
-    //join_threads joiner(threads);
+    join_threads joiner(threads);
 
     Iterator block_start = first;
     T result = init;
@@ -78,12 +78,8 @@ T parallel_accumulate(Iterator first, Iterator last, T init)
     //auto ab = accumulate_block<Iterator, T>();
     //T last_result = ab(block_start, last);
     T last_result = accumulate_block<Iterator, T>()(block_start, last);
-    
-    std::for_each(threads.begin(), threads.end(), 
-                std::mem_fn(&std::thread::join));
 
     result += last_result;
-    
     return result;
 }
 
