@@ -12,8 +12,7 @@ private:
 public:
     join_threads(std::vector<std::thread>& threads) : 
         _threads(threads)
-    {
-    }
+    {}
 
     ~join_threads()
     {
