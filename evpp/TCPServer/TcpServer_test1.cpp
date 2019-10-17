@@ -4,6 +4,7 @@
 #include "evpp/tcp_conn.h"
 #include "evpp/event_loop.h"
 #include "evpp/tcp_server.h"
+#include "evpp/buffer.h"
 
 
 int main()
@@ -15,6 +16,7 @@ int main()
 
     server.SetMessageCallback([](const evpp::TCPConnPtr& conn, evpp::Buffer* msg)
                                 {
+                                    LOG_INFO << "Message received: [" << msg->ToString() << "]";
                                     // Here just send the message back. 
                                     conn->Send(msg);
                                 });
