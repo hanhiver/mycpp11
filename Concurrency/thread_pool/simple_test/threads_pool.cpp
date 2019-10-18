@@ -30,6 +30,7 @@ class thread_pool
 {
 private:
     std::atomic_bool done; 
+    std::atomic_bool ready; 
     threadsafe_queue<std::function<void()>> work_queue; 
     std::vector<std::thread> threads; 
     threads_joiner joiner;
@@ -38,6 +39,10 @@ private:
     {
         while(!done)
         {
+            if (!ready)
+            {
+                ready = true; 
+            }
             std::function<void()> task; 
             if (work_queue.try_pop(task))
             {
@@ -51,7 +56,7 @@ private:
     }
 
 public:
-    thread_pool() : done(false), joiner(threads)
+    thread_pool() : done(false), joiner(threads), ready(false)
     {
         unsigned const thread_count = std::thread::hardware_concurrency();
 
@@ -66,6 +71,11 @@ public:
         {
             done = true; 
             throw; 
+        }
+
+        while (!ready)
+        {
+            std::this_thread::sleep_for(std::chrono::microseconds(1));
         }
     }
 
@@ -96,6 +106,7 @@ int main()
         tpool.submit(sayHello);
     }
 
+    // Wait incase some of the work threads are not finished. 
     std::this_thread::sleep_for(std::chrono::seconds(1));
 
     return 0; 
