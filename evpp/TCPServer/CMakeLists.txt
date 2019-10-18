@@ -20,8 +20,8 @@ set (CXX_FLAGS
          -Wextra
          -std=c++11
     )
-include_directories (${PROJECT_SOURCE_DIR}
-                     ${PROJECT_SOURCE_DIR}/.. )
+
+include_directories (${PROJECT_SOURCE_DIR}/..)
 link_directories (/home/dhan/myprog/build/evpp/build/lib/)
 link_libraries (event glog pthread evpp)
 SET (EXECUTABLE_OUTPUT_PATH ${PROJECT_BINARY_DIR}/bin)
