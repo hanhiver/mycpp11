@@ -2,6 +2,7 @@
 #include <atomic>
 #include <thread> 
 #include <future> // std::future; 
+#include <map> // std::map
 
 #include "../threadsafe_queue.cpp"
 
@@ -148,28 +149,35 @@ public:
 std::thread::id sayHello()
 {
     std::cout << "Hello from " << std::this_thread::get_id() << std::endl; 
+    return std::this_thread::get_id();
 } 
 
 int main()
 {
-    unsigned long const TASK_NUM = 10;
-    std::vector<std::thread::id> rvect; 
+    unsigned long const TASK_NUM = 50;
+    std::vector<std::future<std::thread::id>> rvect; 
     thread_pool tpool; 
     
     for (unsigned long i=0; i<TASK_NUM; ++i)
     {
-        // BUG HERE: the rid will be the same afterwards. 
-        std::thread::id rid = tpool.submit(sayHello).get();
-        rvect.push_back(std::move(rid));
+        rvect.push_back(std::move(tpool.submit(sayHello)));
+        std::cout << "#" << i << " sbumitted. " << std::endl; 
     }
 
+    std::map<std::thread::id, long> tmap; 
     for (auto& elem : rvect)
     {
-        std::cout << elem << std::endl; 
+        tmap[elem.get()]++; 
     }
 
-    // Wait incase some of the work threads are not finished. 
-    std::this_thread::sleep_for(std::chrono::seconds(1));
+    std::cout << "\nResult: " << std::endl; 
+    for (auto& elem : tmap)
+    {
+        std::cout << "Thread <" << elem.first << "> finished " << elem.second << " tasks. " << std::endl; 
+    }
 
+    // No need to wait the thread pool finish all task. 
+    // In the previous get(), ensure all task finished. 
+    
     return 0; 
 }
