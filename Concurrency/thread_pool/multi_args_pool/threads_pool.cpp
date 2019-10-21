@@ -33,33 +33,33 @@ public:
         
         for (size=0; size<idlThrNum; ++size)
         {
-            pool.emplace_back([this]
-            {
-                while(!this->stopped)
+            pool.emplace_back([this]()
                 {
-                    std::function<void()> task; 
-                    
+                    while(!this->stopped)
                     {
-                        std::unique_lock<std::mutex> lock(this->m_lock);
-                        this->cv_task.wait(lock, [this]
-                        {
-                            return this->stopped.load() || !this->tasks.empty();
-                        }); 
-
-                        if (this->stopped && this->tasks.empty())
-                        {
-                            return; 
-                        }
+                        std::function<void()> task; 
                         
-                        task = std::move(this->tasks.front());
-                        this->tasks.pop();
-                    }
+                        {
+                            std::unique_lock<std::mutex> lock(this->m_lock);
+                            this->cv_task.wait(lock, [this]()
+                                    {
+                                        return this->stopped.load() || !this->tasks.empty();
+                                    }); 
 
-                    idlThrNum--; 
-                    task();
-                    idlThrNum++; 
-                }
-            });
+                            if (this->stopped && this->tasks.empty())
+                            {
+                                return; 
+                            }
+                            
+                            task = std::move(this->tasks.front());
+                            this->tasks.pop();
+                        }
+
+                        idlThrNum--; 
+                        task();
+                        idlThrNum++; 
+                    }
+                });
         }
     }
 
