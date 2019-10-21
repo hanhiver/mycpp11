@@ -9,5 +9,6 @@ all: $(APPS) Makefile
 %.out: %.cpp
 	$(CC) $^ -o $@ $(CXXFLAGS) $(LDFLAGS)
 
+.PHONY: clean 
 clean:
 	$(RM) $(APPS)
