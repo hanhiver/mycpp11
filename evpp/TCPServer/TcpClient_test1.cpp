@@ -11,10 +11,13 @@ int main()
     evpp::EventLoop loop; 
     evpp::TCPClient client(&loop, addr, "TCPEchoClient"); 
 
+    std::cout << "ServerMain: " << std::this_thread::get_id() << std::endl; 
+
     client.SetConnectionCallback([](const evpp::TCPConnPtr& conn)
                                     {
                                         if (conn->IsConnected())
                                         {
+                                            std::cout << "ConnectionCallback: " << std::this_thread::get_id() << std::endl; 
                                             LOG_INFO << "Connected to " << conn->remote_addr();
                                             conn->Send("Hello!");
                                         }
@@ -26,6 +29,7 @@ int main()
 
     client.SetMessageCallback([&loop, &client](const evpp::TCPConnPtr& conn, evpp::Buffer* msg)
                                 {
+                                    std::cout << "MessageCallback: " << std::this_thread::get_id() << std::endl; 
                                     LOG_INFO << "Receive a message [" << msg->ToString() << "]";
                                     //conn->Send("Hello!"); 
                                     client.Disconnect();

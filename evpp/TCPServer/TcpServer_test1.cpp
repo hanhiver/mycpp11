@@ -14,8 +14,11 @@ int main()
     evpp::EventLoop loop;
     evpp::TCPServer server(&loop, addr, "TCPEchoServer", thread_num);
 
+    std::cout << "ClientMain: " << std::this_thread::get_id() << std::endl; 
+
     server.SetMessageCallback([](const evpp::TCPConnPtr& conn, evpp::Buffer* msg)
                                 {
+                                    std::cout << "MessageCallback: " << std::this_thread::get_id() << std::endl; 
                                     LOG_INFO << "Message received: [" << msg->ToString() << "]";
                                     // Here just send the message back. 
                                     conn->Send(msg);
@@ -24,10 +27,12 @@ int main()
                                 {
                                     if (conn->IsConnected())
                                     {
+                                        std::cout << "ConnectionCallback: " << std::this_thread::get_id() << std::endl; 
                                         LOG_INFO << "A new connection from " << conn->remote_addr();
                                     }
                                     else
                                     {
+                                        std::cout << "ConnectionCallback: " << std::this_thread::get_id() << std::endl; 
                                         LOG_INFO << "Lost the connection from " << conn->remote_addr();
                                     }
                                 });
