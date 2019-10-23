@@ -29,11 +29,55 @@
             }
         },
         {
-            "label": "Run",
+            "label": "Run C++11",
             "type": "shell",
             "command": "${fileDirname}/${fileBasenameNoExtension}.out",
             "dependsOn": [
                 "Build C++11"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$eslint-compact"
+            ]
+        },
+        {
+            "label": "Build C++17",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-std=c++17",
+                "-g",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}.out",
+                "${file}",
+                "-pthread",
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            }
+        },
+        {
+            "label": "Run C++17",
+            "type": "shell",
+            "command": "${fileDirname}/${fileBasenameNoExtension}.out",
+            "dependsOn": [
+                "Build C++17"
             ],
             "presentation": {
                 "echo": true,
