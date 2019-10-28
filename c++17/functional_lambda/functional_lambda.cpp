@@ -7,6 +7,7 @@
 template <typename C> 
 static auto consumer(C& container)
 {
+    // c++ 14 code, use auto inside lambda. 
     return [&] (auto value)
     {
         container.push_back(value);
