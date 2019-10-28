@@ -31,4 +31,16 @@ int main()
 
     const std::vector<std::function<void(int)>> consumers 
         { consumer(d), consumer(l), consumer(v)};
+
+    for (size_t i {0}; i<10; ++i)
+    {
+        for (auto&& consume : consumers)
+        {
+            consume(i);
+        }
+    }
+
+    print(d);
+    print(l);
+    print(v);
 }
