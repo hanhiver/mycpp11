@@ -96,4 +96,7 @@ int main()
     print_int(lower_it);
     print_int(upper_it);
 
+    print_int(std::lower_bound(std::begin(v), std::end(v), 7));
+    print_int(std::upper_bound(std::begin(v), std::end(v), 7));
+
 }
