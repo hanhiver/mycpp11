@@ -2,7 +2,7 @@
 #include <vector> 
 #include <random> 
 #include <algorithm> 
-//#include <execution> 
+#include <execution> 
 
 static bool odd(int n)
 {
@@ -20,17 +20,19 @@ int main()
             return dis(gen);
         });
 
-    /*
+    
     std::generate(std::execution::par, std::begin(d), std::end(d), rand_num); 
     std::sort(std::execution::par, std::begin(d), std::end(d));
     std::reverse(std::execution::par, std::begin(d), std::end(d));
-    auto odds(std::count_if(execution::par, std::begin(d), std::end(d), odd));
-    */
+    auto odds(std::count_if(std::execution::par, std::begin(d), std::end(d), odd));
+    
+    /*
     std::generate(std::begin(d), std::end(d), rand_num); 
     std::sort(std::begin(d), std::end(d));
     std::reverse(std::begin(d), std::end(d));
     auto odds(std::count_if(std::begin(d), std::end(d), odd));
+    */
 
     std::cout << (100.0 * odds / d.size()) 
-              << "% of the numbers are odd. " << std::endl; 
+                << "% of the numbers are odd. " << std::endl; 
 }

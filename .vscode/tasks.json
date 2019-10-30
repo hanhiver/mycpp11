@@ -92,6 +92,52 @@
             ]
         },
         {
+            "label": "Build C++17 Parallel",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-std=c++17",
+                "-g",
+                "-ltbb", 
+                "-L/usr/local/lib",
+                "-o",
+                "${fileDirname}/${fileBasenameNoExtension}.out",
+                "${file}",
+                "-pthread",
+            ],
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": true
+            }
+        },
+        {
+            "label": "Run C++17 Parallel",
+            "type": "shell",
+            "command": "${fileDirname}/${fileBasenameNoExtension}.out",
+            "dependsOn": [
+                "Build C++17 Parallel"
+            ],
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "shared",
+                "showReuseMessage": true,
+                "clear": false
+            },
+            "problemMatcher": [
+                "$eslint-compact"
+            ]
+        },
+        {
             "label": "echo",
             "type": "shell",
             "command": "echo Hello"
