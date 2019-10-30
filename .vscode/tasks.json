@@ -140,7 +140,7 @@
         {
             "label": "echo",
             "type": "shell",
-            "command": "echo Hello"
+            "command": "env | grep LD"
         }
     ]
 }
