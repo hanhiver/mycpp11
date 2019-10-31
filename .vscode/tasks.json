@@ -126,7 +126,7 @@
                 "Build C++17 Parallel"
             ],
             "options": {
-                "env": { "LD_LIBRARY_PATH":"/usr/local/lib" }
+                "env": { "LD_LIBRARY_PATH":"/usr/local/lib:/usr/local/lib64" }
             },
             "presentation": {
                 "echo": true,
