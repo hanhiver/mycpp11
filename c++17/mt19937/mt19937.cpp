@@ -25,10 +25,10 @@ int main()
     {
         auto start = std::chrono::steady_clock::now(); 
 
-        std::generate(std::begin(d), std::end(d), rand_num); 
-        std::sort(std::begin(d), std::end(d));
-        std::reverse(std::begin(d), std::end(d));
-        auto odds(std::count_if(std::begin(d), std::end(d), odd));
+        std::generate(std::execution::seq, std::begin(d), std::end(d), rand_num); 
+        std::sort(std::execution::seq, std::begin(d), std::end(d));
+        std::reverse(std::execution::seq, std::begin(d), std::end(d));
+        auto odds(std::count_if(std::execution::seq, std::begin(d), std::end(d), odd));
         
         auto end = std::chrono::steady_clock::now();
         auto dur = std::chrono::duration_cast<std::chrono::milliseconds>(end-start);
