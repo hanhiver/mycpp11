@@ -125,6 +125,9 @@
             "dependsOn": [
                 "Build C++17 Parallel"
             ],
+            "options": {
+                "env": { "LD_LIBRARY_PATH":"/usr/local/lib" }
+            },
             "presentation": {
                 "echo": true,
                 "reveal": "always",
