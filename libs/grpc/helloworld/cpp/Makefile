@@ -7,13 +7,13 @@ LDFLAGS += -L/usr/local/lib `pkg-config --libs protobuf grpc++` \
            -pthread \
 		   -ldl 
 
-all: server client 
+all: server.out client.out 
 
-client: client.o helloworld.grpc.pb.o helloworld.pb.o 
+client.out: client.o helloworld.grpc.pb.o helloworld.pb.o 
 	$(CXX) $^ $(LDFLAGS) -o $@
 
-server: server.o helloworld.grpc.pb.o helloworld.pb.o 
+server.out: server.o helloworld.grpc.pb.o helloworld.pb.o 
 	$(CXX) $^ $(LDFLAGS) -o $@
 
 clean:
-	$(RM) *.o server client
+	$(RM) *.o server.out client.out 
