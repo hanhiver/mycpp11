@@ -1,0 +1,26 @@
+syntax = "proto3";
+package msgType; 
+
+enum EnumTest
+{
+    TEST0 = 0x00; 
+    TEST1 = 0x01; 
+    TEST2 = 0x02;
+    TEST3 = 0x03;
+}
+
+message ProtoTestSub
+{
+    int32 test1 = 1; 
+    string test2 = 2; 
+}
+
+message ProtoTest 
+{
+    int32 int32_test = 1; 
+    string str_test = 2; 
+    repeated double dou_test = 3; 
+    repeated ProtoTestSub sub_test = 4; 
+    EnumTest enum_test = 5; 
+    bytes bytes_test = 6; 
+}
