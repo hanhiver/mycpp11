@@ -1,11 +1,11 @@
 CXX=g++
 CPPFLAG += `pkg-config --cflags protobuf grpc`
-CXXFLAGS += -std=c++11
+CXXFLAGS += -std=c++11 -g
 
 LDFLAGS += -L/usr/local/lib `pkg-config --libs protobuf grpc++` \
            -lgrpc++_unsecure \
            -pthread \
-		   -ldl 
+		   -ldl -g 
 
 all: server.out client.out 
 

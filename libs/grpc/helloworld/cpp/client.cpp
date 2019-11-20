@@ -41,7 +41,7 @@ private:
 int main(int argc, char** argv)
 {
     std::cout << "Main started. " << std::endl;
-    auto channel = grpc::CreateChannel("localhost:50051", 
+    auto channel = grpc::CreateChannel("localhost:30088", 
                                        grpc::InsecureChannelCredentials());
     std::cout << "Channel created. " << std::endl; 
     GreeterClient greeter(channel);

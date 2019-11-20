@@ -13,6 +13,7 @@ class GreeterServiceImpl final : public Greeter::Service
                           HelloReply* reply) override
     {
         std::string prefix("Hello "); 
+        std::cout << "Msg: \"" << request->name() << "\" received." << std::endl; 
         reply->set_message(prefix + request->name());
         return grpc::Status::OK; 
     }
@@ -21,7 +22,7 @@ class GreeterServiceImpl final : public Greeter::Service
 void RunServer()
 {
     std::cout << "RunServer started. " << std::endl; 
-    std::string server_address("0.0.0.0:50051");
+    std::string server_address("localhost:30088");
 
     GreeterServiceImpl service; 
     grpc::ServerBuilder builder; 
