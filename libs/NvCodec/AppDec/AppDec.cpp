@@ -86,12 +86,12 @@ int main(int argc, char** argv)
     CUcontext cuContext = NULL; 
     chk(cuCtxCreate(&cuContext, 0, cuDevice));
 
-    char* szInFilePath = "/home/dhan/1s.mp4";
+    char* szInFilePath = "/home8/dhan/1s.mp4";
     char* szOutFilePath = "/tmp/1s.mp4";
     
     std::cout << szInFilePath << std::endl; 
     std::cout << szOutFilePath << std::endl; 
-
+    
     std::ofstream fpOut(szOutFilePath, std::ios::out | std::ios::binary);
     if (!fpOut)
     {
@@ -99,8 +99,40 @@ int main(int argc, char** argv)
         err << "Unable to open output file: " << szOutFilePath << std::endl; 
         throw std::invalid_argument(err.str());
     }
+    
+    Rect cropRect = {}; 
+    Dim resizeDim = {}; 
 
     FFmpegDemuxer demuxer(szInFilePath); 
+    NvDecoder dec(cuContext, demuxer.GetWidth(), demuxer.GetHeight(), false, 
+                  FFmpeg2NvCodecId(demuxer.GetVideoCodec()), 
+                  NULL, false, false, &cropRect, &resizeDim); 
     
+    int nVideoBytes = 0;
+    int nFrameReturned = 0; 
+    int nFrame = 0; 
+    uint8_t* pVideo = NULL, **ppFrame; 
+
+    do 
+    {
+        demuxer.Demux(&pVideo, &nVideoBytes);
+        dec.Decode(pVideo, nVideoBytes, &ppFrame, &nFrameReturned);
+
+        if (!nFrame && nFrameReturned)
+        {
+            std::cerr << dec.GetVideoInfo(); 
+        }
+
+        for (int i=0; i<nFrameReturned; ++i)
+        {
+            fpOut.write(reinterpret_cast<char*>(ppFrame[i]), dec.GetFrameSize()); 
+        }
+        nFrame += nFrameReturned; 
+    } while (nVideoBytes); 
+
+    std::cout << "Total frame decoded: " << nFrame << std::endl
+              << "Saved in file: " << szOutFilePath << std::endl; 
+
+    fpOut.close();
 
 }
