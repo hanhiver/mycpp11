@@ -71,6 +71,12 @@ void ShowDecoderCapacity()
 
 int main(int argc, char** argv)
 {
+    if (argc < 2)
+    {
+        std::cout << "Usage: " << argv[0] << " [video file] " << std::endl; 
+        return 0; 
+    }
+
     // Initialize the device. 
     chk(cuInit(0));
     int nGpu = 0; 
@@ -89,7 +95,8 @@ int main(int argc, char** argv)
     CUcontext cuContext = NULL; 
     chk(cuCtxCreate(&cuContext, 0, cuDevice));
 
-    const char* szInFilePath = "/home8/dhan/out.h264";
+    //const char* szInFilePath = "/home8/dhan/out.h264";
+    char* szInFilePath = argv[1];
     const char* szOutFilePath = "/tmp/out.h264";
     
     std::cout << szInFilePath << std::endl; 
