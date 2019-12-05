@@ -2,9 +2,12 @@
 #include <algorithm> 
 #include <thread> 
 #include <iomanip>
+#include <cuda.h>
 #include "NvDecoder/NvDecoder.h"
 #include "../Utils/NvCodecUtils.h"
 #include "../Utils/FFmpegDemuxer.h"
+
+simplelogger::Logger *logger = simplelogger::LoggerFactory::CreateConsoleLogger();
 
 inline bool mycheck(int e, int iLine, const char *szFile) {
     if (e < 0) {
@@ -74,7 +77,7 @@ int main(int argc, char** argv)
     chk(cuDeviceGetCount(&nGpu)); 
     std::cout << "There are " << nGpu << " GPUs in the system. " << std::endl; 
 
-    ShowDecoderCapacity(); 
+    //ShowDecoderCapacity(); 
 
     // Get the first device in the system. 
     CUdevice cuDevice = 0; 
@@ -86,8 +89,8 @@ int main(int argc, char** argv)
     CUcontext cuContext = NULL; 
     chk(cuCtxCreate(&cuContext, 0, cuDevice));
 
-    char* szInFilePath = "/home8/dhan/1s.mp4";
-    char* szOutFilePath = "/tmp/1s.mp4";
+    const char* szInFilePath = "/home8/dhan/out.h264";
+    const char* szOutFilePath = "/tmp/out.h264";
     
     std::cout << szInFilePath << std::endl; 
     std::cout << szOutFilePath << std::endl; 
@@ -100,7 +103,7 @@ int main(int argc, char** argv)
         throw std::invalid_argument(err.str());
     }
     
-    Rect cropRect = {}; 
+    Rect cropRect = {200, 100, 1480, 820}; 
     Dim resizeDim = {}; 
 
     FFmpegDemuxer demuxer(szInFilePath); 
@@ -111,16 +114,23 @@ int main(int argc, char** argv)
     int nVideoBytes = 0;
     int nFrameReturned = 0; 
     int nFrame = 0; 
-    uint8_t* pVideo = NULL, **ppFrame; 
+    uint8_t* pVideo = NULL;
+    uint8_t** ppFrame; 
 
     do 
     {
         demuxer.Demux(&pVideo, &nVideoBytes);
         dec.Decode(pVideo, nVideoBytes, &ppFrame, &nFrameReturned);
 
+        /*
+        std::cout << "nFrame: " << nFrame 
+                  << ", nFrameReturned: " << nFrameReturned 
+                  << ", nVideoBytes: " << nVideoBytes << std::endl; 
+        */
+
         if (!nFrame && nFrameReturned)
         {
-            std::cerr << dec.GetVideoInfo(); 
+            std::cout << dec.GetVideoInfo(); 
         }
 
         for (int i=0; i<nFrameReturned; ++i)
