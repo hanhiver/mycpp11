@@ -5,7 +5,7 @@ LDFLAGS += $(shell pkg-config --libs libavcodec libavutil libavformat)
 
 all: build
 
-build: AppDec
+build: AppDec.out
 
 NvDecoder.o: ../NvCodec/NvDecoder/NvDecoder.cpp ../NvCodec/NvDecoder/NvDecoder.h
 	$(GCC) $(CCFLAGS) $(INCLUDES) -o $@ -c $<
@@ -14,7 +14,7 @@ AppDec.o: AppDec.cpp ../NvCodec/NvDecoder/NvDecoder.h \
 		  ../Utils/NvCodecUtils.h ../Utils/Logger.h
 	$(GCC) $(CCFLAGS) $(INCLUDES) -o $@ -c $<
 
-AppDec: AppDec.o NvDecoder.o 
+AppDec.out: AppDec.o NvDecoder.o 
 	$(GCC) $(CCFLAGS) -o $@ $^ $(LDFLAGS)
 
 clean: 
