@@ -29,7 +29,7 @@ int main(int argc, char** argv)
             break; 
         }
         imshow("Live", frame);
-        waitKey(1000); 
+        waitKey(100); 
     }
      
     video.release(); 
