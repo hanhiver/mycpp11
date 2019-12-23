@@ -17,4 +17,8 @@ int main()
     cv::Mat F = A.clone(); 
     cv::Mat G; 
     A.copyTo(G); 
+
+    //cv::Mat M(2, 2, cv::CV_8UC3, cv::Scalar(0, 0, 255)); 
+    cv::Mat M(2, 2, cv::CV_8UC1);
+    std::cout << "M = " << std::endl << M << std::endl << std::endl; 
 }
