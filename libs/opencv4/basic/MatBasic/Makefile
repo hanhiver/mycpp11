@@ -1,4 +1,4 @@
-APPS=readimg.out rgb2gray.out
+APPS=MatBasic.out
 ARGS=$(shell pkg-config --cflags --libs opencv4)
 
 all: $(APPS)

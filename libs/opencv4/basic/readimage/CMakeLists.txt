@@ -1,0 +1,7 @@
+cmake_minimum_required(VERSION 2.8)
+project ( readimage )
+find_package ( OpenCV REQUIRED )
+add_executable( readimg.out readimg.cpp )
+add_executable( rgb2gray.out rgb2gray.cpp )
+target_link_libraries ( readimg.out ${OpenCV_LIBS} )
+target_link_libraries ( rgb2gray.out ${OpenCV_LIBS} )
