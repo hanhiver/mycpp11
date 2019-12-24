@@ -15,7 +15,7 @@ int main(int argc, char** argv)
  
     // For OpenCV 3, you can also use the following
     // double fps = video.get(CAP_PROP_FPS);
-    cout << "Frames per second using video.get(CV_CAP_PROP_FPS) : " << fps << endl;
+    cout << "Frames per second using video.get(CAP_PROP_FPS) : " << fps << endl;
 
     Mat frame; 
     namedWindow("Live", 0);

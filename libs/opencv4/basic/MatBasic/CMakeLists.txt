@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 2.8)
+project ( MatBasic )
+find_package ( OpenCV REQUIRED )
+add_executable( MatBasic.out MatBasic.cpp )
+target_link_libraries ( MatBasic.out ${OpenCV_LIBS} )
