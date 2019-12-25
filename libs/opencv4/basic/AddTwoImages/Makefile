@@ -1,4 +1,4 @@
-APPS=add2imgs.out
+APPS=add2imgs.out contrast_brightness.out
 ARGS=$(shell pkg-config --cflags --libs opencv4)
 
 all: $(APPS)
