@@ -5,7 +5,7 @@ all: $(APPS)
 
 %.out: %.cpp
 	@echo "Compile the cpp files."
-	g++ -o $@ $< $(ARGS)
+	g++ -std=c++11 -o $@ $< $(ARGS) 
 
 .PHONY: clean
 clean:
