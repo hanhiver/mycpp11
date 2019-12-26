@@ -20,7 +20,7 @@ void onTrackbarSlide(int pos, void*)
 
 int main(int argc, char** argv)
 {
-    std::string filename { "../videoSpeed/1s.mp4" };
+    std::string filename { "/home/dhan/out.mp4" };
     cv::namedWindow("TraceBar", cv::WINDOW_AUTOSIZE); 
 
     g_cap.open(filename); 
