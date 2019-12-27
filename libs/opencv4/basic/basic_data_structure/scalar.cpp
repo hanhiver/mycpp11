@@ -6,20 +6,14 @@
 
 int main(int argc, char** argv)
 {
-    cv::Mat img_rgb, img_gray, img_cny; 
+    cv::Scalar s1(0); 
+    std::cout << "s1 = " << s1 << std::endl; 
 
-    cv::namedWindow("in", cv::WINDOW_AUTOSIZE);
-    cv::namedWindow("out", cv::WINDOW_AUTOSIZE);
+    cv::Scalar s2(0, 1, 2, 3); 
+    std::cout << "s2 = " << s2 << std::endl; 
 
-    img_rgb = cv::imread(cv::samples::findFile("lena.jpg"));
-
-    cv::imshow("in", img_rgb); 
-
-    cv::cvtColor(img_rgb, img_gray, cv::COLOR_BGR2GRAY);
-    cv::Canny(img_gray, img_cny, 10, 100, 3, true);
-
-    cv::imshow("out", img_cny);
-    cv::waitKey(0);
+    cv::Mat a(3, 3, CV_8UC3, cv::Scalar(1, 2, 3, 4)); 
+    std::cout << "a = " << a << std::endl; 
 
     return EXIT_SUCCESS;
 }
