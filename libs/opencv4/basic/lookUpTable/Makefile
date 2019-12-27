@@ -1,6 +1,5 @@
 APPS=lut.out
-ARGS=$(shell pkg-config --cflags --libs opencv4)
-CXXFLAGS=-std=c++11 -lm -lpthread
+ARGS=$(shell pkg-config --cflags --libs opencv4) -std=c++11 -lm -lpthread
 
 all: $(APPS)
 
