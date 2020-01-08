@@ -1,4 +1,3 @@
-PROTOC=protoc 
 CXX = g++
 CPPFLAGS += `pkg-config --cflags protobuf grpc`
 CXXFLAGS += -std=c++11
@@ -7,14 +6,10 @@ LDFLAGS += -L/usr/local/lib `pkg-config --libs protobuf grpc++`\
            -lgrpc++_reflection\
            -ldl
 
-all: test.pb.cc main.out 
+all: engine.out
 
-.PRECIOUS: %.pb.cc
-%.pb.cc: %.proto
-	$(PROTOC) --cpp_out=. $<
-
-main.out: main.o test.pb.o 
+engine.out: engine.o ../proto/config.pb.o 
 	$(CXX) $^ $(LDFLAGS) -o $@
 
 clean: 
-	$(RM) test.pb.cc test.pb.h main.out *.o
+	$(RM) test.pb.cc test.pb.h engine.out 
