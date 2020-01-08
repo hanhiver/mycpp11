@@ -55,3 +55,20 @@ message ImageProcessingLayer {
     optional string func_args = 5;  // Args that call the function.   
 }
 
+// RGB2Gray is a ImageProcessingLayer (IPL)
+message IPL_RGB2Gray {
+    required ImageProcessingLayer head = 1; 
+    optional int32 channel_selected = 2 [default = 0]; // 0: mixed, 1: red, 2: green, 3: blue. 
+}
+
+// BLUR is a ImageProcessingLayer (IPL)
+message IPL_BLUR {
+    required ImageProcessingLayer head = 1; 
+    optional int32 blur_level = 2 [default = 1]; 
+}
+
+// Image Processing Engine
+message IPL_Engine {
+    optional IPL_RGB2Gray rgb2gray = 1; 
+    optional IPL_BLUR blur = 2; 
+}
