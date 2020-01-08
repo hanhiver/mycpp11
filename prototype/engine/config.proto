@@ -45,10 +45,13 @@ message ImageParameter {
     optional ROIParameter ROI_zone = 5; // Default disable. 
 }
 
+
+// Defined a layer of the ImageProcessingEngine. 
 message ImageProcessingLayer {
     required ImageParameter image_input = 1; 
     required ImageParameter image_output = 2;
-    required string lib_file = 3; 
-    required string func_name = 4;  
+    required string lib_file = 3;  // .so file that contain the func. 
+    required string func_name = 4;  // func name that call the image layer.
+    optional string func_args = 5;  // Args that call the function.   
 }
 
