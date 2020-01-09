@@ -4,7 +4,7 @@
 #include <fstream> 
 #include <string>
 
-#include "../proto/config.pb.h"
+#include "config.pb.h"
 #include <google/protobuf/text_format.h>
 #include <google/protobuf/io/zero_copy_stream_impl.h>
 
