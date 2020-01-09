@@ -48,7 +48,7 @@ struct TableStruct_config_2eproto {
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::AuxillaryParseTableField aux[]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
-  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[9]
+  static const ::PROTOBUF_NAMESPACE_ID::internal::ParseTable schema[11]
     PROTOBUF_SECTION_VARIABLE(protodesc_cold);
   static const ::PROTOBUF_NAMESPACE_ID::internal::FieldMetadata field_metadata[];
   static const ::PROTOBUF_NAMESPACE_ID::internal::SerializationTable serialization_table[];
@@ -59,6 +59,9 @@ namespace ws_engine {
 class CameraParameter;
 class CameraParameterDefaultTypeInternal;
 extern CameraParameterDefaultTypeInternal _CameraParameter_default_instance_;
+class DisplayDevice;
+class DisplayDeviceDefaultTypeInternal;
+extern DisplayDeviceDefaultTypeInternal _DisplayDevice_default_instance_;
 class IPL_BLUR;
 class IPL_BLURDefaultTypeInternal;
 extern IPL_BLURDefaultTypeInternal _IPL_BLUR_default_instance_;
@@ -83,9 +86,13 @@ extern ROIParameterDefaultTypeInternal _ROIParameter_default_instance_;
 class SystemParameter;
 class SystemParameterDefaultTypeInternal;
 extern SystemParameterDefaultTypeInternal _SystemParameter_default_instance_;
+class WsEngineParameters;
+class WsEngineParametersDefaultTypeInternal;
+extern WsEngineParametersDefaultTypeInternal _WsEngineParameters_default_instance_;
 }  // namespace ws_engine
 PROTOBUF_NAMESPACE_OPEN
 template<> ::ws_engine::CameraParameter* Arena::CreateMaybeMessage<::ws_engine::CameraParameter>(Arena*);
+template<> ::ws_engine::DisplayDevice* Arena::CreateMaybeMessage<::ws_engine::DisplayDevice>(Arena*);
 template<> ::ws_engine::IPL_BLUR* Arena::CreateMaybeMessage<::ws_engine::IPL_BLUR>(Arena*);
 template<> ::ws_engine::IPL_Engine* Arena::CreateMaybeMessage<::ws_engine::IPL_Engine>(Arena*);
 template<> ::ws_engine::IPL_RGB2Gray* Arena::CreateMaybeMessage<::ws_engine::IPL_RGB2Gray>(Arena*);
@@ -94,13 +101,15 @@ template<> ::ws_engine::ImageProcessingLayer* Arena::CreateMaybeMessage<::ws_eng
 template<> ::ws_engine::PointParameter* Arena::CreateMaybeMessage<::ws_engine::PointParameter>(Arena*);
 template<> ::ws_engine::ROIParameter* Arena::CreateMaybeMessage<::ws_engine::ROIParameter>(Arena*);
 template<> ::ws_engine::SystemParameter* Arena::CreateMaybeMessage<::ws_engine::SystemParameter>(Arena*);
+template<> ::ws_engine::WsEngineParameters* Arena::CreateMaybeMessage<::ws_engine::WsEngineParameters>(Arena*);
 PROTOBUF_NAMESPACE_CLOSE
 namespace ws_engine {
 
 enum CameraParameter_CameraType : int {
   CameraParameter_CameraType_gige = 0,
   CameraParameter_CameraType_usb = 1,
-  CameraParameter_CameraType_video_file = 2
+  CameraParameter_CameraType_image_file = 2,
+  CameraParameter_CameraType_video_file = 3
 };
 bool CameraParameter_CameraType_IsValid(int value);
 constexpr CameraParameter_CameraType CameraParameter_CameraType_CameraType_MIN = CameraParameter_CameraType_gige;
@@ -413,6 +422,8 @@ class CameraParameter :
     CameraParameter_CameraType_gige;
   static constexpr CameraType usb =
     CameraParameter_CameraType_usb;
+  static constexpr CameraType image_file =
+    CameraParameter_CameraType_image_file;
   static constexpr CameraType video_file =
     CameraParameter_CameraType_video_file;
   static inline bool CameraType_IsValid(int value) {
@@ -444,7 +455,7 @@ class CameraParameter :
 
   enum : int {
     kCameraNameFieldNumber = 2,
-    kTypeFieldNumber = 1,
+    kCameraTypeFieldNumber = 1,
     kCameraIdFieldNumber = 3,
     kCameraFpsFieldNumber = 4,
     kCameraAutoBalanceFieldNumber = 5,
@@ -469,20 +480,20 @@ class CameraParameter :
   std::string* _internal_mutable_camera_name();
   public:
 
-  // optional .ws_engine.CameraParameter.CameraType type = 1 [default = gige];
-  bool has_type() const;
+  // optional .ws_engine.CameraParameter.CameraType camera_type = 1 [default = gige];
+  bool has_camera_type() const;
   private:
-  bool _internal_has_type() const;
+  bool _internal_has_camera_type() const;
   public:
-  void clear_type();
-  ::ws_engine::CameraParameter_CameraType type() const;
-  void set_type(::ws_engine::CameraParameter_CameraType value);
+  void clear_camera_type();
+  ::ws_engine::CameraParameter_CameraType camera_type() const;
+  void set_camera_type(::ws_engine::CameraParameter_CameraType value);
   private:
-  ::ws_engine::CameraParameter_CameraType _internal_type() const;
-  void _internal_set_type(::ws_engine::CameraParameter_CameraType value);
+  ::ws_engine::CameraParameter_CameraType _internal_camera_type() const;
+  void _internal_set_camera_type(::ws_engine::CameraParameter_CameraType value);
   public:
 
-  // required int32 camera_id = 3;
+  // optional int32 camera_id = 3;
   bool has_camera_id() const;
   private:
   bool _internal_has_camera_id() const;
@@ -525,14 +536,11 @@ class CameraParameter :
  private:
   class _Internal;
 
-  // helper for ByteSizeLong()
-  size_t RequiredFieldsByteSizeFallback() const;
-
   ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr camera_name_;
-  int type_;
+  int camera_type_;
   ::PROTOBUF_NAMESPACE_ID::int32 camera_id_;
   ::PROTOBUF_NAMESPACE_ID::int32 camera_fps_;
   bool camera_auto_balance_;
@@ -1779,6 +1787,364 @@ class IPL_Engine :
   ::ws_engine::IPL_BLUR* blur_;
   friend struct ::TableStruct_config_2eproto;
 };
+// -------------------------------------------------------------------
+
+class DisplayDevice :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:ws_engine.DisplayDevice) */ {
+ public:
+  DisplayDevice();
+  virtual ~DisplayDevice();
+
+  DisplayDevice(const DisplayDevice& from);
+  DisplayDevice(DisplayDevice&& from) noexcept
+    : DisplayDevice() {
+    *this = ::std::move(from);
+  }
+
+  inline DisplayDevice& operator=(const DisplayDevice& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline DisplayDevice& operator=(DisplayDevice&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields();
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const DisplayDevice& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const DisplayDevice* internal_default_instance() {
+    return reinterpret_cast<const DisplayDevice*>(
+               &_DisplayDevice_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    9;
+
+  friend void swap(DisplayDevice& a, DisplayDevice& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(DisplayDevice* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline DisplayDevice* New() const final {
+    return CreateMaybeMessage<DisplayDevice>(nullptr);
+  }
+
+  DisplayDevice* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<DisplayDevice>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const DisplayDevice& from);
+  void MergeFrom(const DisplayDevice& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(DisplayDevice* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "ws_engine.DisplayDevice";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_config_2eproto);
+    return ::descriptor_table_config_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kOutputFileNameFieldNumber = 2,
+    kShowInScreenFieldNumber = 1,
+  };
+  // optional string output_file_name = 2;
+  bool has_output_file_name() const;
+  private:
+  bool _internal_has_output_file_name() const;
+  public:
+  void clear_output_file_name();
+  const std::string& output_file_name() const;
+  void set_output_file_name(const std::string& value);
+  void set_output_file_name(std::string&& value);
+  void set_output_file_name(const char* value);
+  void set_output_file_name(const char* value, size_t size);
+  std::string* mutable_output_file_name();
+  std::string* release_output_file_name();
+  void set_allocated_output_file_name(std::string* output_file_name);
+  private:
+  const std::string& _internal_output_file_name() const;
+  void _internal_set_output_file_name(const std::string& value);
+  std::string* _internal_mutable_output_file_name();
+  public:
+
+  // required bool show_in_screen = 1 [default = true];
+  bool has_show_in_screen() const;
+  private:
+  bool _internal_has_show_in_screen() const;
+  public:
+  void clear_show_in_screen();
+  bool show_in_screen() const;
+  void set_show_in_screen(bool value);
+  private:
+  bool _internal_show_in_screen() const;
+  void _internal_set_show_in_screen(bool value);
+  public:
+
+  // @@protoc_insertion_point(class_scope:ws_engine.DisplayDevice)
+ private:
+  class _Internal;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr output_file_name_;
+  bool show_in_screen_;
+  friend struct ::TableStruct_config_2eproto;
+};
+// -------------------------------------------------------------------
+
+class WsEngineParameters :
+    public ::PROTOBUF_NAMESPACE_ID::Message /* @@protoc_insertion_point(class_definition:ws_engine.WsEngineParameters) */ {
+ public:
+  WsEngineParameters();
+  virtual ~WsEngineParameters();
+
+  WsEngineParameters(const WsEngineParameters& from);
+  WsEngineParameters(WsEngineParameters&& from) noexcept
+    : WsEngineParameters() {
+    *this = ::std::move(from);
+  }
+
+  inline WsEngineParameters& operator=(const WsEngineParameters& from) {
+    CopyFrom(from);
+    return *this;
+  }
+  inline WsEngineParameters& operator=(WsEngineParameters&& from) noexcept {
+    if (GetArenaNoVirtual() == from.GetArenaNoVirtual()) {
+      if (this != &from) InternalSwap(&from);
+    } else {
+      CopyFrom(from);
+    }
+    return *this;
+  }
+
+  inline const ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet& unknown_fields() const {
+    return _internal_metadata_.unknown_fields();
+  }
+  inline ::PROTOBUF_NAMESPACE_ID::UnknownFieldSet* mutable_unknown_fields() {
+    return _internal_metadata_.mutable_unknown_fields();
+  }
+
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* descriptor() {
+    return GetDescriptor();
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Descriptor* GetDescriptor() {
+    return GetMetadataStatic().descriptor;
+  }
+  static const ::PROTOBUF_NAMESPACE_ID::Reflection* GetReflection() {
+    return GetMetadataStatic().reflection;
+  }
+  static const WsEngineParameters& default_instance();
+
+  static void InitAsDefaultInstance();  // FOR INTERNAL USE ONLY
+  static inline const WsEngineParameters* internal_default_instance() {
+    return reinterpret_cast<const WsEngineParameters*>(
+               &_WsEngineParameters_default_instance_);
+  }
+  static constexpr int kIndexInFileMessages =
+    10;
+
+  friend void swap(WsEngineParameters& a, WsEngineParameters& b) {
+    a.Swap(&b);
+  }
+  inline void Swap(WsEngineParameters* other) {
+    if (other == this) return;
+    InternalSwap(other);
+  }
+
+  // implements Message ----------------------------------------------
+
+  inline WsEngineParameters* New() const final {
+    return CreateMaybeMessage<WsEngineParameters>(nullptr);
+  }
+
+  WsEngineParameters* New(::PROTOBUF_NAMESPACE_ID::Arena* arena) const final {
+    return CreateMaybeMessage<WsEngineParameters>(arena);
+  }
+  void CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) final;
+  void CopyFrom(const WsEngineParameters& from);
+  void MergeFrom(const WsEngineParameters& from);
+  PROTOBUF_ATTRIBUTE_REINITIALIZES void Clear() final;
+  bool IsInitialized() const final;
+
+  size_t ByteSizeLong() const final;
+  const char* _InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) final;
+  ::PROTOBUF_NAMESPACE_ID::uint8* _InternalSerialize(
+      ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const final;
+  int GetCachedSize() const final { return _cached_size_.Get(); }
+
+  private:
+  inline void SharedCtor();
+  inline void SharedDtor();
+  void SetCachedSize(int size) const final;
+  void InternalSwap(WsEngineParameters* other);
+  friend class ::PROTOBUF_NAMESPACE_ID::internal::AnyMetadata;
+  static ::PROTOBUF_NAMESPACE_ID::StringPiece FullMessageName() {
+    return "ws_engine.WsEngineParameters";
+  }
+  private:
+  inline ::PROTOBUF_NAMESPACE_ID::Arena* GetArenaNoVirtual() const {
+    return nullptr;
+  }
+  inline void* MaybeArenaPtr() const {
+    return nullptr;
+  }
+  public:
+
+  ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadata() const final;
+  private:
+  static ::PROTOBUF_NAMESPACE_ID::Metadata GetMetadataStatic() {
+    ::PROTOBUF_NAMESPACE_ID::internal::AssignDescriptors(&::descriptor_table_config_2eproto);
+    return ::descriptor_table_config_2eproto.file_level_metadata[kIndexInFileMessages];
+  }
+
+  public:
+
+  // nested types ----------------------------------------------------
+
+  // accessors -------------------------------------------------------
+
+  enum : int {
+    kSysParamsFieldNumber = 1,
+    kCameraFieldNumber = 2,
+    kIplEngineFieldNumber = 3,
+    kDisplayDeviceFieldNumber = 4,
+  };
+  // required .ws_engine.SystemParameter sys_params = 1;
+  bool has_sys_params() const;
+  private:
+  bool _internal_has_sys_params() const;
+  public:
+  void clear_sys_params();
+  const ::ws_engine::SystemParameter& sys_params() const;
+  ::ws_engine::SystemParameter* release_sys_params();
+  ::ws_engine::SystemParameter* mutable_sys_params();
+  void set_allocated_sys_params(::ws_engine::SystemParameter* sys_params);
+  private:
+  const ::ws_engine::SystemParameter& _internal_sys_params() const;
+  ::ws_engine::SystemParameter* _internal_mutable_sys_params();
+  public:
+
+  // required .ws_engine.CameraParameter camera = 2;
+  bool has_camera() const;
+  private:
+  bool _internal_has_camera() const;
+  public:
+  void clear_camera();
+  const ::ws_engine::CameraParameter& camera() const;
+  ::ws_engine::CameraParameter* release_camera();
+  ::ws_engine::CameraParameter* mutable_camera();
+  void set_allocated_camera(::ws_engine::CameraParameter* camera);
+  private:
+  const ::ws_engine::CameraParameter& _internal_camera() const;
+  ::ws_engine::CameraParameter* _internal_mutable_camera();
+  public:
+
+  // required .ws_engine.IPL_Engine ipl_engine = 3;
+  bool has_ipl_engine() const;
+  private:
+  bool _internal_has_ipl_engine() const;
+  public:
+  void clear_ipl_engine();
+  const ::ws_engine::IPL_Engine& ipl_engine() const;
+  ::ws_engine::IPL_Engine* release_ipl_engine();
+  ::ws_engine::IPL_Engine* mutable_ipl_engine();
+  void set_allocated_ipl_engine(::ws_engine::IPL_Engine* ipl_engine);
+  private:
+  const ::ws_engine::IPL_Engine& _internal_ipl_engine() const;
+  ::ws_engine::IPL_Engine* _internal_mutable_ipl_engine();
+  public:
+
+  // optional .ws_engine.DisplayDevice display_device = 4;
+  bool has_display_device() const;
+  private:
+  bool _internal_has_display_device() const;
+  public:
+  void clear_display_device();
+  const ::ws_engine::DisplayDevice& display_device() const;
+  ::ws_engine::DisplayDevice* release_display_device();
+  ::ws_engine::DisplayDevice* mutable_display_device();
+  void set_allocated_display_device(::ws_engine::DisplayDevice* display_device);
+  private:
+  const ::ws_engine::DisplayDevice& _internal_display_device() const;
+  ::ws_engine::DisplayDevice* _internal_mutable_display_device();
+  public:
+
+  // @@protoc_insertion_point(class_scope:ws_engine.WsEngineParameters)
+ private:
+  class _Internal;
+
+  // helper for ByteSizeLong()
+  size_t RequiredFieldsByteSizeFallback() const;
+
+  ::PROTOBUF_NAMESPACE_ID::internal::InternalMetadataWithArena _internal_metadata_;
+  ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
+  mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
+  ::ws_engine::SystemParameter* sys_params_;
+  ::ws_engine::CameraParameter* camera_;
+  ::ws_engine::IPL_Engine* ipl_engine_;
+  ::ws_engine::DisplayDevice* display_device_;
+  friend struct ::TableStruct_config_2eproto;
+};
 // ===================================================================
 
 
@@ -1936,33 +2302,33 @@ inline void SystemParameter::set_allocated_debug_level(std::string* debug_level)
 
 // CameraParameter
 
-// optional .ws_engine.CameraParameter.CameraType type = 1 [default = gige];
-inline bool CameraParameter::_internal_has_type() const {
+// optional .ws_engine.CameraParameter.CameraType camera_type = 1 [default = gige];
+inline bool CameraParameter::_internal_has_camera_type() const {
   bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
 }
-inline bool CameraParameter::has_type() const {
-  return _internal_has_type();
+inline bool CameraParameter::has_camera_type() const {
+  return _internal_has_camera_type();
 }
-inline void CameraParameter::clear_type() {
-  type_ = 0;
+inline void CameraParameter::clear_camera_type() {
+  camera_type_ = 0;
   _has_bits_[0] &= ~0x00000002u;
 }
-inline ::ws_engine::CameraParameter_CameraType CameraParameter::_internal_type() const {
-  return static_cast< ::ws_engine::CameraParameter_CameraType >(type_);
+inline ::ws_engine::CameraParameter_CameraType CameraParameter::_internal_camera_type() const {
+  return static_cast< ::ws_engine::CameraParameter_CameraType >(camera_type_);
 }
-inline ::ws_engine::CameraParameter_CameraType CameraParameter::type() const {
-  // @@protoc_insertion_point(field_get:ws_engine.CameraParameter.type)
-  return _internal_type();
+inline ::ws_engine::CameraParameter_CameraType CameraParameter::camera_type() const {
+  // @@protoc_insertion_point(field_get:ws_engine.CameraParameter.camera_type)
+  return _internal_camera_type();
 }
-inline void CameraParameter::_internal_set_type(::ws_engine::CameraParameter_CameraType value) {
+inline void CameraParameter::_internal_set_camera_type(::ws_engine::CameraParameter_CameraType value) {
   assert(::ws_engine::CameraParameter_CameraType_IsValid(value));
   _has_bits_[0] |= 0x00000002u;
-  type_ = value;
+  camera_type_ = value;
 }
-inline void CameraParameter::set_type(::ws_engine::CameraParameter_CameraType value) {
-  _internal_set_type(value);
-  // @@protoc_insertion_point(field_set:ws_engine.CameraParameter.type)
+inline void CameraParameter::set_camera_type(::ws_engine::CameraParameter_CameraType value) {
+  _internal_set_camera_type(value);
+  // @@protoc_insertion_point(field_set:ws_engine.CameraParameter.camera_type)
 }
 
 // required string camera_name = 2;
@@ -2036,7 +2402,7 @@ inline void CameraParameter::set_allocated_camera_name(std::string* camera_name)
   // @@protoc_insertion_point(field_set_allocated:ws_engine.CameraParameter.camera_name)
 }
 
-// required int32 camera_id = 3;
+// optional int32 camera_id = 3;
 inline bool CameraParameter::_internal_has_camera_id() const {
   bool value = (_has_bits_[0] & 0x00000004u) != 0;
   return value;
@@ -3153,9 +3519,360 @@ inline void IPL_Engine::set_allocated_blur(::ws_engine::IPL_BLUR* blur) {
   // @@protoc_insertion_point(field_set_allocated:ws_engine.IPL_Engine.blur)
 }
 
+// -------------------------------------------------------------------
+
+// DisplayDevice
+
+// required bool show_in_screen = 1 [default = true];
+inline bool DisplayDevice::_internal_has_show_in_screen() const {
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  return value;
+}
+inline bool DisplayDevice::has_show_in_screen() const {
+  return _internal_has_show_in_screen();
+}
+inline void DisplayDevice::clear_show_in_screen() {
+  show_in_screen_ = true;
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline bool DisplayDevice::_internal_show_in_screen() const {
+  return show_in_screen_;
+}
+inline bool DisplayDevice::show_in_screen() const {
+  // @@protoc_insertion_point(field_get:ws_engine.DisplayDevice.show_in_screen)
+  return _internal_show_in_screen();
+}
+inline void DisplayDevice::_internal_set_show_in_screen(bool value) {
+  _has_bits_[0] |= 0x00000002u;
+  show_in_screen_ = value;
+}
+inline void DisplayDevice::set_show_in_screen(bool value) {
+  _internal_set_show_in_screen(value);
+  // @@protoc_insertion_point(field_set:ws_engine.DisplayDevice.show_in_screen)
+}
+
+// optional string output_file_name = 2;
+inline bool DisplayDevice::_internal_has_output_file_name() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  return value;
+}
+inline bool DisplayDevice::has_output_file_name() const {
+  return _internal_has_output_file_name();
+}
+inline void DisplayDevice::clear_output_file_name() {
+  output_file_name_.ClearToEmptyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline const std::string& DisplayDevice::output_file_name() const {
+  // @@protoc_insertion_point(field_get:ws_engine.DisplayDevice.output_file_name)
+  return _internal_output_file_name();
+}
+inline void DisplayDevice::set_output_file_name(const std::string& value) {
+  _internal_set_output_file_name(value);
+  // @@protoc_insertion_point(field_set:ws_engine.DisplayDevice.output_file_name)
+}
+inline std::string* DisplayDevice::mutable_output_file_name() {
+  // @@protoc_insertion_point(field_mutable:ws_engine.DisplayDevice.output_file_name)
+  return _internal_mutable_output_file_name();
+}
+inline const std::string& DisplayDevice::_internal_output_file_name() const {
+  return output_file_name_.GetNoArena();
+}
+inline void DisplayDevice::_internal_set_output_file_name(const std::string& value) {
+  _has_bits_[0] |= 0x00000001u;
+  output_file_name_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), value);
+}
+inline void DisplayDevice::set_output_file_name(std::string&& value) {
+  _has_bits_[0] |= 0x00000001u;
+  output_file_name_.SetNoArena(
+    &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::move(value));
+  // @@protoc_insertion_point(field_set_rvalue:ws_engine.DisplayDevice.output_file_name)
+}
+inline void DisplayDevice::set_output_file_name(const char* value) {
+  GOOGLE_DCHECK(value != nullptr);
+  _has_bits_[0] |= 0x00000001u;
+  output_file_name_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), ::std::string(value));
+  // @@protoc_insertion_point(field_set_char:ws_engine.DisplayDevice.output_file_name)
+}
+inline void DisplayDevice::set_output_file_name(const char* value, size_t size) {
+  _has_bits_[0] |= 0x00000001u;
+  output_file_name_.SetNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+      ::std::string(reinterpret_cast<const char*>(value), size));
+  // @@protoc_insertion_point(field_set_pointer:ws_engine.DisplayDevice.output_file_name)
+}
+inline std::string* DisplayDevice::_internal_mutable_output_file_name() {
+  _has_bits_[0] |= 0x00000001u;
+  return output_file_name_.MutableNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline std::string* DisplayDevice::release_output_file_name() {
+  // @@protoc_insertion_point(field_release:ws_engine.DisplayDevice.output_file_name)
+  if (!_internal_has_output_file_name()) {
+    return nullptr;
+  }
+  _has_bits_[0] &= ~0x00000001u;
+  return output_file_name_.ReleaseNonDefaultNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+inline void DisplayDevice::set_allocated_output_file_name(std::string* output_file_name) {
+  if (output_file_name != nullptr) {
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  output_file_name_.SetAllocatedNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), output_file_name);
+  // @@protoc_insertion_point(field_set_allocated:ws_engine.DisplayDevice.output_file_name)
+}
+
+// -------------------------------------------------------------------
+
+// WsEngineParameters
+
+// required .ws_engine.SystemParameter sys_params = 1;
+inline bool WsEngineParameters::_internal_has_sys_params() const {
+  bool value = (_has_bits_[0] & 0x00000001u) != 0;
+  PROTOBUF_ASSUME(!value || sys_params_ != nullptr);
+  return value;
+}
+inline bool WsEngineParameters::has_sys_params() const {
+  return _internal_has_sys_params();
+}
+inline void WsEngineParameters::clear_sys_params() {
+  if (sys_params_ != nullptr) sys_params_->Clear();
+  _has_bits_[0] &= ~0x00000001u;
+}
+inline const ::ws_engine::SystemParameter& WsEngineParameters::_internal_sys_params() const {
+  const ::ws_engine::SystemParameter* p = sys_params_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::ws_engine::SystemParameter*>(
+      &::ws_engine::_SystemParameter_default_instance_);
+}
+inline const ::ws_engine::SystemParameter& WsEngineParameters::sys_params() const {
+  // @@protoc_insertion_point(field_get:ws_engine.WsEngineParameters.sys_params)
+  return _internal_sys_params();
+}
+inline ::ws_engine::SystemParameter* WsEngineParameters::release_sys_params() {
+  // @@protoc_insertion_point(field_release:ws_engine.WsEngineParameters.sys_params)
+  _has_bits_[0] &= ~0x00000001u;
+  ::ws_engine::SystemParameter* temp = sys_params_;
+  sys_params_ = nullptr;
+  return temp;
+}
+inline ::ws_engine::SystemParameter* WsEngineParameters::_internal_mutable_sys_params() {
+  _has_bits_[0] |= 0x00000001u;
+  if (sys_params_ == nullptr) {
+    auto* p = CreateMaybeMessage<::ws_engine::SystemParameter>(GetArenaNoVirtual());
+    sys_params_ = p;
+  }
+  return sys_params_;
+}
+inline ::ws_engine::SystemParameter* WsEngineParameters::mutable_sys_params() {
+  // @@protoc_insertion_point(field_mutable:ws_engine.WsEngineParameters.sys_params)
+  return _internal_mutable_sys_params();
+}
+inline void WsEngineParameters::set_allocated_sys_params(::ws_engine::SystemParameter* sys_params) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete sys_params_;
+  }
+  if (sys_params) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      sys_params = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, sys_params, submessage_arena);
+    }
+    _has_bits_[0] |= 0x00000001u;
+  } else {
+    _has_bits_[0] &= ~0x00000001u;
+  }
+  sys_params_ = sys_params;
+  // @@protoc_insertion_point(field_set_allocated:ws_engine.WsEngineParameters.sys_params)
+}
+
+// required .ws_engine.CameraParameter camera = 2;
+inline bool WsEngineParameters::_internal_has_camera() const {
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  PROTOBUF_ASSUME(!value || camera_ != nullptr);
+  return value;
+}
+inline bool WsEngineParameters::has_camera() const {
+  return _internal_has_camera();
+}
+inline void WsEngineParameters::clear_camera() {
+  if (camera_ != nullptr) camera_->Clear();
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline const ::ws_engine::CameraParameter& WsEngineParameters::_internal_camera() const {
+  const ::ws_engine::CameraParameter* p = camera_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::ws_engine::CameraParameter*>(
+      &::ws_engine::_CameraParameter_default_instance_);
+}
+inline const ::ws_engine::CameraParameter& WsEngineParameters::camera() const {
+  // @@protoc_insertion_point(field_get:ws_engine.WsEngineParameters.camera)
+  return _internal_camera();
+}
+inline ::ws_engine::CameraParameter* WsEngineParameters::release_camera() {
+  // @@protoc_insertion_point(field_release:ws_engine.WsEngineParameters.camera)
+  _has_bits_[0] &= ~0x00000002u;
+  ::ws_engine::CameraParameter* temp = camera_;
+  camera_ = nullptr;
+  return temp;
+}
+inline ::ws_engine::CameraParameter* WsEngineParameters::_internal_mutable_camera() {
+  _has_bits_[0] |= 0x00000002u;
+  if (camera_ == nullptr) {
+    auto* p = CreateMaybeMessage<::ws_engine::CameraParameter>(GetArenaNoVirtual());
+    camera_ = p;
+  }
+  return camera_;
+}
+inline ::ws_engine::CameraParameter* WsEngineParameters::mutable_camera() {
+  // @@protoc_insertion_point(field_mutable:ws_engine.WsEngineParameters.camera)
+  return _internal_mutable_camera();
+}
+inline void WsEngineParameters::set_allocated_camera(::ws_engine::CameraParameter* camera) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete camera_;
+  }
+  if (camera) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      camera = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, camera, submessage_arena);
+    }
+    _has_bits_[0] |= 0x00000002u;
+  } else {
+    _has_bits_[0] &= ~0x00000002u;
+  }
+  camera_ = camera;
+  // @@protoc_insertion_point(field_set_allocated:ws_engine.WsEngineParameters.camera)
+}
+
+// required .ws_engine.IPL_Engine ipl_engine = 3;
+inline bool WsEngineParameters::_internal_has_ipl_engine() const {
+  bool value = (_has_bits_[0] & 0x00000004u) != 0;
+  PROTOBUF_ASSUME(!value || ipl_engine_ != nullptr);
+  return value;
+}
+inline bool WsEngineParameters::has_ipl_engine() const {
+  return _internal_has_ipl_engine();
+}
+inline void WsEngineParameters::clear_ipl_engine() {
+  if (ipl_engine_ != nullptr) ipl_engine_->Clear();
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline const ::ws_engine::IPL_Engine& WsEngineParameters::_internal_ipl_engine() const {
+  const ::ws_engine::IPL_Engine* p = ipl_engine_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::ws_engine::IPL_Engine*>(
+      &::ws_engine::_IPL_Engine_default_instance_);
+}
+inline const ::ws_engine::IPL_Engine& WsEngineParameters::ipl_engine() const {
+  // @@protoc_insertion_point(field_get:ws_engine.WsEngineParameters.ipl_engine)
+  return _internal_ipl_engine();
+}
+inline ::ws_engine::IPL_Engine* WsEngineParameters::release_ipl_engine() {
+  // @@protoc_insertion_point(field_release:ws_engine.WsEngineParameters.ipl_engine)
+  _has_bits_[0] &= ~0x00000004u;
+  ::ws_engine::IPL_Engine* temp = ipl_engine_;
+  ipl_engine_ = nullptr;
+  return temp;
+}
+inline ::ws_engine::IPL_Engine* WsEngineParameters::_internal_mutable_ipl_engine() {
+  _has_bits_[0] |= 0x00000004u;
+  if (ipl_engine_ == nullptr) {
+    auto* p = CreateMaybeMessage<::ws_engine::IPL_Engine>(GetArenaNoVirtual());
+    ipl_engine_ = p;
+  }
+  return ipl_engine_;
+}
+inline ::ws_engine::IPL_Engine* WsEngineParameters::mutable_ipl_engine() {
+  // @@protoc_insertion_point(field_mutable:ws_engine.WsEngineParameters.ipl_engine)
+  return _internal_mutable_ipl_engine();
+}
+inline void WsEngineParameters::set_allocated_ipl_engine(::ws_engine::IPL_Engine* ipl_engine) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete ipl_engine_;
+  }
+  if (ipl_engine) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      ipl_engine = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, ipl_engine, submessage_arena);
+    }
+    _has_bits_[0] |= 0x00000004u;
+  } else {
+    _has_bits_[0] &= ~0x00000004u;
+  }
+  ipl_engine_ = ipl_engine;
+  // @@protoc_insertion_point(field_set_allocated:ws_engine.WsEngineParameters.ipl_engine)
+}
+
+// optional .ws_engine.DisplayDevice display_device = 4;
+inline bool WsEngineParameters::_internal_has_display_device() const {
+  bool value = (_has_bits_[0] & 0x00000008u) != 0;
+  PROTOBUF_ASSUME(!value || display_device_ != nullptr);
+  return value;
+}
+inline bool WsEngineParameters::has_display_device() const {
+  return _internal_has_display_device();
+}
+inline void WsEngineParameters::clear_display_device() {
+  if (display_device_ != nullptr) display_device_->Clear();
+  _has_bits_[0] &= ~0x00000008u;
+}
+inline const ::ws_engine::DisplayDevice& WsEngineParameters::_internal_display_device() const {
+  const ::ws_engine::DisplayDevice* p = display_device_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::ws_engine::DisplayDevice*>(
+      &::ws_engine::_DisplayDevice_default_instance_);
+}
+inline const ::ws_engine::DisplayDevice& WsEngineParameters::display_device() const {
+  // @@protoc_insertion_point(field_get:ws_engine.WsEngineParameters.display_device)
+  return _internal_display_device();
+}
+inline ::ws_engine::DisplayDevice* WsEngineParameters::release_display_device() {
+  // @@protoc_insertion_point(field_release:ws_engine.WsEngineParameters.display_device)
+  _has_bits_[0] &= ~0x00000008u;
+  ::ws_engine::DisplayDevice* temp = display_device_;
+  display_device_ = nullptr;
+  return temp;
+}
+inline ::ws_engine::DisplayDevice* WsEngineParameters::_internal_mutable_display_device() {
+  _has_bits_[0] |= 0x00000008u;
+  if (display_device_ == nullptr) {
+    auto* p = CreateMaybeMessage<::ws_engine::DisplayDevice>(GetArenaNoVirtual());
+    display_device_ = p;
+  }
+  return display_device_;
+}
+inline ::ws_engine::DisplayDevice* WsEngineParameters::mutable_display_device() {
+  // @@protoc_insertion_point(field_mutable:ws_engine.WsEngineParameters.display_device)
+  return _internal_mutable_display_device();
+}
+inline void WsEngineParameters::set_allocated_display_device(::ws_engine::DisplayDevice* display_device) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete display_device_;
+  }
+  if (display_device) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      display_device = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, display_device, submessage_arena);
+    }
+    _has_bits_[0] |= 0x00000008u;
+  } else {
+    _has_bits_[0] &= ~0x00000008u;
+  }
+  display_device_ = display_device;
+  // @@protoc_insertion_point(field_set_allocated:ws_engine.WsEngineParameters.display_device)
+}
+
 #ifdef __GNUC__
   #pragma GCC diagnostic pop
 #endif  // __GNUC__
+// -------------------------------------------------------------------
+
+// -------------------------------------------------------------------
+
 // -------------------------------------------------------------------
 
 // -------------------------------------------------------------------

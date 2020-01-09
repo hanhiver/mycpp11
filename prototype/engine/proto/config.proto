@@ -14,11 +14,12 @@ message CameraParameter {
     enum CameraType {
         gige = 0;          // GIGE camera. 
         usb = 1;           // USB camera. 
-        video_file = 2;    // Video file. 
+        image_file = 2;    // Image file. 
+        video_file = 3;    // Video file. 
     }
-    optional CameraType type = 1 [default = gige];
+    optional CameraType camera_type = 1 [default = gige];
     required string camera_name = 2; 
-    required int32 camera_id = 3; 
+    optional int32 camera_id = 3; 
     optional int32 camera_fps = 4 [default = 0]; // 0 means unlimited. 
     optional bool camera_auto_balance = 5 [default = false];
 }
@@ -72,3 +73,17 @@ message IPL_Engine {
     optional IPL_RGB2Gray rgb2gray = 1; 
     optional IPL_BLUR blur = 2; 
 }
+
+message DisplayDevice {
+    required bool show_in_screen = 1 [default = true];
+    optional string output_file_name = 2; 
+}
+
+// General messages for all the conponents
+message WsEngineParameters {
+    required SystemParameter sys_params = 1; 
+    required CameraParameter camera = 2;
+    required IPL_Engine ipl_engine = 3; 
+    optional DisplayDevice display_device = 4; 
+}
+

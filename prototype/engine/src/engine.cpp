@@ -28,8 +28,12 @@ int main(int argc, char** argv)
 
     google::protobuf::io::FileInputStream fileInput(fd);
     fileInput.SetCloseOnDelete(true);
-    ws_engine::PointParameter engine; 
+    
+    //ws_engine::PointParameter engine; 
+    ws_engine::WsEngineParameters sys_params; 
+
     std::cout << "Read config file: " << std::endl; 
-    google::protobuf::TextFormat::Parse(&fileInput, &engine);
-    engine.PrintDebugString();
+
+    google::protobuf::TextFormat::Parse(&fileInput, &sys_params);
+    sys_params.PrintDebugString();
 }

@@ -14,12 +14,16 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
+extern PROTOBUF_INTERNAL_EXPORT_config_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_CameraParameter_config_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_config_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_DisplayDevice_config_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_config_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_IPL_BLUR_config_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_config_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_IPL_Engine_config_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_config_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_IPL_RGB2Gray_config_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_config_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_ImageParameter_config_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_config_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_ImageProcessingLayer_config_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_config_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_PointParameter_config_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_config_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_ROIParameter_config_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_config_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SystemParameter_config_2eproto;
 namespace ws_engine {
 class SystemParameterDefaultTypeInternal {
  public:
@@ -57,6 +61,14 @@ class IPL_EngineDefaultTypeInternal {
  public:
   ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<IPL_Engine> _instance;
 } _IPL_Engine_default_instance_;
+class DisplayDeviceDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<DisplayDevice> _instance;
+} _DisplayDevice_default_instance_;
+class WsEngineParametersDefaultTypeInternal {
+ public:
+  ::PROTOBUF_NAMESPACE_ID::internal::ExplicitlyConstructed<WsEngineParameters> _instance;
+} _WsEngineParameters_default_instance_;
 }  // namespace ws_engine
 static void InitDefaultsscc_info_CameraParameter_config_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -71,6 +83,20 @@ static void InitDefaultsscc_info_CameraParameter_config_2eproto() {
 
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_CameraParameter_config_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_CameraParameter_config_2eproto}, {}};
+
+static void InitDefaultsscc_info_DisplayDevice_config_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::ws_engine::_DisplayDevice_default_instance_;
+    new (ptr) ::ws_engine::DisplayDevice();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::ws_engine::DisplayDevice::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_DisplayDevice_config_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_DisplayDevice_config_2eproto}, {}};
 
 static void InitDefaultsscc_info_IPL_BLUR_config_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -199,7 +225,25 @@ static void InitDefaultsscc_info_SystemParameter_config_2eproto() {
 ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_SystemParameter_config_2eproto =
     {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_SystemParameter_config_2eproto}, {}};
 
-static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_config_2eproto[9];
+static void InitDefaultsscc_info_WsEngineParameters_config_2eproto() {
+  GOOGLE_PROTOBUF_VERIFY_VERSION;
+
+  {
+    void* ptr = &::ws_engine::_WsEngineParameters_default_instance_;
+    new (ptr) ::ws_engine::WsEngineParameters();
+    ::PROTOBUF_NAMESPACE_ID::internal::OnShutdownDestroyMessage(ptr);
+  }
+  ::ws_engine::WsEngineParameters::InitAsDefaultInstance();
+}
+
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<4> scc_info_WsEngineParameters_config_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 4, 0, InitDefaultsscc_info_WsEngineParameters_config_2eproto}, {
+      &scc_info_SystemParameter_config_2eproto.base,
+      &scc_info_CameraParameter_config_2eproto.base,
+      &scc_info_IPL_Engine_config_2eproto.base,
+      &scc_info_DisplayDevice_config_2eproto.base,}};
+
+static ::PROTOBUF_NAMESPACE_ID::Metadata file_level_metadata_config_2eproto[11];
 static const ::PROTOBUF_NAMESPACE_ID::EnumDescriptor* file_level_enum_descriptors_config_2eproto[1];
 static constexpr ::PROTOBUF_NAMESPACE_ID::ServiceDescriptor const** file_level_service_descriptors_config_2eproto = nullptr;
 
@@ -218,7 +262,7 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_config_2eproto::offsets[] PROT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
-  PROTOBUF_FIELD_OFFSET(::ws_engine::CameraParameter, type_),
+  PROTOBUF_FIELD_OFFSET(::ws_engine::CameraParameter, camera_type_),
   PROTOBUF_FIELD_OFFSET(::ws_engine::CameraParameter, camera_name_),
   PROTOBUF_FIELD_OFFSET(::ws_engine::CameraParameter, camera_id_),
   PROTOBUF_FIELD_OFFSET(::ws_engine::CameraParameter, camera_fps_),
@@ -305,6 +349,28 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_config_2eproto::offsets[] PROT
   PROTOBUF_FIELD_OFFSET(::ws_engine::IPL_Engine, blur_),
   0,
   1,
+  PROTOBUF_FIELD_OFFSET(::ws_engine::DisplayDevice, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::ws_engine::DisplayDevice, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::ws_engine::DisplayDevice, show_in_screen_),
+  PROTOBUF_FIELD_OFFSET(::ws_engine::DisplayDevice, output_file_name_),
+  1,
+  0,
+  PROTOBUF_FIELD_OFFSET(::ws_engine::WsEngineParameters, _has_bits_),
+  PROTOBUF_FIELD_OFFSET(::ws_engine::WsEngineParameters, _internal_metadata_),
+  ~0u,  // no _extensions_
+  ~0u,  // no _oneof_case_
+  ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::ws_engine::WsEngineParameters, sys_params_),
+  PROTOBUF_FIELD_OFFSET(::ws_engine::WsEngineParameters, camera_),
+  PROTOBUF_FIELD_OFFSET(::ws_engine::WsEngineParameters, ipl_engine_),
+  PROTOBUF_FIELD_OFFSET(::ws_engine::WsEngineParameters, display_device_),
+  0,
+  1,
+  2,
+  3,
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 7, sizeof(::ws_engine::SystemParameter)},
@@ -316,6 +382,8 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 74, 81, sizeof(::ws_engine::IPL_RGB2Gray)},
   { 83, 90, sizeof(::ws_engine::IPL_BLUR)},
   { 92, 99, sizeof(::ws_engine::IPL_Engine)},
+  { 101, 108, sizeof(::ws_engine::DisplayDevice)},
+  { 110, 119, sizeof(::ws_engine::WsEngineParameters)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -328,42 +396,52 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::ws_engine::_IPL_RGB2Gray_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::ws_engine::_IPL_BLUR_default_instance_),
   reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::ws_engine::_IPL_Engine_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::ws_engine::_DisplayDevice_default_instance_),
+  reinterpret_cast<const ::PROTOBUF_NAMESPACE_ID::Message*>(&::ws_engine::_WsEngineParameters_default_instance_),
 };
 
 const char descriptor_table_protodef_config_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\014config.proto\022\tws_engine\"K\n\017SystemParam"
   "eter\022\035\n\017debug_file_root\030\001 \001(\t:\004/tmp\022\031\n\013d"
-  "ebug_level\030\002 \001(\t:\004info\"\340\001\n\017CameraParamet"
-  "er\0229\n\004type\030\001 \001(\0162%.ws_engine.CameraParam"
-  "eter.CameraType:\004gige\022\023\n\013camera_name\030\002 \002"
-  "(\t\022\021\n\tcamera_id\030\003 \002(\005\022\025\n\ncamera_fps\030\004 \001("
-  "\005:\0010\022\"\n\023camera_auto_balance\030\005 \001(\010:\005false"
-  "\"/\n\nCameraType\022\010\n\004gige\020\000\022\007\n\003usb\020\001\022\016\n\nvid"
-  "eo_file\020\002\"&\n\016PointParameter\022\t\n\001x\030\001 \002(\005\022\t"
-  "\n\001y\030\002 \002(\005\"\215\001\n\014ROIParameter\022\024\n\006enable\030\001 \001"
-  "(\010:\004true\0220\n\rleft_up_point\030\002 \002(\0132\031.ws_eng"
-  "ine.PointParameter\0225\n\022right_bottom_point"
-  "\030\003 \002(\0132\031.ws_engine.PointParameter\"\200\001\n\016Im"
-  "ageParameter\022\r\n\005width\030\001 \002(\005\022\016\n\006height\030\002 "
-  "\002(\005\022\022\n\007channel\030\003 \001(\005:\0011\022\020\n\005depth\030\004 \001(\005:\001"
-  "8\022)\n\010ROI_zone\030\005 \001(\0132\027.ws_engine.ROIParam"
-  "eter\"\257\001\n\024ImageProcessingLayer\022.\n\013image_i"
-  "nput\030\001 \002(\0132\031.ws_engine.ImageParameter\022/\n"
-  "\014image_output\030\002 \002(\0132\031.ws_engine.ImagePar"
-  "ameter\022\020\n\010lib_file\030\003 \002(\t\022\021\n\tfunc_name\030\004 "
-  "\002(\t\022\021\n\tfunc_args\030\005 \001(\t\"Z\n\014IPL_RGB2Gray\022-"
-  "\n\004head\030\001 \002(\0132\037.ws_engine.ImageProcessing"
-  "Layer\022\033\n\020channel_selected\030\002 \001(\005:\0010\"P\n\010IP"
-  "L_BLUR\022-\n\004head\030\001 \002(\0132\037.ws_engine.ImagePr"
-  "ocessingLayer\022\025\n\nblur_level\030\002 \001(\005:\0011\"Z\n\n"
-  "IPL_Engine\022)\n\010rgb2gray\030\001 \001(\0132\027.ws_engine"
-  ".IPL_RGB2Gray\022!\n\004blur\030\002 \001(\0132\023.ws_engine."
-  "IPL_BLUR"
+  "ebug_level\030\002 \001(\t:\004info\"\367\001\n\017CameraParamet"
+  "er\022@\n\013camera_type\030\001 \001(\0162%.ws_engine.Came"
+  "raParameter.CameraType:\004gige\022\023\n\013camera_n"
+  "ame\030\002 \002(\t\022\021\n\tcamera_id\030\003 \001(\005\022\025\n\ncamera_f"
+  "ps\030\004 \001(\005:\0010\022\"\n\023camera_auto_balance\030\005 \001(\010"
+  ":\005false\"\?\n\nCameraType\022\010\n\004gige\020\000\022\007\n\003usb\020\001"
+  "\022\016\n\nimage_file\020\002\022\016\n\nvideo_file\020\003\"&\n\016Poin"
+  "tParameter\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\"\215\001\n\014ROI"
+  "Parameter\022\024\n\006enable\030\001 \001(\010:\004true\0220\n\rleft_"
+  "up_point\030\002 \002(\0132\031.ws_engine.PointParamete"
+  "r\0225\n\022right_bottom_point\030\003 \002(\0132\031.ws_engin"
+  "e.PointParameter\"\200\001\n\016ImageParameter\022\r\n\005w"
+  "idth\030\001 \002(\005\022\016\n\006height\030\002 \002(\005\022\022\n\007channel\030\003 "
+  "\001(\005:\0011\022\020\n\005depth\030\004 \001(\005:\0018\022)\n\010ROI_zone\030\005 \001"
+  "(\0132\027.ws_engine.ROIParameter\"\257\001\n\024ImagePro"
+  "cessingLayer\022.\n\013image_input\030\001 \002(\0132\031.ws_e"
+  "ngine.ImageParameter\022/\n\014image_output\030\002 \002"
+  "(\0132\031.ws_engine.ImageParameter\022\020\n\010lib_fil"
+  "e\030\003 \002(\t\022\021\n\tfunc_name\030\004 \002(\t\022\021\n\tfunc_args\030"
+  "\005 \001(\t\"Z\n\014IPL_RGB2Gray\022-\n\004head\030\001 \002(\0132\037.ws"
+  "_engine.ImageProcessingLayer\022\033\n\020channel_"
+  "selected\030\002 \001(\005:\0010\"P\n\010IPL_BLUR\022-\n\004head\030\001 "
+  "\002(\0132\037.ws_engine.ImageProcessingLayer\022\025\n\n"
+  "blur_level\030\002 \001(\005:\0011\"Z\n\nIPL_Engine\022)\n\010rgb"
+  "2gray\030\001 \001(\0132\027.ws_engine.IPL_RGB2Gray\022!\n\004"
+  "blur\030\002 \001(\0132\023.ws_engine.IPL_BLUR\"G\n\rDispl"
+  "ayDevice\022\034\n\016show_in_screen\030\001 \002(\010:\004true\022\030"
+  "\n\020output_file_name\030\002 \001(\t\"\315\001\n\022WsEnginePar"
+  "ameters\022.\n\nsys_params\030\001 \002(\0132\032.ws_engine."
+  "SystemParameter\022*\n\006camera\030\002 \002(\0132\032.ws_eng"
+  "ine.CameraParameter\022)\n\nipl_engine\030\003 \002(\0132"
+  "\025.ws_engine.IPL_Engine\0220\n\016display_device"
+  "\030\004 \001(\0132\030.ws_engine.DisplayDevice"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_config_2eproto_deps[1] = {
 };
-static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_config_2eproto_sccs[9] = {
+static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_config_2eproto_sccs[11] = {
   &scc_info_CameraParameter_config_2eproto.base,
+  &scc_info_DisplayDevice_config_2eproto.base,
   &scc_info_IPL_BLUR_config_2eproto.base,
   &scc_info_IPL_Engine_config_2eproto.base,
   &scc_info_IPL_RGB2Gray_config_2eproto.base,
@@ -372,14 +450,15 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_con
   &scc_info_PointParameter_config_2eproto.base,
   &scc_info_ROIParameter_config_2eproto.base,
   &scc_info_SystemParameter_config_2eproto.base,
+  &scc_info_WsEngineParameters_config_2eproto.base,
 };
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_config_2eproto_once;
 static bool descriptor_table_config_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_config_2eproto = {
-  &descriptor_table_config_2eproto_initialized, descriptor_table_protodef_config_2eproto, "config.proto", 1088,
-  &descriptor_table_config_2eproto_once, descriptor_table_config_2eproto_sccs, descriptor_table_config_2eproto_deps, 9, 0,
+  &descriptor_table_config_2eproto_initialized, descriptor_table_protodef_config_2eproto, "config.proto", 1392,
+  &descriptor_table_config_2eproto_once, descriptor_table_config_2eproto_sccs, descriptor_table_config_2eproto_deps, 11, 0,
   schemas, file_default_instances, TableStruct_config_2eproto::offsets,
-  file_level_metadata_config_2eproto, 9, file_level_enum_descriptors_config_2eproto, file_level_service_descriptors_config_2eproto,
+  file_level_metadata_config_2eproto, 11, file_level_enum_descriptors_config_2eproto, file_level_service_descriptors_config_2eproto,
 };
 
 // Force running AddDescriptors() at dynamic initialization time.
@@ -394,6 +473,7 @@ bool CameraParameter_CameraType_IsValid(int value) {
     case 0:
     case 1:
     case 2:
+    case 3:
       return true;
     default:
       return false;
@@ -403,6 +483,7 @@ bool CameraParameter_CameraType_IsValid(int value) {
 #if (__cplusplus < 201703) && (!defined(_MSC_VER) || _MSC_VER >= 1900)
 constexpr CameraParameter_CameraType CameraParameter::gige;
 constexpr CameraParameter_CameraType CameraParameter::usb;
+constexpr CameraParameter_CameraType CameraParameter::image_file;
 constexpr CameraParameter_CameraType CameraParameter::video_file;
 constexpr CameraParameter_CameraType CameraParameter::CameraType_MIN;
 constexpr CameraParameter_CameraType CameraParameter::CameraType_MAX;
@@ -686,7 +767,7 @@ void CameraParameter::InitAsDefaultInstance() {
 class CameraParameter::_Internal {
  public:
   using HasBits = decltype(std::declval<CameraParameter>()._has_bits_);
-  static void set_has_type(HasBits* has_bits) {
+  static void set_has_camera_type(HasBits* has_bits) {
     (*has_bits)[0] |= 2u;
   }
   static void set_has_camera_name(HasBits* has_bits) {
@@ -717,18 +798,18 @@ CameraParameter::CameraParameter(const CameraParameter& from)
   if (from._internal_has_camera_name()) {
     camera_name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.camera_name_);
   }
-  ::memcpy(&type_, &from.type_,
+  ::memcpy(&camera_type_, &from.camera_type_,
     static_cast<size_t>(reinterpret_cast<char*>(&camera_auto_balance_) -
-    reinterpret_cast<char*>(&type_)) + sizeof(camera_auto_balance_));
+    reinterpret_cast<char*>(&camera_type_)) + sizeof(camera_auto_balance_));
   // @@protoc_insertion_point(copy_constructor:ws_engine.CameraParameter)
 }
 
 void CameraParameter::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_CameraParameter_config_2eproto.base);
   camera_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  ::memset(&type_, 0, static_cast<size_t>(
+  ::memset(&camera_type_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&camera_auto_balance_) -
-      reinterpret_cast<char*>(&type_)) + sizeof(camera_auto_balance_));
+      reinterpret_cast<char*>(&camera_type_)) + sizeof(camera_auto_balance_));
 }
 
 CameraParameter::~CameraParameter() {
@@ -760,9 +841,9 @@ void CameraParameter::Clear() {
     camera_name_.ClearNonDefaultToEmptyNoArena();
   }
   if (cached_has_bits & 0x0000001eu) {
-    ::memset(&type_, 0, static_cast<size_t>(
+    ::memset(&camera_type_, 0, static_cast<size_t>(
         reinterpret_cast<char*>(&camera_auto_balance_) -
-        reinterpret_cast<char*>(&type_)) + sizeof(camera_auto_balance_));
+        reinterpret_cast<char*>(&camera_type_)) + sizeof(camera_auto_balance_));
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear();
@@ -776,13 +857,13 @@ const char* CameraParameter::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPAC
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // optional .ws_engine.CameraParameter.CameraType type = 1 [default = gige];
+      // optional .ws_engine.CameraParameter.CameraType camera_type = 1 [default = gige];
       case 1:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
           ::PROTOBUF_NAMESPACE_ID::uint64 val = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
           if (PROTOBUF_PREDICT_TRUE(::ws_engine::CameraParameter_CameraType_IsValid(val))) {
-            _internal_set_type(static_cast<::ws_engine::CameraParameter_CameraType>(val));
+            _internal_set_camera_type(static_cast<::ws_engine::CameraParameter_CameraType>(val));
           } else {
             ::PROTOBUF_NAMESPACE_ID::internal::WriteVarint(1, val, mutable_unknown_fields());
           }
@@ -799,7 +880,7 @@ const char* CameraParameter::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPAC
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // required int32 camera_id = 3;
+      // optional int32 camera_id = 3;
       case 3:
         if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
           _Internal::set_has_camera_id(&has_bits);
@@ -851,11 +932,11 @@ failure:
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  // optional .ws_engine.CameraParameter.CameraType type = 1 [default = gige];
+  // optional .ws_engine.CameraParameter.CameraType camera_type = 1 [default = gige];
   if (cached_has_bits & 0x00000002u) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
-      1, this->_internal_type(), target);
+      1, this->_internal_camera_type(), target);
   }
 
   // required string camera_name = 2;
@@ -868,7 +949,7 @@ failure:
         2, this->_internal_camera_name(), target);
   }
 
-  // required int32 camera_id = 3;
+  // optional int32 camera_id = 3;
   if (cached_has_bits & 0x00000004u) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(3, this->_internal_camera_id(), target);
@@ -894,56 +975,35 @@ failure:
   return target;
 }
 
-size_t CameraParameter::RequiredFieldsByteSizeFallback() const {
-// @@protoc_insertion_point(required_fields_byte_size_fallback_start:ws_engine.CameraParameter)
-  size_t total_size = 0;
-
-  if (_internal_has_camera_name()) {
-    // required string camera_name = 2;
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
-        this->_internal_camera_name());
-  }
-
-  if (_internal_has_camera_id()) {
-    // required int32 camera_id = 3;
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_camera_id());
-  }
-
-  return total_size;
-}
 size_t CameraParameter::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:ws_engine.CameraParameter)
   size_t total_size = 0;
 
-  if (((_has_bits_[0] & 0x00000005) ^ 0x00000005) == 0) {  // All required fields are present.
-    // required string camera_name = 2;
+  // required string camera_name = 2;
+  if (_internal_has_camera_name()) {
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_camera_name());
-
-    // required int32 camera_id = 3;
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
-        this->_internal_camera_id());
-
-  } else {
-    total_size += RequiredFieldsByteSizeFallback();
   }
   ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // optional .ws_engine.CameraParameter.CameraType type = 1 [default = gige];
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000002u) {
-    total_size += 1 +
-      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_type());
-  }
+  if (cached_has_bits & 0x0000001eu) {
+    // optional .ws_engine.CameraParameter.CameraType camera_type = 1 [default = gige];
+    if (cached_has_bits & 0x00000002u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_camera_type());
+    }
 
-  if (cached_has_bits & 0x00000018u) {
+    // optional int32 camera_id = 3;
+    if (cached_has_bits & 0x00000004u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+          this->_internal_camera_id());
+    }
+
     // optional int32 camera_fps = 4 [default = 0];
     if (cached_has_bits & 0x00000008u) {
       total_size += 1 +
@@ -995,7 +1055,7 @@ void CameraParameter::MergeFrom(const CameraParameter& from) {
       camera_name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.camera_name_);
     }
     if (cached_has_bits & 0x00000002u) {
-      type_ = from.type_;
+      camera_type_ = from.camera_type_;
     }
     if (cached_has_bits & 0x00000004u) {
       camera_id_ = from.camera_id_;
@@ -1025,7 +1085,7 @@ void CameraParameter::CopyFrom(const CameraParameter& from) {
 }
 
 bool CameraParameter::IsInitialized() const {
-  if ((_has_bits_[0] & 0x00000005) != 0x00000005) return false;
+  if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
   return true;
 }
 
@@ -1035,7 +1095,7 @@ void CameraParameter::InternalSwap(CameraParameter* other) {
   swap(_has_bits_[0], other->_has_bits_[0]);
   camera_name_.Swap(&other->camera_name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
-  swap(type_, other->type_);
+  swap(camera_type_, other->camera_type_);
   swap(camera_id_, other->camera_id_);
   swap(camera_fps_, other->camera_fps_);
   swap(camera_auto_balance_, other->camera_auto_balance_);
@@ -3235,6 +3295,652 @@ void IPL_Engine::InternalSwap(IPL_Engine* other) {
 }
 
 
+// ===================================================================
+
+void DisplayDevice::InitAsDefaultInstance() {
+}
+class DisplayDevice::_Internal {
+ public:
+  using HasBits = decltype(std::declval<DisplayDevice>()._has_bits_);
+  static void set_has_show_in_screen(HasBits* has_bits) {
+    (*has_bits)[0] |= 2u;
+  }
+  static void set_has_output_file_name(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+};
+
+DisplayDevice::DisplayDevice()
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:ws_engine.DisplayDevice)
+}
+DisplayDevice::DisplayDevice(const DisplayDevice& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _internal_metadata_(nullptr),
+      _has_bits_(from._has_bits_) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  output_file_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (from._internal_has_output_file_name()) {
+    output_file_name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.output_file_name_);
+  }
+  show_in_screen_ = from.show_in_screen_;
+  // @@protoc_insertion_point(copy_constructor:ws_engine.DisplayDevice)
+}
+
+void DisplayDevice::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_DisplayDevice_config_2eproto.base);
+  output_file_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  show_in_screen_ = true;
+}
+
+DisplayDevice::~DisplayDevice() {
+  // @@protoc_insertion_point(destructor:ws_engine.DisplayDevice)
+  SharedDtor();
+}
+
+void DisplayDevice::SharedDtor() {
+  output_file_name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+}
+
+void DisplayDevice::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const DisplayDevice& DisplayDevice::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_DisplayDevice_config_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void DisplayDevice::Clear() {
+// @@protoc_insertion_point(message_clear_start:ws_engine.DisplayDevice)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    if (cached_has_bits & 0x00000001u) {
+      output_file_name_.ClearNonDefaultToEmptyNoArena();
+    }
+    show_in_screen_ = true;
+  }
+  _has_bits_.Clear();
+  _internal_metadata_.Clear();
+}
+
+const char* DisplayDevice::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // required bool show_in_screen = 1 [default = true];
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          _Internal::set_has_show_in_screen(&has_bits);
+          show_in_screen_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // optional string output_file_name = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          auto str = _internal_mutable_output_file_name();
+          ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
+          #ifndef NDEBUG
+          ::PROTOBUF_NAMESPACE_ID::internal::VerifyUTF8(str, "ws_engine.DisplayDevice.output_file_name");
+          #endif  // !NDEBUG
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  _has_bits_.Or(has_bits);
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* DisplayDevice::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:ws_engine.DisplayDevice)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
+  // required bool show_in_screen = 1 [default = true];
+  if (cached_has_bits & 0x00000002u) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(1, this->_internal_show_in_screen(), target);
+  }
+
+  // optional string output_file_name = 2;
+  if (cached_has_bits & 0x00000001u) {
+    ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::VerifyUTF8StringNamedField(
+      this->_internal_output_file_name().data(), static_cast<int>(this->_internal_output_file_name().length()),
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SERIALIZE,
+      "ws_engine.DisplayDevice.output_file_name");
+    target = stream->WriteStringMaybeAliased(
+        2, this->_internal_output_file_name(), target);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:ws_engine.DisplayDevice)
+  return target;
+}
+
+size_t DisplayDevice::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:ws_engine.DisplayDevice)
+  size_t total_size = 0;
+
+  // required bool show_in_screen = 1 [default = true];
+  if (_internal_has_show_in_screen()) {
+    total_size += 1 + 1;
+  }
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // optional string output_file_name = 2;
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000001u) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
+        this->_internal_output_file_name());
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void DisplayDevice::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:ws_engine.DisplayDevice)
+  GOOGLE_DCHECK_NE(&from, this);
+  const DisplayDevice* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<DisplayDevice>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:ws_engine.DisplayDevice)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:ws_engine.DisplayDevice)
+    MergeFrom(*source);
+  }
+}
+
+void DisplayDevice::MergeFrom(const DisplayDevice& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:ws_engine.DisplayDevice)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._has_bits_[0];
+  if (cached_has_bits & 0x00000003u) {
+    if (cached_has_bits & 0x00000001u) {
+      _has_bits_[0] |= 0x00000001u;
+      output_file_name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.output_file_name_);
+    }
+    if (cached_has_bits & 0x00000002u) {
+      show_in_screen_ = from.show_in_screen_;
+    }
+    _has_bits_[0] |= cached_has_bits;
+  }
+}
+
+void DisplayDevice::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:ws_engine.DisplayDevice)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void DisplayDevice::CopyFrom(const DisplayDevice& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ws_engine.DisplayDevice)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool DisplayDevice::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000002) != 0x00000002) return false;
+  return true;
+}
+
+void DisplayDevice::InternalSwap(DisplayDevice* other) {
+  using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_has_bits_[0], other->_has_bits_[0]);
+  output_file_name_.Swap(&other->output_file_name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
+    GetArenaNoVirtual());
+  swap(show_in_screen_, other->show_in_screen_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata DisplayDevice::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
+// ===================================================================
+
+void WsEngineParameters::InitAsDefaultInstance() {
+  ::ws_engine::_WsEngineParameters_default_instance_._instance.get_mutable()->sys_params_ = const_cast< ::ws_engine::SystemParameter*>(
+      ::ws_engine::SystemParameter::internal_default_instance());
+  ::ws_engine::_WsEngineParameters_default_instance_._instance.get_mutable()->camera_ = const_cast< ::ws_engine::CameraParameter*>(
+      ::ws_engine::CameraParameter::internal_default_instance());
+  ::ws_engine::_WsEngineParameters_default_instance_._instance.get_mutable()->ipl_engine_ = const_cast< ::ws_engine::IPL_Engine*>(
+      ::ws_engine::IPL_Engine::internal_default_instance());
+  ::ws_engine::_WsEngineParameters_default_instance_._instance.get_mutable()->display_device_ = const_cast< ::ws_engine::DisplayDevice*>(
+      ::ws_engine::DisplayDevice::internal_default_instance());
+}
+class WsEngineParameters::_Internal {
+ public:
+  using HasBits = decltype(std::declval<WsEngineParameters>()._has_bits_);
+  static const ::ws_engine::SystemParameter& sys_params(const WsEngineParameters* msg);
+  static void set_has_sys_params(HasBits* has_bits) {
+    (*has_bits)[0] |= 1u;
+  }
+  static const ::ws_engine::CameraParameter& camera(const WsEngineParameters* msg);
+  static void set_has_camera(HasBits* has_bits) {
+    (*has_bits)[0] |= 2u;
+  }
+  static const ::ws_engine::IPL_Engine& ipl_engine(const WsEngineParameters* msg);
+  static void set_has_ipl_engine(HasBits* has_bits) {
+    (*has_bits)[0] |= 4u;
+  }
+  static const ::ws_engine::DisplayDevice& display_device(const WsEngineParameters* msg);
+  static void set_has_display_device(HasBits* has_bits) {
+    (*has_bits)[0] |= 8u;
+  }
+};
+
+const ::ws_engine::SystemParameter&
+WsEngineParameters::_Internal::sys_params(const WsEngineParameters* msg) {
+  return *msg->sys_params_;
+}
+const ::ws_engine::CameraParameter&
+WsEngineParameters::_Internal::camera(const WsEngineParameters* msg) {
+  return *msg->camera_;
+}
+const ::ws_engine::IPL_Engine&
+WsEngineParameters::_Internal::ipl_engine(const WsEngineParameters* msg) {
+  return *msg->ipl_engine_;
+}
+const ::ws_engine::DisplayDevice&
+WsEngineParameters::_Internal::display_device(const WsEngineParameters* msg) {
+  return *msg->display_device_;
+}
+WsEngineParameters::WsEngineParameters()
+  : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
+  SharedCtor();
+  // @@protoc_insertion_point(constructor:ws_engine.WsEngineParameters)
+}
+WsEngineParameters::WsEngineParameters(const WsEngineParameters& from)
+  : ::PROTOBUF_NAMESPACE_ID::Message(),
+      _internal_metadata_(nullptr),
+      _has_bits_(from._has_bits_) {
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  if (from._internal_has_sys_params()) {
+    sys_params_ = new ::ws_engine::SystemParameter(*from.sys_params_);
+  } else {
+    sys_params_ = nullptr;
+  }
+  if (from._internal_has_camera()) {
+    camera_ = new ::ws_engine::CameraParameter(*from.camera_);
+  } else {
+    camera_ = nullptr;
+  }
+  if (from._internal_has_ipl_engine()) {
+    ipl_engine_ = new ::ws_engine::IPL_Engine(*from.ipl_engine_);
+  } else {
+    ipl_engine_ = nullptr;
+  }
+  if (from._internal_has_display_device()) {
+    display_device_ = new ::ws_engine::DisplayDevice(*from.display_device_);
+  } else {
+    display_device_ = nullptr;
+  }
+  // @@protoc_insertion_point(copy_constructor:ws_engine.WsEngineParameters)
+}
+
+void WsEngineParameters::SharedCtor() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_WsEngineParameters_config_2eproto.base);
+  ::memset(&sys_params_, 0, static_cast<size_t>(
+      reinterpret_cast<char*>(&display_device_) -
+      reinterpret_cast<char*>(&sys_params_)) + sizeof(display_device_));
+}
+
+WsEngineParameters::~WsEngineParameters() {
+  // @@protoc_insertion_point(destructor:ws_engine.WsEngineParameters)
+  SharedDtor();
+}
+
+void WsEngineParameters::SharedDtor() {
+  if (this != internal_default_instance()) delete sys_params_;
+  if (this != internal_default_instance()) delete camera_;
+  if (this != internal_default_instance()) delete ipl_engine_;
+  if (this != internal_default_instance()) delete display_device_;
+}
+
+void WsEngineParameters::SetCachedSize(int size) const {
+  _cached_size_.Set(size);
+}
+const WsEngineParameters& WsEngineParameters::default_instance() {
+  ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&::scc_info_WsEngineParameters_config_2eproto.base);
+  return *internal_default_instance();
+}
+
+
+void WsEngineParameters::Clear() {
+// @@protoc_insertion_point(message_clear_start:ws_engine.WsEngineParameters)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x0000000fu) {
+    if (cached_has_bits & 0x00000001u) {
+      GOOGLE_DCHECK(sys_params_ != nullptr);
+      sys_params_->Clear();
+    }
+    if (cached_has_bits & 0x00000002u) {
+      GOOGLE_DCHECK(camera_ != nullptr);
+      camera_->Clear();
+    }
+    if (cached_has_bits & 0x00000004u) {
+      GOOGLE_DCHECK(ipl_engine_ != nullptr);
+      ipl_engine_->Clear();
+    }
+    if (cached_has_bits & 0x00000008u) {
+      GOOGLE_DCHECK(display_device_ != nullptr);
+      display_device_->Clear();
+    }
+  }
+  _has_bits_.Clear();
+  _internal_metadata_.Clear();
+}
+
+const char* WsEngineParameters::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID::internal::ParseContext* ctx) {
+#define CHK_(x) if (PROTOBUF_PREDICT_FALSE(!(x))) goto failure
+  _Internal::HasBits has_bits{};
+  while (!ctx->Done(&ptr)) {
+    ::PROTOBUF_NAMESPACE_ID::uint32 tag;
+    ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
+    CHK_(ptr);
+    switch (tag >> 3) {
+      // required .ws_engine.SystemParameter sys_params = 1;
+      case 1:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+          ptr = ctx->ParseMessage(_internal_mutable_sys_params(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // required .ws_engine.CameraParameter camera = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+          ptr = ctx->ParseMessage(_internal_mutable_camera(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // required .ws_engine.IPL_Engine ipl_engine = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+          ptr = ctx->ParseMessage(_internal_mutable_ipl_engine(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // optional .ws_engine.DisplayDevice display_device = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
+          ptr = ctx->ParseMessage(_internal_mutable_display_device(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      default: {
+      handle_unusual:
+        if ((tag & 7) == 4 || tag == 0) {
+          ctx->SetLastTag(tag);
+          goto success;
+        }
+        ptr = UnknownFieldParse(tag, &_internal_metadata_, ptr, ctx);
+        CHK_(ptr != nullptr);
+        continue;
+      }
+    }  // switch
+  }  // while
+success:
+  _has_bits_.Or(has_bits);
+  return ptr;
+failure:
+  ptr = nullptr;
+  goto success;
+#undef CHK_
+}
+
+::PROTOBUF_NAMESPACE_ID::uint8* WsEngineParameters::_InternalSerialize(
+    ::PROTOBUF_NAMESPACE_ID::uint8* target, ::PROTOBUF_NAMESPACE_ID::io::EpsCopyOutputStream* stream) const {
+  // @@protoc_insertion_point(serialize_to_array_start:ws_engine.WsEngineParameters)
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = _has_bits_[0];
+  // required .ws_engine.SystemParameter sys_params = 1;
+  if (cached_has_bits & 0x00000001u) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        1, _Internal::sys_params(this), target, stream);
+  }
+
+  // required .ws_engine.CameraParameter camera = 2;
+  if (cached_has_bits & 0x00000002u) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        2, _Internal::camera(this), target, stream);
+  }
+
+  // required .ws_engine.IPL_Engine ipl_engine = 3;
+  if (cached_has_bits & 0x00000004u) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        3, _Internal::ipl_engine(this), target, stream);
+  }
+
+  // optional .ws_engine.DisplayDevice display_device = 4;
+  if (cached_has_bits & 0x00000008u) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        4, _Internal::display_device(this), target, stream);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::InternalSerializeUnknownFieldsToArray(
+        _internal_metadata_.unknown_fields(), target, stream);
+  }
+  // @@protoc_insertion_point(serialize_to_array_end:ws_engine.WsEngineParameters)
+  return target;
+}
+
+size_t WsEngineParameters::RequiredFieldsByteSizeFallback() const {
+// @@protoc_insertion_point(required_fields_byte_size_fallback_start:ws_engine.WsEngineParameters)
+  size_t total_size = 0;
+
+  if (_internal_has_sys_params()) {
+    // required .ws_engine.SystemParameter sys_params = 1;
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *sys_params_);
+  }
+
+  if (_internal_has_camera()) {
+    // required .ws_engine.CameraParameter camera = 2;
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *camera_);
+  }
+
+  if (_internal_has_ipl_engine()) {
+    // required .ws_engine.IPL_Engine ipl_engine = 3;
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *ipl_engine_);
+  }
+
+  return total_size;
+}
+size_t WsEngineParameters::ByteSizeLong() const {
+// @@protoc_insertion_point(message_byte_size_start:ws_engine.WsEngineParameters)
+  size_t total_size = 0;
+
+  if (((_has_bits_[0] & 0x00000007) ^ 0x00000007) == 0) {  // All required fields are present.
+    // required .ws_engine.SystemParameter sys_params = 1;
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *sys_params_);
+
+    // required .ws_engine.CameraParameter camera = 2;
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *camera_);
+
+    // required .ws_engine.IPL_Engine ipl_engine = 3;
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *ipl_engine_);
+
+  } else {
+    total_size += RequiredFieldsByteSizeFallback();
+  }
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  // Prevent compiler warnings about cached_has_bits being unused
+  (void) cached_has_bits;
+
+  // optional .ws_engine.DisplayDevice display_device = 4;
+  cached_has_bits = _has_bits_[0];
+  if (cached_has_bits & 0x00000008u) {
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+        *display_device_);
+  }
+
+  if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
+    return ::PROTOBUF_NAMESPACE_ID::internal::ComputeUnknownFieldsSize(
+        _internal_metadata_, total_size, &_cached_size_);
+  }
+  int cached_size = ::PROTOBUF_NAMESPACE_ID::internal::ToCachedSize(total_size);
+  SetCachedSize(cached_size);
+  return total_size;
+}
+
+void WsEngineParameters::MergeFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_merge_from_start:ws_engine.WsEngineParameters)
+  GOOGLE_DCHECK_NE(&from, this);
+  const WsEngineParameters* source =
+      ::PROTOBUF_NAMESPACE_ID::DynamicCastToGenerated<WsEngineParameters>(
+          &from);
+  if (source == nullptr) {
+  // @@protoc_insertion_point(generalized_merge_from_cast_fail:ws_engine.WsEngineParameters)
+    ::PROTOBUF_NAMESPACE_ID::internal::ReflectionOps::Merge(from, this);
+  } else {
+  // @@protoc_insertion_point(generalized_merge_from_cast_success:ws_engine.WsEngineParameters)
+    MergeFrom(*source);
+  }
+}
+
+void WsEngineParameters::MergeFrom(const WsEngineParameters& from) {
+// @@protoc_insertion_point(class_specific_merge_from_start:ws_engine.WsEngineParameters)
+  GOOGLE_DCHECK_NE(&from, this);
+  _internal_metadata_.MergeFrom(from._internal_metadata_);
+  ::PROTOBUF_NAMESPACE_ID::uint32 cached_has_bits = 0;
+  (void) cached_has_bits;
+
+  cached_has_bits = from._has_bits_[0];
+  if (cached_has_bits & 0x0000000fu) {
+    if (cached_has_bits & 0x00000001u) {
+      _internal_mutable_sys_params()->::ws_engine::SystemParameter::MergeFrom(from._internal_sys_params());
+    }
+    if (cached_has_bits & 0x00000002u) {
+      _internal_mutable_camera()->::ws_engine::CameraParameter::MergeFrom(from._internal_camera());
+    }
+    if (cached_has_bits & 0x00000004u) {
+      _internal_mutable_ipl_engine()->::ws_engine::IPL_Engine::MergeFrom(from._internal_ipl_engine());
+    }
+    if (cached_has_bits & 0x00000008u) {
+      _internal_mutable_display_device()->::ws_engine::DisplayDevice::MergeFrom(from._internal_display_device());
+    }
+  }
+}
+
+void WsEngineParameters::CopyFrom(const ::PROTOBUF_NAMESPACE_ID::Message& from) {
+// @@protoc_insertion_point(generalized_copy_from_start:ws_engine.WsEngineParameters)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+void WsEngineParameters::CopyFrom(const WsEngineParameters& from) {
+// @@protoc_insertion_point(class_specific_copy_from_start:ws_engine.WsEngineParameters)
+  if (&from == this) return;
+  Clear();
+  MergeFrom(from);
+}
+
+bool WsEngineParameters::IsInitialized() const {
+  if ((_has_bits_[0] & 0x00000007) != 0x00000007) return false;
+  if (_internal_has_camera()) {
+    if (!camera_->IsInitialized()) return false;
+  }
+  if (_internal_has_ipl_engine()) {
+    if (!ipl_engine_->IsInitialized()) return false;
+  }
+  if (_internal_has_display_device()) {
+    if (!display_device_->IsInitialized()) return false;
+  }
+  return true;
+}
+
+void WsEngineParameters::InternalSwap(WsEngineParameters* other) {
+  using std::swap;
+  _internal_metadata_.Swap(&other->_internal_metadata_);
+  swap(_has_bits_[0], other->_has_bits_[0]);
+  swap(sys_params_, other->sys_params_);
+  swap(camera_, other->camera_);
+  swap(ipl_engine_, other->ipl_engine_);
+  swap(display_device_, other->display_device_);
+}
+
+::PROTOBUF_NAMESPACE_ID::Metadata WsEngineParameters::GetMetadata() const {
+  return GetMetadataStatic();
+}
+
+
 // @@protoc_insertion_point(namespace_scope)
 }  // namespace ws_engine
 PROTOBUF_NAMESPACE_OPEN
@@ -3264,6 +3970,12 @@ template<> PROTOBUF_NOINLINE ::ws_engine::IPL_BLUR* Arena::CreateMaybeMessage< :
 }
 template<> PROTOBUF_NOINLINE ::ws_engine::IPL_Engine* Arena::CreateMaybeMessage< ::ws_engine::IPL_Engine >(Arena* arena) {
   return Arena::CreateInternal< ::ws_engine::IPL_Engine >(arena);
+}
+template<> PROTOBUF_NOINLINE ::ws_engine::DisplayDevice* Arena::CreateMaybeMessage< ::ws_engine::DisplayDevice >(Arena* arena) {
+  return Arena::CreateInternal< ::ws_engine::DisplayDevice >(arena);
+}
+template<> PROTOBUF_NOINLINE ::ws_engine::WsEngineParameters* Arena::CreateMaybeMessage< ::ws_engine::WsEngineParameters >(Arena* arena) {
+  return Arena::CreateInternal< ::ws_engine::WsEngineParameters >(arena);
 }
 PROTOBUF_NAMESPACE_CLOSE
 
