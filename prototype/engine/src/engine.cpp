@@ -23,6 +23,22 @@ int main(int argc, char** argv)
     }
     
     auto params = Params::Get();
-    std::cout << "Print configures: " << std::endl; 
-    params.PrintParams();
+    //std::cout << "Print configures: " << std::endl; 
+    //params.PrintParams();
+
+    auto sys_params = Params::Get().GetSystemParams();
+    auto camera_params = Params::Get().GetCameraParams();
+    auto ipl_engine_params = Params::Get().GetIPLEngineParams();
+    auto display_device_params = Params::Get().GetDisplayDeviceParams(); 
+
+    std::cout << "\nsys_params: " << std::endl; 
+    sys_params.PrintDebugString();
+
+    std::cout << "\ncamera_params: " << std::endl; 
+    camera_params.PrintDebugString();
+
+    std::cout << "\nipl_engine_params: " << std::endl; 
+    ipl_engine_params.PrintDebugString(); 
+
+    return 0; 
 }
