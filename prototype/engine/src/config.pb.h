@@ -455,10 +455,11 @@ class CameraParameter :
 
   enum : int {
     kCameraNameFieldNumber = 2,
+    kCameraOutputFieldNumber = 3,
     kCameraTypeFieldNumber = 1,
-    kCameraIdFieldNumber = 3,
-    kCameraFpsFieldNumber = 4,
-    kCameraAutoBalanceFieldNumber = 5,
+    kCameraIdFieldNumber = 4,
+    kCameraFpsFieldNumber = 5,
+    kCameraAutoBalanceFieldNumber = 6,
   };
   // required string camera_name = 2;
   bool has_camera_name() const;
@@ -480,6 +481,21 @@ class CameraParameter :
   std::string* _internal_mutable_camera_name();
   public:
 
+  // optional .ws_engine.ImageParameter camera_output = 3;
+  bool has_camera_output() const;
+  private:
+  bool _internal_has_camera_output() const;
+  public:
+  void clear_camera_output();
+  const ::ws_engine::ImageParameter& camera_output() const;
+  ::ws_engine::ImageParameter* release_camera_output();
+  ::ws_engine::ImageParameter* mutable_camera_output();
+  void set_allocated_camera_output(::ws_engine::ImageParameter* camera_output);
+  private:
+  const ::ws_engine::ImageParameter& _internal_camera_output() const;
+  ::ws_engine::ImageParameter* _internal_mutable_camera_output();
+  public:
+
   // optional .ws_engine.CameraParameter.CameraType camera_type = 1 [default = gige];
   bool has_camera_type() const;
   private:
@@ -493,7 +509,7 @@ class CameraParameter :
   void _internal_set_camera_type(::ws_engine::CameraParameter_CameraType value);
   public:
 
-  // optional int32 camera_id = 3;
+  // optional int32 camera_id = 4;
   bool has_camera_id() const;
   private:
   bool _internal_has_camera_id() const;
@@ -506,7 +522,7 @@ class CameraParameter :
   void _internal_set_camera_id(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // optional int32 camera_fps = 4 [default = 0];
+  // optional int32 camera_fps = 5 [default = 0];
   bool has_camera_fps() const;
   private:
   bool _internal_has_camera_fps() const;
@@ -519,7 +535,7 @@ class CameraParameter :
   void _internal_set_camera_fps(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
-  // optional bool camera_auto_balance = 5 [default = false];
+  // optional bool camera_auto_balance = 6 [default = false];
   bool has_camera_auto_balance() const;
   private:
   bool _internal_has_camera_auto_balance() const;
@@ -540,6 +556,7 @@ class CameraParameter :
   ::PROTOBUF_NAMESPACE_ID::internal::HasBits<1> _has_bits_;
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr camera_name_;
+  ::ws_engine::ImageParameter* camera_output_;
   int camera_type_;
   ::PROTOBUF_NAMESPACE_ID::int32 camera_id_;
   ::PROTOBUF_NAMESPACE_ID::int32 camera_fps_;
@@ -2334,7 +2351,7 @@ inline void SystemParameter::set_allocated_debug_level(std::string* debug_level)
 
 // optional .ws_engine.CameraParameter.CameraType camera_type = 1 [default = gige];
 inline bool CameraParameter::_internal_has_camera_type() const {
-  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  bool value = (_has_bits_[0] & 0x00000004u) != 0;
   return value;
 }
 inline bool CameraParameter::has_camera_type() const {
@@ -2342,7 +2359,7 @@ inline bool CameraParameter::has_camera_type() const {
 }
 inline void CameraParameter::clear_camera_type() {
   camera_type_ = 0;
-  _has_bits_[0] &= ~0x00000002u;
+  _has_bits_[0] &= ~0x00000004u;
 }
 inline ::ws_engine::CameraParameter_CameraType CameraParameter::_internal_camera_type() const {
   return static_cast< ::ws_engine::CameraParameter_CameraType >(camera_type_);
@@ -2353,7 +2370,7 @@ inline ::ws_engine::CameraParameter_CameraType CameraParameter::camera_type() co
 }
 inline void CameraParameter::_internal_set_camera_type(::ws_engine::CameraParameter_CameraType value) {
   assert(::ws_engine::CameraParameter_CameraType_IsValid(value));
-  _has_bits_[0] |= 0x00000002u;
+  _has_bits_[0] |= 0x00000004u;
   camera_type_ = value;
 }
 inline void CameraParameter::set_camera_type(::ws_engine::CameraParameter_CameraType value) {
@@ -2432,9 +2449,69 @@ inline void CameraParameter::set_allocated_camera_name(std::string* camera_name)
   // @@protoc_insertion_point(field_set_allocated:ws_engine.CameraParameter.camera_name)
 }
 
-// optional int32 camera_id = 3;
+// optional .ws_engine.ImageParameter camera_output = 3;
+inline bool CameraParameter::_internal_has_camera_output() const {
+  bool value = (_has_bits_[0] & 0x00000002u) != 0;
+  PROTOBUF_ASSUME(!value || camera_output_ != nullptr);
+  return value;
+}
+inline bool CameraParameter::has_camera_output() const {
+  return _internal_has_camera_output();
+}
+inline void CameraParameter::clear_camera_output() {
+  if (camera_output_ != nullptr) camera_output_->Clear();
+  _has_bits_[0] &= ~0x00000002u;
+}
+inline const ::ws_engine::ImageParameter& CameraParameter::_internal_camera_output() const {
+  const ::ws_engine::ImageParameter* p = camera_output_;
+  return p != nullptr ? *p : *reinterpret_cast<const ::ws_engine::ImageParameter*>(
+      &::ws_engine::_ImageParameter_default_instance_);
+}
+inline const ::ws_engine::ImageParameter& CameraParameter::camera_output() const {
+  // @@protoc_insertion_point(field_get:ws_engine.CameraParameter.camera_output)
+  return _internal_camera_output();
+}
+inline ::ws_engine::ImageParameter* CameraParameter::release_camera_output() {
+  // @@protoc_insertion_point(field_release:ws_engine.CameraParameter.camera_output)
+  _has_bits_[0] &= ~0x00000002u;
+  ::ws_engine::ImageParameter* temp = camera_output_;
+  camera_output_ = nullptr;
+  return temp;
+}
+inline ::ws_engine::ImageParameter* CameraParameter::_internal_mutable_camera_output() {
+  _has_bits_[0] |= 0x00000002u;
+  if (camera_output_ == nullptr) {
+    auto* p = CreateMaybeMessage<::ws_engine::ImageParameter>(GetArenaNoVirtual());
+    camera_output_ = p;
+  }
+  return camera_output_;
+}
+inline ::ws_engine::ImageParameter* CameraParameter::mutable_camera_output() {
+  // @@protoc_insertion_point(field_mutable:ws_engine.CameraParameter.camera_output)
+  return _internal_mutable_camera_output();
+}
+inline void CameraParameter::set_allocated_camera_output(::ws_engine::ImageParameter* camera_output) {
+  ::PROTOBUF_NAMESPACE_ID::Arena* message_arena = GetArenaNoVirtual();
+  if (message_arena == nullptr) {
+    delete camera_output_;
+  }
+  if (camera_output) {
+    ::PROTOBUF_NAMESPACE_ID::Arena* submessage_arena = nullptr;
+    if (message_arena != submessage_arena) {
+      camera_output = ::PROTOBUF_NAMESPACE_ID::internal::GetOwnedMessage(
+          message_arena, camera_output, submessage_arena);
+    }
+    _has_bits_[0] |= 0x00000002u;
+  } else {
+    _has_bits_[0] &= ~0x00000002u;
+  }
+  camera_output_ = camera_output;
+  // @@protoc_insertion_point(field_set_allocated:ws_engine.CameraParameter.camera_output)
+}
+
+// optional int32 camera_id = 4;
 inline bool CameraParameter::_internal_has_camera_id() const {
-  bool value = (_has_bits_[0] & 0x00000004u) != 0;
+  bool value = (_has_bits_[0] & 0x00000008u) != 0;
   return value;
 }
 inline bool CameraParameter::has_camera_id() const {
@@ -2442,7 +2519,7 @@ inline bool CameraParameter::has_camera_id() const {
 }
 inline void CameraParameter::clear_camera_id() {
   camera_id_ = 0;
-  _has_bits_[0] &= ~0x00000004u;
+  _has_bits_[0] &= ~0x00000008u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int32 CameraParameter::_internal_camera_id() const {
   return camera_id_;
@@ -2452,7 +2529,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int32 CameraParameter::camera_id() const {
   return _internal_camera_id();
 }
 inline void CameraParameter::_internal_set_camera_id(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _has_bits_[0] |= 0x00000004u;
+  _has_bits_[0] |= 0x00000008u;
   camera_id_ = value;
 }
 inline void CameraParameter::set_camera_id(::PROTOBUF_NAMESPACE_ID::int32 value) {
@@ -2460,9 +2537,9 @@ inline void CameraParameter::set_camera_id(::PROTOBUF_NAMESPACE_ID::int32 value)
   // @@protoc_insertion_point(field_set:ws_engine.CameraParameter.camera_id)
 }
 
-// optional int32 camera_fps = 4 [default = 0];
+// optional int32 camera_fps = 5 [default = 0];
 inline bool CameraParameter::_internal_has_camera_fps() const {
-  bool value = (_has_bits_[0] & 0x00000008u) != 0;
+  bool value = (_has_bits_[0] & 0x00000010u) != 0;
   return value;
 }
 inline bool CameraParameter::has_camera_fps() const {
@@ -2470,7 +2547,7 @@ inline bool CameraParameter::has_camera_fps() const {
 }
 inline void CameraParameter::clear_camera_fps() {
   camera_fps_ = 0;
-  _has_bits_[0] &= ~0x00000008u;
+  _has_bits_[0] &= ~0x00000010u;
 }
 inline ::PROTOBUF_NAMESPACE_ID::int32 CameraParameter::_internal_camera_fps() const {
   return camera_fps_;
@@ -2480,7 +2557,7 @@ inline ::PROTOBUF_NAMESPACE_ID::int32 CameraParameter::camera_fps() const {
   return _internal_camera_fps();
 }
 inline void CameraParameter::_internal_set_camera_fps(::PROTOBUF_NAMESPACE_ID::int32 value) {
-  _has_bits_[0] |= 0x00000008u;
+  _has_bits_[0] |= 0x00000010u;
   camera_fps_ = value;
 }
 inline void CameraParameter::set_camera_fps(::PROTOBUF_NAMESPACE_ID::int32 value) {
@@ -2488,9 +2565,9 @@ inline void CameraParameter::set_camera_fps(::PROTOBUF_NAMESPACE_ID::int32 value
   // @@protoc_insertion_point(field_set:ws_engine.CameraParameter.camera_fps)
 }
 
-// optional bool camera_auto_balance = 5 [default = false];
+// optional bool camera_auto_balance = 6 [default = false];
 inline bool CameraParameter::_internal_has_camera_auto_balance() const {
-  bool value = (_has_bits_[0] & 0x00000010u) != 0;
+  bool value = (_has_bits_[0] & 0x00000020u) != 0;
   return value;
 }
 inline bool CameraParameter::has_camera_auto_balance() const {
@@ -2498,7 +2575,7 @@ inline bool CameraParameter::has_camera_auto_balance() const {
 }
 inline void CameraParameter::clear_camera_auto_balance() {
   camera_auto_balance_ = false;
-  _has_bits_[0] &= ~0x00000010u;
+  _has_bits_[0] &= ~0x00000020u;
 }
 inline bool CameraParameter::_internal_camera_auto_balance() const {
   return camera_auto_balance_;
@@ -2508,7 +2585,7 @@ inline bool CameraParameter::camera_auto_balance() const {
   return _internal_camera_auto_balance();
 }
 inline void CameraParameter::_internal_set_camera_auto_balance(bool value) {
-  _has_bits_[0] |= 0x00000010u;
+  _has_bits_[0] |= 0x00000020u;
   camera_auto_balance_ = value;
 }
 inline void CameraParameter::set_camera_auto_balance(bool value) {

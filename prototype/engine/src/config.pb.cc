@@ -14,7 +14,7 @@
 #include <google/protobuf/wire_format.h>
 // @@protoc_insertion_point(includes)
 #include <google/protobuf/port_def.inc>
-extern PROTOBUF_INTERNAL_EXPORT_config_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_CameraParameter_config_2eproto;
+extern PROTOBUF_INTERNAL_EXPORT_config_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_CameraParameter_config_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_config_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_DisplayDevice_config_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_config_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_IPL_BLUR_config_2eproto;
 extern PROTOBUF_INTERNAL_EXPORT_config_2eproto ::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<2> scc_info_IPL_Engine_config_2eproto;
@@ -81,8 +81,9 @@ static void InitDefaultsscc_info_CameraParameter_config_2eproto() {
   ::ws_engine::CameraParameter::InitAsDefaultInstance();
 }
 
-::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<0> scc_info_CameraParameter_config_2eproto =
-    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 0, 0, InitDefaultsscc_info_CameraParameter_config_2eproto}, {}};
+::PROTOBUF_NAMESPACE_ID::internal::SCCInfo<1> scc_info_CameraParameter_config_2eproto =
+    {{ATOMIC_VAR_INIT(::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase::kUninitialized), 1, 0, InitDefaultsscc_info_CameraParameter_config_2eproto}, {
+      &scc_info_ImageParameter_config_2eproto.base,}};
 
 static void InitDefaultsscc_info_DisplayDevice_config_2eproto() {
   GOOGLE_PROTOBUF_VERIFY_VERSION;
@@ -264,14 +265,16 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_config_2eproto::offsets[] PROT
   ~0u,  // no _weak_field_map_
   PROTOBUF_FIELD_OFFSET(::ws_engine::CameraParameter, camera_type_),
   PROTOBUF_FIELD_OFFSET(::ws_engine::CameraParameter, camera_name_),
+  PROTOBUF_FIELD_OFFSET(::ws_engine::CameraParameter, camera_output_),
   PROTOBUF_FIELD_OFFSET(::ws_engine::CameraParameter, camera_id_),
   PROTOBUF_FIELD_OFFSET(::ws_engine::CameraParameter, camera_fps_),
   PROTOBUF_FIELD_OFFSET(::ws_engine::CameraParameter, camera_auto_balance_),
-  1,
-  0,
   2,
+  0,
+  1,
   3,
   4,
+  5,
   PROTOBUF_FIELD_OFFSET(::ws_engine::PointParameter, _has_bits_),
   PROTOBUF_FIELD_OFFSET(::ws_engine::PointParameter, _internal_metadata_),
   ~0u,  // no _extensions_
@@ -378,16 +381,16 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_config_2eproto::offsets[] PROT
 };
 static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) = {
   { 0, 7, sizeof(::ws_engine::SystemParameter)},
-  { 9, 19, sizeof(::ws_engine::CameraParameter)},
-  { 24, 31, sizeof(::ws_engine::PointParameter)},
-  { 33, 41, sizeof(::ws_engine::ROIParameter)},
-  { 44, 54, sizeof(::ws_engine::ImageParameter)},
-  { 59, 70, sizeof(::ws_engine::ImageProcessingLayer)},
-  { 76, 83, sizeof(::ws_engine::IPL_RGB2Gray)},
-  { 85, 92, sizeof(::ws_engine::IPL_BLUR)},
-  { 94, 102, sizeof(::ws_engine::IPL_Engine)},
-  { 105, 112, sizeof(::ws_engine::DisplayDevice)},
-  { 114, 123, sizeof(::ws_engine::WsEngineParameters)},
+  { 9, 20, sizeof(::ws_engine::CameraParameter)},
+  { 26, 33, sizeof(::ws_engine::PointParameter)},
+  { 35, 43, sizeof(::ws_engine::ROIParameter)},
+  { 46, 56, sizeof(::ws_engine::ImageParameter)},
+  { 61, 72, sizeof(::ws_engine::ImageProcessingLayer)},
+  { 78, 85, sizeof(::ws_engine::IPL_RGB2Gray)},
+  { 87, 94, sizeof(::ws_engine::IPL_BLUR)},
+  { 96, 104, sizeof(::ws_engine::IPL_Engine)},
+  { 107, 114, sizeof(::ws_engine::DisplayDevice)},
+  { 116, 125, sizeof(::ws_engine::WsEngineParameters)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -407,40 +410,41 @@ static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] =
 const char descriptor_table_protodef_config_2eproto[] PROTOBUF_SECTION_VARIABLE(protodesc_cold) =
   "\n\014config.proto\022\tws_engine\"K\n\017SystemParam"
   "eter\022\035\n\017debug_file_root\030\001 \001(\t:\004/tmp\022\031\n\013d"
-  "ebug_level\030\002 \001(\t:\004info\"\367\001\n\017CameraParamet"
+  "ebug_level\030\002 \001(\t:\004info\"\251\002\n\017CameraParamet"
   "er\022@\n\013camera_type\030\001 \001(\0162%.ws_engine.Came"
   "raParameter.CameraType:\004gige\022\023\n\013camera_n"
-  "ame\030\002 \002(\t\022\021\n\tcamera_id\030\003 \001(\005\022\025\n\ncamera_f"
-  "ps\030\004 \001(\005:\0010\022\"\n\023camera_auto_balance\030\005 \001(\010"
-  ":\005false\"\?\n\nCameraType\022\010\n\004gige\020\000\022\007\n\003usb\020\001"
-  "\022\016\n\nimage_file\020\002\022\016\n\nvideo_file\020\003\"&\n\016Poin"
-  "tParameter\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002(\005\"\215\001\n\014ROI"
-  "Parameter\022\024\n\006enable\030\001 \001(\010:\004true\0220\n\rleft_"
-  "up_point\030\002 \002(\0132\031.ws_engine.PointParamete"
-  "r\0225\n\022right_bottom_point\030\003 \002(\0132\031.ws_engin"
-  "e.PointParameter\"\200\001\n\016ImageParameter\022\r\n\005w"
-  "idth\030\001 \002(\005\022\016\n\006height\030\002 \002(\005\022\022\n\007channel\030\003 "
-  "\001(\005:\0011\022\020\n\005depth\030\004 \001(\005:\0018\022)\n\010ROI_zone\030\005 \001"
-  "(\0132\027.ws_engine.ROIParameter\"\301\001\n\024ImagePro"
-  "cessingLayer\022\020\n\010layer_id\030\001 \002(\005\022.\n\013image_"
-  "input\030\002 \002(\0132\031.ws_engine.ImageParameter\022/"
-  "\n\014image_output\030\003 \002(\0132\031.ws_engine.ImagePa"
-  "rameter\022\020\n\010lib_file\030\004 \002(\t\022\021\n\tfunc_name\030\005"
-  " \002(\t\022\021\n\tfunc_args\030\006 \001(\t\"Z\n\014IPL_RGB2Gray\022"
-  "-\n\004head\030\001 \002(\0132\037.ws_engine.ImageProcessin"
-  "gLayer\022\033\n\020channel_selected\030\002 \001(\005:\0010\"P\n\010I"
-  "PL_BLUR\022-\n\004head\030\001 \002(\0132\037.ws_engine.ImageP"
-  "rocessingLayer\022\025\n\nblur_level\030\002 \001(\005:\0011\"m\n"
-  "\nIPL_Engine\022\021\n\006worker\030\001 \001(\005:\0011\022)\n\010rgb2gr"
-  "ay\030\002 \001(\0132\027.ws_engine.IPL_RGB2Gray\022!\n\004blu"
-  "r\030\003 \001(\0132\023.ws_engine.IPL_BLUR\"G\n\rDisplayD"
-  "evice\022\034\n\016show_in_screen\030\001 \002(\010:\004true\022\030\n\020o"
-  "utput_file_name\030\002 \001(\t\"\315\001\n\022WsEngineParame"
-  "ters\022.\n\nsys_params\030\001 \002(\0132\032.ws_engine.Sys"
-  "temParameter\022*\n\006camera\030\002 \002(\0132\032.ws_engine"
-  ".CameraParameter\022)\n\nipl_engine\030\003 \002(\0132\025.w"
-  "s_engine.IPL_Engine\0220\n\016display_device\030\004 "
-  "\001(\0132\030.ws_engine.DisplayDevice"
+  "ame\030\002 \002(\t\0220\n\rcamera_output\030\003 \001(\0132\031.ws_en"
+  "gine.ImageParameter\022\021\n\tcamera_id\030\004 \001(\005\022\025"
+  "\n\ncamera_fps\030\005 \001(\005:\0010\022\"\n\023camera_auto_bal"
+  "ance\030\006 \001(\010:\005false\"\?\n\nCameraType\022\010\n\004gige\020"
+  "\000\022\007\n\003usb\020\001\022\016\n\nimage_file\020\002\022\016\n\nvideo_file"
+  "\020\003\"&\n\016PointParameter\022\t\n\001x\030\001 \002(\005\022\t\n\001y\030\002 \002"
+  "(\005\"\215\001\n\014ROIParameter\022\024\n\006enable\030\001 \001(\010:\004tru"
+  "e\0220\n\rleft_up_point\030\002 \002(\0132\031.ws_engine.Poi"
+  "ntParameter\0225\n\022right_bottom_point\030\003 \002(\0132"
+  "\031.ws_engine.PointParameter\"\200\001\n\016ImagePara"
+  "meter\022\r\n\005width\030\001 \002(\005\022\016\n\006height\030\002 \002(\005\022\022\n\007"
+  "channel\030\003 \001(\005:\0011\022\020\n\005depth\030\004 \001(\005:\0018\022)\n\010RO"
+  "I_zone\030\005 \001(\0132\027.ws_engine.ROIParameter\"\301\001"
+  "\n\024ImageProcessingLayer\022\020\n\010layer_id\030\001 \002(\005"
+  "\022.\n\013image_input\030\002 \002(\0132\031.ws_engine.ImageP"
+  "arameter\022/\n\014image_output\030\003 \002(\0132\031.ws_engi"
+  "ne.ImageParameter\022\020\n\010lib_file\030\004 \002(\t\022\021\n\tf"
+  "unc_name\030\005 \002(\t\022\021\n\tfunc_args\030\006 \001(\t\"Z\n\014IPL"
+  "_RGB2Gray\022-\n\004head\030\001 \002(\0132\037.ws_engine.Imag"
+  "eProcessingLayer\022\033\n\020channel_selected\030\002 \001"
+  "(\005:\0010\"P\n\010IPL_BLUR\022-\n\004head\030\001 \002(\0132\037.ws_eng"
+  "ine.ImageProcessingLayer\022\025\n\nblur_level\030\002"
+  " \001(\005:\0011\"m\n\nIPL_Engine\022\021\n\006worker\030\001 \001(\005:\0011"
+  "\022)\n\010rgb2gray\030\002 \001(\0132\027.ws_engine.IPL_RGB2G"
+  "ray\022!\n\004blur\030\003 \001(\0132\023.ws_engine.IPL_BLUR\"G"
+  "\n\rDisplayDevice\022\034\n\016show_in_screen\030\001 \002(\010:"
+  "\004true\022\030\n\020output_file_name\030\002 \001(\t\"\315\001\n\022WsEn"
+  "gineParameters\022.\n\nsys_params\030\001 \002(\0132\032.ws_"
+  "engine.SystemParameter\022*\n\006camera\030\002 \002(\0132\032"
+  ".ws_engine.CameraParameter\022)\n\nipl_engine"
+  "\030\003 \002(\0132\025.ws_engine.IPL_Engine\0220\n\016display"
+  "_device\030\004 \001(\0132\030.ws_engine.DisplayDevice"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_config_2eproto_deps[1] = {
 };
@@ -460,7 +464,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_con
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_config_2eproto_once;
 static bool descriptor_table_config_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_config_2eproto = {
-  &descriptor_table_config_2eproto_initialized, descriptor_table_protodef_config_2eproto, "config.proto", 1429,
+  &descriptor_table_config_2eproto_initialized, descriptor_table_protodef_config_2eproto, "config.proto", 1479,
   &descriptor_table_config_2eproto_once, descriptor_table_config_2eproto_sccs, descriptor_table_config_2eproto_deps, 11, 0,
   schemas, file_default_instances, TableStruct_config_2eproto::offsets,
   file_level_metadata_config_2eproto, 11, file_level_enum_descriptors_config_2eproto, file_level_service_descriptors_config_2eproto,
@@ -768,27 +772,37 @@ void SystemParameter::InternalSwap(SystemParameter* other) {
 // ===================================================================
 
 void CameraParameter::InitAsDefaultInstance() {
+  ::ws_engine::_CameraParameter_default_instance_._instance.get_mutable()->camera_output_ = const_cast< ::ws_engine::ImageParameter*>(
+      ::ws_engine::ImageParameter::internal_default_instance());
 }
 class CameraParameter::_Internal {
  public:
   using HasBits = decltype(std::declval<CameraParameter>()._has_bits_);
   static void set_has_camera_type(HasBits* has_bits) {
-    (*has_bits)[0] |= 2u;
+    (*has_bits)[0] |= 4u;
   }
   static void set_has_camera_name(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
   }
-  static void set_has_camera_id(HasBits* has_bits) {
-    (*has_bits)[0] |= 4u;
+  static const ::ws_engine::ImageParameter& camera_output(const CameraParameter* msg);
+  static void set_has_camera_output(HasBits* has_bits) {
+    (*has_bits)[0] |= 2u;
   }
-  static void set_has_camera_fps(HasBits* has_bits) {
+  static void set_has_camera_id(HasBits* has_bits) {
     (*has_bits)[0] |= 8u;
   }
-  static void set_has_camera_auto_balance(HasBits* has_bits) {
+  static void set_has_camera_fps(HasBits* has_bits) {
     (*has_bits)[0] |= 16u;
+  }
+  static void set_has_camera_auto_balance(HasBits* has_bits) {
+    (*has_bits)[0] |= 32u;
   }
 };
 
+const ::ws_engine::ImageParameter&
+CameraParameter::_Internal::camera_output(const CameraParameter* msg) {
+  return *msg->camera_output_;
+}
 CameraParameter::CameraParameter()
   : ::PROTOBUF_NAMESPACE_ID::Message(), _internal_metadata_(nullptr) {
   SharedCtor();
@@ -803,6 +817,11 @@ CameraParameter::CameraParameter(const CameraParameter& from)
   if (from._internal_has_camera_name()) {
     camera_name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.camera_name_);
   }
+  if (from._internal_has_camera_output()) {
+    camera_output_ = new ::ws_engine::ImageParameter(*from.camera_output_);
+  } else {
+    camera_output_ = nullptr;
+  }
   ::memcpy(&camera_type_, &from.camera_type_,
     static_cast<size_t>(reinterpret_cast<char*>(&camera_auto_balance_) -
     reinterpret_cast<char*>(&camera_type_)) + sizeof(camera_auto_balance_));
@@ -812,9 +831,9 @@ CameraParameter::CameraParameter(const CameraParameter& from)
 void CameraParameter::SharedCtor() {
   ::PROTOBUF_NAMESPACE_ID::internal::InitSCC(&scc_info_CameraParameter_config_2eproto.base);
   camera_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
-  ::memset(&camera_type_, 0, static_cast<size_t>(
+  ::memset(&camera_output_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&camera_auto_balance_) -
-      reinterpret_cast<char*>(&camera_type_)) + sizeof(camera_auto_balance_));
+      reinterpret_cast<char*>(&camera_output_)) + sizeof(camera_auto_balance_));
 }
 
 CameraParameter::~CameraParameter() {
@@ -824,6 +843,7 @@ CameraParameter::~CameraParameter() {
 
 void CameraParameter::SharedDtor() {
   camera_name_.DestroyNoArena(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
+  if (this != internal_default_instance()) delete camera_output_;
 }
 
 void CameraParameter::SetCachedSize(int size) const {
@@ -842,10 +862,16 @@ void CameraParameter::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000001u) {
-    camera_name_.ClearNonDefaultToEmptyNoArena();
+  if (cached_has_bits & 0x00000003u) {
+    if (cached_has_bits & 0x00000001u) {
+      camera_name_.ClearNonDefaultToEmptyNoArena();
+    }
+    if (cached_has_bits & 0x00000002u) {
+      GOOGLE_DCHECK(camera_output_ != nullptr);
+      camera_output_->Clear();
+    }
   }
-  if (cached_has_bits & 0x0000001eu) {
+  if (cached_has_bits & 0x0000003cu) {
     ::memset(&camera_type_, 0, static_cast<size_t>(
         reinterpret_cast<char*>(&camera_auto_balance_) -
         reinterpret_cast<char*>(&camera_type_)) + sizeof(camera_auto_balance_));
@@ -885,25 +911,32 @@ const char* CameraParameter::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPAC
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // optional int32 camera_id = 3;
+      // optional .ws_engine.ImageParameter camera_output = 3;
       case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 24)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+          ptr = ctx->ParseMessage(_internal_mutable_camera_output(), ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // optional int32 camera_id = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
           _Internal::set_has_camera_id(&has_bits);
           camera_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // optional int32 camera_fps = 4 [default = 0];
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 32)) {
+      // optional int32 camera_fps = 5 [default = 0];
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
           _Internal::set_has_camera_fps(&has_bits);
           camera_fps_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // optional bool camera_auto_balance = 5 [default = false];
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 40)) {
+      // optional bool camera_auto_balance = 6 [default = false];
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 48)) {
           _Internal::set_has_camera_auto_balance(&has_bits);
           camera_auto_balance_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
           CHK_(ptr);
@@ -938,7 +971,7 @@ failure:
 
   cached_has_bits = _has_bits_[0];
   // optional .ws_engine.CameraParameter.CameraType camera_type = 1 [default = gige];
-  if (cached_has_bits & 0x00000002u) {
+  if (cached_has_bits & 0x00000004u) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteEnumToArray(
       1, this->_internal_camera_type(), target);
@@ -954,22 +987,30 @@ failure:
         2, this->_internal_camera_name(), target);
   }
 
-  // optional int32 camera_id = 3;
-  if (cached_has_bits & 0x00000004u) {
+  // optional .ws_engine.ImageParameter camera_output = 3;
+  if (cached_has_bits & 0x00000002u) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(3, this->_internal_camera_id(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
+      InternalWriteMessage(
+        3, _Internal::camera_output(this), target, stream);
   }
 
-  // optional int32 camera_fps = 4 [default = 0];
+  // optional int32 camera_id = 4;
   if (cached_has_bits & 0x00000008u) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(4, this->_internal_camera_fps(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(4, this->_internal_camera_id(), target);
   }
 
-  // optional bool camera_auto_balance = 5 [default = false];
+  // optional int32 camera_fps = 5 [default = 0];
   if (cached_has_bits & 0x00000010u) {
     target = stream->EnsureSpace(target);
-    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(5, this->_internal_camera_auto_balance(), target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(5, this->_internal_camera_fps(), target);
+  }
+
+  // optional bool camera_auto_balance = 6 [default = false];
+  if (cached_has_bits & 0x00000020u) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteBoolToArray(6, this->_internal_camera_auto_balance(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -995,29 +1036,36 @@ size_t CameraParameter::ByteSizeLong() const {
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x0000001eu) {
-    // optional .ws_engine.CameraParameter.CameraType camera_type = 1 [default = gige];
+  if (cached_has_bits & 0x0000003eu) {
+    // optional .ws_engine.ImageParameter camera_output = 3;
     if (cached_has_bits & 0x00000002u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
+          *camera_output_);
+    }
+
+    // optional .ws_engine.CameraParameter.CameraType camera_type = 1 [default = gige];
+    if (cached_has_bits & 0x00000004u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::EnumSize(this->_internal_camera_type());
     }
 
-    // optional int32 camera_id = 3;
-    if (cached_has_bits & 0x00000004u) {
+    // optional int32 camera_id = 4;
+    if (cached_has_bits & 0x00000008u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
           this->_internal_camera_id());
     }
 
-    // optional int32 camera_fps = 4 [default = 0];
-    if (cached_has_bits & 0x00000008u) {
+    // optional int32 camera_fps = 5 [default = 0];
+    if (cached_has_bits & 0x00000010u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
           this->_internal_camera_fps());
     }
 
-    // optional bool camera_auto_balance = 5 [default = false];
-    if (cached_has_bits & 0x00000010u) {
+    // optional bool camera_auto_balance = 6 [default = false];
+    if (cached_has_bits & 0x00000020u) {
       total_size += 1 + 1;
     }
 
@@ -1054,21 +1102,24 @@ void CameraParameter::MergeFrom(const CameraParameter& from) {
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 0x0000001fu) {
+  if (cached_has_bits & 0x0000003fu) {
     if (cached_has_bits & 0x00000001u) {
       _has_bits_[0] |= 0x00000001u;
       camera_name_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.camera_name_);
     }
     if (cached_has_bits & 0x00000002u) {
-      camera_type_ = from.camera_type_;
+      _internal_mutable_camera_output()->::ws_engine::ImageParameter::MergeFrom(from._internal_camera_output());
     }
     if (cached_has_bits & 0x00000004u) {
-      camera_id_ = from.camera_id_;
+      camera_type_ = from.camera_type_;
     }
     if (cached_has_bits & 0x00000008u) {
-      camera_fps_ = from.camera_fps_;
+      camera_id_ = from.camera_id_;
     }
     if (cached_has_bits & 0x00000010u) {
+      camera_fps_ = from.camera_fps_;
+    }
+    if (cached_has_bits & 0x00000020u) {
       camera_auto_balance_ = from.camera_auto_balance_;
     }
     _has_bits_[0] |= cached_has_bits;
@@ -1091,6 +1142,9 @@ void CameraParameter::CopyFrom(const CameraParameter& from) {
 
 bool CameraParameter::IsInitialized() const {
   if ((_has_bits_[0] & 0x00000001) != 0x00000001) return false;
+  if (_internal_has_camera_output()) {
+    if (!camera_output_->IsInitialized()) return false;
+  }
   return true;
 }
 
@@ -1100,6 +1154,7 @@ void CameraParameter::InternalSwap(CameraParameter* other) {
   swap(_has_bits_[0], other->_has_bits_[0]);
   camera_name_.Swap(&other->camera_name_, &::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(),
     GetArenaNoVirtual());
+  swap(camera_output_, other->camera_output_);
   swap(camera_type_, other->camera_type_);
   swap(camera_id_, other->camera_id_);
   swap(camera_fps_, other->camera_fps_);

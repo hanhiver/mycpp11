@@ -19,7 +19,7 @@ message CameraParameter {
     }
     optional CameraType camera_type = 1 [default = gige];
     required string camera_name = 2; 
-    required ImageParameter camera_output = 3;
+    optional ImageParameter camera_output = 3;
     optional int32 camera_id = 4; 
     optional int32 camera_fps = 5 [default = 0]; // 0 means unlimited. 
     optional bool camera_auto_balance = 6 [default = false];
