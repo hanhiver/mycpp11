@@ -19,9 +19,10 @@ message CameraParameter {
     }
     optional CameraType camera_type = 1 [default = gige];
     required string camera_name = 2; 
-    optional int32 camera_id = 3; 
-    optional int32 camera_fps = 4 [default = 0]; // 0 means unlimited. 
-    optional bool camera_auto_balance = 5 [default = false];
+    required ImageParameter camera_output = 3;
+    optional int32 camera_id = 4; 
+    optional int32 camera_fps = 5 [default = 0]; // 0 means unlimited. 
+    optional bool camera_auto_balance = 6 [default = false];
 }
 
 // PointParameter defined a point in a image. 
@@ -45,7 +46,6 @@ message ImageParameter {
     optional int32 depth = 4 [default = 8];  // Default is 8bits for each channel of a pixel.
     optional ROIParameter ROI_zone = 5; // Default disable. 
 }
-
 
 // Defined a layer of the ImageProcessingEngine. 
 message ImageProcessingLayer {
@@ -76,8 +76,11 @@ message IPL_Engine {
     optional IPL_BLUR blur = 3; 
 }
 
+// Image display/storage device parameters
 message DisplayDevice {
+    // if show images in the screen
     required bool show_in_screen = 1 [default = true];
+    // save output image/video to files 
     optional string output_file_name = 2; 
 }
 
