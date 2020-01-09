@@ -312,11 +312,13 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_config_2eproto::offsets[] PROT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::ws_engine::ImageProcessingLayer, layer_id_),
   PROTOBUF_FIELD_OFFSET(::ws_engine::ImageProcessingLayer, image_input_),
   PROTOBUF_FIELD_OFFSET(::ws_engine::ImageProcessingLayer, image_output_),
   PROTOBUF_FIELD_OFFSET(::ws_engine::ImageProcessingLayer, lib_file_),
   PROTOBUF_FIELD_OFFSET(::ws_engine::ImageProcessingLayer, func_name_),
   PROTOBUF_FIELD_OFFSET(::ws_engine::ImageProcessingLayer, func_args_),
+  5,
   3,
   4,
   0,
@@ -345,8 +347,10 @@ const ::PROTOBUF_NAMESPACE_ID::uint32 TableStruct_config_2eproto::offsets[] PROT
   ~0u,  // no _extensions_
   ~0u,  // no _oneof_case_
   ~0u,  // no _weak_field_map_
+  PROTOBUF_FIELD_OFFSET(::ws_engine::IPL_Engine, worker_),
   PROTOBUF_FIELD_OFFSET(::ws_engine::IPL_Engine, rgb2gray_),
   PROTOBUF_FIELD_OFFSET(::ws_engine::IPL_Engine, blur_),
+  2,
   0,
   1,
   PROTOBUF_FIELD_OFFSET(::ws_engine::DisplayDevice, _has_bits_),
@@ -378,12 +382,12 @@ static const ::PROTOBUF_NAMESPACE_ID::internal::MigrationSchema schemas[] PROTOB
   { 24, 31, sizeof(::ws_engine::PointParameter)},
   { 33, 41, sizeof(::ws_engine::ROIParameter)},
   { 44, 54, sizeof(::ws_engine::ImageParameter)},
-  { 59, 69, sizeof(::ws_engine::ImageProcessingLayer)},
-  { 74, 81, sizeof(::ws_engine::IPL_RGB2Gray)},
-  { 83, 90, sizeof(::ws_engine::IPL_BLUR)},
-  { 92, 99, sizeof(::ws_engine::IPL_Engine)},
-  { 101, 108, sizeof(::ws_engine::DisplayDevice)},
-  { 110, 119, sizeof(::ws_engine::WsEngineParameters)},
+  { 59, 70, sizeof(::ws_engine::ImageProcessingLayer)},
+  { 76, 83, sizeof(::ws_engine::IPL_RGB2Gray)},
+  { 85, 92, sizeof(::ws_engine::IPL_BLUR)},
+  { 94, 102, sizeof(::ws_engine::IPL_Engine)},
+  { 105, 112, sizeof(::ws_engine::DisplayDevice)},
+  { 114, 123, sizeof(::ws_engine::WsEngineParameters)},
 };
 
 static ::PROTOBUF_NAMESPACE_ID::Message const * const file_default_instances[] = {
@@ -417,25 +421,26 @@ const char descriptor_table_protodef_config_2eproto[] PROTOBUF_SECTION_VARIABLE(
   "e.PointParameter\"\200\001\n\016ImageParameter\022\r\n\005w"
   "idth\030\001 \002(\005\022\016\n\006height\030\002 \002(\005\022\022\n\007channel\030\003 "
   "\001(\005:\0011\022\020\n\005depth\030\004 \001(\005:\0018\022)\n\010ROI_zone\030\005 \001"
-  "(\0132\027.ws_engine.ROIParameter\"\257\001\n\024ImagePro"
-  "cessingLayer\022.\n\013image_input\030\001 \002(\0132\031.ws_e"
-  "ngine.ImageParameter\022/\n\014image_output\030\002 \002"
-  "(\0132\031.ws_engine.ImageParameter\022\020\n\010lib_fil"
-  "e\030\003 \002(\t\022\021\n\tfunc_name\030\004 \002(\t\022\021\n\tfunc_args\030"
-  "\005 \001(\t\"Z\n\014IPL_RGB2Gray\022-\n\004head\030\001 \002(\0132\037.ws"
-  "_engine.ImageProcessingLayer\022\033\n\020channel_"
-  "selected\030\002 \001(\005:\0010\"P\n\010IPL_BLUR\022-\n\004head\030\001 "
-  "\002(\0132\037.ws_engine.ImageProcessingLayer\022\025\n\n"
-  "blur_level\030\002 \001(\005:\0011\"Z\n\nIPL_Engine\022)\n\010rgb"
-  "2gray\030\001 \001(\0132\027.ws_engine.IPL_RGB2Gray\022!\n\004"
-  "blur\030\002 \001(\0132\023.ws_engine.IPL_BLUR\"G\n\rDispl"
-  "ayDevice\022\034\n\016show_in_screen\030\001 \002(\010:\004true\022\030"
-  "\n\020output_file_name\030\002 \001(\t\"\315\001\n\022WsEnginePar"
-  "ameters\022.\n\nsys_params\030\001 \002(\0132\032.ws_engine."
-  "SystemParameter\022*\n\006camera\030\002 \002(\0132\032.ws_eng"
-  "ine.CameraParameter\022)\n\nipl_engine\030\003 \002(\0132"
-  "\025.ws_engine.IPL_Engine\0220\n\016display_device"
-  "\030\004 \001(\0132\030.ws_engine.DisplayDevice"
+  "(\0132\027.ws_engine.ROIParameter\"\301\001\n\024ImagePro"
+  "cessingLayer\022\020\n\010layer_id\030\001 \002(\005\022.\n\013image_"
+  "input\030\002 \002(\0132\031.ws_engine.ImageParameter\022/"
+  "\n\014image_output\030\003 \002(\0132\031.ws_engine.ImagePa"
+  "rameter\022\020\n\010lib_file\030\004 \002(\t\022\021\n\tfunc_name\030\005"
+  " \002(\t\022\021\n\tfunc_args\030\006 \001(\t\"Z\n\014IPL_RGB2Gray\022"
+  "-\n\004head\030\001 \002(\0132\037.ws_engine.ImageProcessin"
+  "gLayer\022\033\n\020channel_selected\030\002 \001(\005:\0010\"P\n\010I"
+  "PL_BLUR\022-\n\004head\030\001 \002(\0132\037.ws_engine.ImageP"
+  "rocessingLayer\022\025\n\nblur_level\030\002 \001(\005:\0011\"m\n"
+  "\nIPL_Engine\022\021\n\006worker\030\001 \001(\005:\0011\022)\n\010rgb2gr"
+  "ay\030\002 \001(\0132\027.ws_engine.IPL_RGB2Gray\022!\n\004blu"
+  "r\030\003 \001(\0132\023.ws_engine.IPL_BLUR\"G\n\rDisplayD"
+  "evice\022\034\n\016show_in_screen\030\001 \002(\010:\004true\022\030\n\020o"
+  "utput_file_name\030\002 \001(\t\"\315\001\n\022WsEngineParame"
+  "ters\022.\n\nsys_params\030\001 \002(\0132\032.ws_engine.Sys"
+  "temParameter\022*\n\006camera\030\002 \002(\0132\032.ws_engine"
+  ".CameraParameter\022)\n\nipl_engine\030\003 \002(\0132\025.w"
+  "s_engine.IPL_Engine\0220\n\016display_device\030\004 "
+  "\001(\0132\030.ws_engine.DisplayDevice"
   ;
 static const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable*const descriptor_table_config_2eproto_deps[1] = {
 };
@@ -455,7 +460,7 @@ static ::PROTOBUF_NAMESPACE_ID::internal::SCCInfoBase*const descriptor_table_con
 static ::PROTOBUF_NAMESPACE_ID::internal::once_flag descriptor_table_config_2eproto_once;
 static bool descriptor_table_config_2eproto_initialized = false;
 const ::PROTOBUF_NAMESPACE_ID::internal::DescriptorTable descriptor_table_config_2eproto = {
-  &descriptor_table_config_2eproto_initialized, descriptor_table_protodef_config_2eproto, "config.proto", 1392,
+  &descriptor_table_config_2eproto_initialized, descriptor_table_protodef_config_2eproto, "config.proto", 1429,
   &descriptor_table_config_2eproto_once, descriptor_table_config_2eproto_sccs, descriptor_table_config_2eproto_deps, 11, 0,
   schemas, file_default_instances, TableStruct_config_2eproto::offsets,
   file_level_metadata_config_2eproto, 11, file_level_enum_descriptors_config_2eproto, file_level_service_descriptors_config_2eproto,
@@ -2074,6 +2079,9 @@ void ImageProcessingLayer::InitAsDefaultInstance() {
 class ImageProcessingLayer::_Internal {
  public:
   using HasBits = decltype(std::declval<ImageProcessingLayer>()._has_bits_);
+  static void set_has_layer_id(HasBits* has_bits) {
+    (*has_bits)[0] |= 32u;
+  }
   static const ::ws_engine::ImageParameter& image_input(const ImageProcessingLayer* msg);
   static void set_has_image_input(HasBits* has_bits) {
     (*has_bits)[0] |= 8u;
@@ -2133,6 +2141,7 @@ ImageProcessingLayer::ImageProcessingLayer(const ImageProcessingLayer& from)
   } else {
     image_output_ = nullptr;
   }
+  layer_id_ = from.layer_id_;
   // @@protoc_insertion_point(copy_constructor:ws_engine.ImageProcessingLayer)
 }
 
@@ -2142,8 +2151,8 @@ void ImageProcessingLayer::SharedCtor() {
   func_name_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   func_args_.UnsafeSetDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited());
   ::memset(&image_input_, 0, static_cast<size_t>(
-      reinterpret_cast<char*>(&image_output_) -
-      reinterpret_cast<char*>(&image_input_)) + sizeof(image_output_));
+      reinterpret_cast<char*>(&layer_id_) -
+      reinterpret_cast<char*>(&image_input_)) + sizeof(layer_id_));
 }
 
 ImageProcessingLayer::~ImageProcessingLayer() {
@@ -2194,6 +2203,7 @@ void ImageProcessingLayer::Clear() {
       image_output_->Clear();
     }
   }
+  layer_id_ = 0;
   _has_bits_.Clear();
   _internal_metadata_.Clear();
 }
@@ -2206,23 +2216,31 @@ const char* ImageProcessingLayer::_InternalParse(const char* ptr, ::PROTOBUF_NAM
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // required .ws_engine.ImageParameter image_input = 1;
+      // required int32 layer_id = 1;
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          _Internal::set_has_layer_id(&has_bits);
+          layer_id_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // required .ws_engine.ImageParameter image_input = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           ptr = ctx->ParseMessage(_internal_mutable_image_input(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // required .ws_engine.ImageParameter image_output = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+      // required .ws_engine.ImageParameter image_output = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
           ptr = ctx->ParseMessage(_internal_mutable_image_output(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // required string lib_file = 3;
-      case 3:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
+      // required string lib_file = 4;
+      case 4:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
           auto str = _internal_mutable_lib_file();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           #ifndef NDEBUG
@@ -2231,9 +2249,9 @@ const char* ImageProcessingLayer::_InternalParse(const char* ptr, ::PROTOBUF_NAM
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // required string func_name = 4;
-      case 4:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 34)) {
+      // required string func_name = 5;
+      case 5:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
           auto str = _internal_mutable_func_name();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           #ifndef NDEBUG
@@ -2242,9 +2260,9 @@ const char* ImageProcessingLayer::_InternalParse(const char* ptr, ::PROTOBUF_NAM
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // optional string func_args = 5;
-      case 5:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 42)) {
+      // optional string func_args = 6;
+      case 6:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 50)) {
           auto str = _internal_mutable_func_args();
           ptr = ::PROTOBUF_NAMESPACE_ID::internal::InlineGreedyStringParser(str, ptr, ctx);
           #ifndef NDEBUG
@@ -2281,50 +2299,56 @@ failure:
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  // required .ws_engine.ImageParameter image_input = 1;
+  // required int32 layer_id = 1;
+  if (cached_has_bits & 0x00000020u) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_layer_id(), target);
+  }
+
+  // required .ws_engine.ImageParameter image_input = 2;
   if (cached_has_bits & 0x00000008u) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
-        1, _Internal::image_input(this), target, stream);
+        2, _Internal::image_input(this), target, stream);
   }
 
-  // required .ws_engine.ImageParameter image_output = 2;
+  // required .ws_engine.ImageParameter image_output = 3;
   if (cached_has_bits & 0x00000010u) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
-        2, _Internal::image_output(this), target, stream);
+        3, _Internal::image_output(this), target, stream);
   }
 
-  // required string lib_file = 3;
+  // required string lib_file = 4;
   if (cached_has_bits & 0x00000001u) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::VerifyUTF8StringNamedField(
       this->_internal_lib_file().data(), static_cast<int>(this->_internal_lib_file().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SERIALIZE,
       "ws_engine.ImageProcessingLayer.lib_file");
     target = stream->WriteStringMaybeAliased(
-        3, this->_internal_lib_file(), target);
+        4, this->_internal_lib_file(), target);
   }
 
-  // required string func_name = 4;
+  // required string func_name = 5;
   if (cached_has_bits & 0x00000002u) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::VerifyUTF8StringNamedField(
       this->_internal_func_name().data(), static_cast<int>(this->_internal_func_name().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SERIALIZE,
       "ws_engine.ImageProcessingLayer.func_name");
     target = stream->WriteStringMaybeAliased(
-        4, this->_internal_func_name(), target);
+        5, this->_internal_func_name(), target);
   }
 
-  // optional string func_args = 5;
+  // optional string func_args = 6;
   if (cached_has_bits & 0x00000004u) {
     ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::VerifyUTF8StringNamedField(
       this->_internal_func_args().data(), static_cast<int>(this->_internal_func_args().length()),
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormat::SERIALIZE,
       "ws_engine.ImageProcessingLayer.func_args");
     target = stream->WriteStringMaybeAliased(
-        5, this->_internal_func_args(), target);
+        6, this->_internal_func_args(), target);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -2340,31 +2364,38 @@ size_t ImageProcessingLayer::RequiredFieldsByteSizeFallback() const {
   size_t total_size = 0;
 
   if (_internal_has_lib_file()) {
-    // required string lib_file = 3;
+    // required string lib_file = 4;
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_lib_file());
   }
 
   if (_internal_has_func_name()) {
-    // required string func_name = 4;
+    // required string func_name = 5;
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_func_name());
   }
 
   if (_internal_has_image_input()) {
-    // required .ws_engine.ImageParameter image_input = 1;
+    // required .ws_engine.ImageParameter image_input = 2;
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *image_input_);
   }
 
   if (_internal_has_image_output()) {
-    // required .ws_engine.ImageParameter image_output = 2;
+    // required .ws_engine.ImageParameter image_output = 3;
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *image_output_);
+  }
+
+  if (_internal_has_layer_id()) {
+    // required int32 layer_id = 1;
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_layer_id());
   }
 
   return total_size;
@@ -2373,26 +2404,31 @@ size_t ImageProcessingLayer::ByteSizeLong() const {
 // @@protoc_insertion_point(message_byte_size_start:ws_engine.ImageProcessingLayer)
   size_t total_size = 0;
 
-  if (((_has_bits_[0] & 0x0000001b) ^ 0x0000001b) == 0) {  // All required fields are present.
-    // required string lib_file = 3;
+  if (((_has_bits_[0] & 0x0000003b) ^ 0x0000003b) == 0) {  // All required fields are present.
+    // required string lib_file = 4;
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_lib_file());
 
-    // required string func_name = 4;
+    // required string func_name = 5;
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::StringSize(
         this->_internal_func_name());
 
-    // required .ws_engine.ImageParameter image_input = 1;
+    // required .ws_engine.ImageParameter image_input = 2;
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *image_input_);
 
-    // required .ws_engine.ImageParameter image_output = 2;
+    // required .ws_engine.ImageParameter image_output = 3;
     total_size += 1 +
       ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
         *image_output_);
+
+    // required int32 layer_id = 1;
+    total_size += 1 +
+      ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+        this->_internal_layer_id());
 
   } else {
     total_size += RequiredFieldsByteSizeFallback();
@@ -2401,7 +2437,7 @@ size_t ImageProcessingLayer::ByteSizeLong() const {
   // Prevent compiler warnings about cached_has_bits being unused
   (void) cached_has_bits;
 
-  // optional string func_args = 5;
+  // optional string func_args = 6;
   cached_has_bits = _has_bits_[0];
   if (cached_has_bits & 0x00000004u) {
     total_size += 1 +
@@ -2441,7 +2477,7 @@ void ImageProcessingLayer::MergeFrom(const ImageProcessingLayer& from) {
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 0x0000001fu) {
+  if (cached_has_bits & 0x0000003fu) {
     if (cached_has_bits & 0x00000001u) {
       _has_bits_[0] |= 0x00000001u;
       lib_file_.AssignWithDefault(&::PROTOBUF_NAMESPACE_ID::internal::GetEmptyStringAlreadyInited(), from.lib_file_);
@@ -2460,6 +2496,10 @@ void ImageProcessingLayer::MergeFrom(const ImageProcessingLayer& from) {
     if (cached_has_bits & 0x00000010u) {
       _internal_mutable_image_output()->::ws_engine::ImageParameter::MergeFrom(from._internal_image_output());
     }
+    if (cached_has_bits & 0x00000020u) {
+      layer_id_ = from.layer_id_;
+    }
+    _has_bits_[0] |= cached_has_bits;
   }
 }
 
@@ -2478,7 +2518,7 @@ void ImageProcessingLayer::CopyFrom(const ImageProcessingLayer& from) {
 }
 
 bool ImageProcessingLayer::IsInitialized() const {
-  if ((_has_bits_[0] & 0x0000001b) != 0x0000001b) return false;
+  if ((_has_bits_[0] & 0x0000003b) != 0x0000003b) return false;
   if (_internal_has_image_input()) {
     if (!image_input_->IsInitialized()) return false;
   }
@@ -2500,6 +2540,7 @@ void ImageProcessingLayer::InternalSwap(ImageProcessingLayer* other) {
     GetArenaNoVirtual());
   swap(image_input_, other->image_input_);
   swap(image_output_, other->image_output_);
+  swap(layer_id_, other->layer_id_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata ImageProcessingLayer::GetMetadata() const {
@@ -3029,6 +3070,9 @@ void IPL_Engine::InitAsDefaultInstance() {
 class IPL_Engine::_Internal {
  public:
   using HasBits = decltype(std::declval<IPL_Engine>()._has_bits_);
+  static void set_has_worker(HasBits* has_bits) {
+    (*has_bits)[0] |= 4u;
+  }
   static const ::ws_engine::IPL_RGB2Gray& rgb2gray(const IPL_Engine* msg);
   static void set_has_rgb2gray(HasBits* has_bits) {
     (*has_bits)[0] |= 1u;
@@ -3067,6 +3111,7 @@ IPL_Engine::IPL_Engine(const IPL_Engine& from)
   } else {
     blur_ = nullptr;
   }
+  worker_ = from.worker_;
   // @@protoc_insertion_point(copy_constructor:ws_engine.IPL_Engine)
 }
 
@@ -3075,6 +3120,7 @@ void IPL_Engine::SharedCtor() {
   ::memset(&rgb2gray_, 0, static_cast<size_t>(
       reinterpret_cast<char*>(&blur_) -
       reinterpret_cast<char*>(&rgb2gray_)) + sizeof(blur_));
+  worker_ = 1;
 }
 
 IPL_Engine::~IPL_Engine() {
@@ -3103,7 +3149,7 @@ void IPL_Engine::Clear() {
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
+  if (cached_has_bits & 0x00000007u) {
     if (cached_has_bits & 0x00000001u) {
       GOOGLE_DCHECK(rgb2gray_ != nullptr);
       rgb2gray_->Clear();
@@ -3112,6 +3158,7 @@ void IPL_Engine::Clear() {
       GOOGLE_DCHECK(blur_ != nullptr);
       blur_->Clear();
     }
+    worker_ = 1;
   }
   _has_bits_.Clear();
   _internal_metadata_.Clear();
@@ -3125,16 +3172,24 @@ const char* IPL_Engine::_InternalParse(const char* ptr, ::PROTOBUF_NAMESPACE_ID:
     ptr = ::PROTOBUF_NAMESPACE_ID::internal::ReadTag(ptr, &tag);
     CHK_(ptr);
     switch (tag >> 3) {
-      // optional .ws_engine.IPL_RGB2Gray rgb2gray = 1;
+      // optional int32 worker = 1 [default = 1];
       case 1:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 10)) {
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 8)) {
+          _Internal::set_has_worker(&has_bits);
+          worker_ = ::PROTOBUF_NAMESPACE_ID::internal::ReadVarint64(&ptr);
+          CHK_(ptr);
+        } else goto handle_unusual;
+        continue;
+      // optional .ws_engine.IPL_RGB2Gray rgb2gray = 2;
+      case 2:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
           ptr = ctx->ParseMessage(_internal_mutable_rgb2gray(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
         continue;
-      // optional .ws_engine.IPL_BLUR blur = 2;
-      case 2:
-        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 18)) {
+      // optional .ws_engine.IPL_BLUR blur = 3;
+      case 3:
+        if (PROTOBUF_PREDICT_TRUE(static_cast<::PROTOBUF_NAMESPACE_ID::uint8>(tag) == 26)) {
           ptr = ctx->ParseMessage(_internal_mutable_blur(), ptr);
           CHK_(ptr);
         } else goto handle_unusual;
@@ -3167,20 +3222,26 @@ failure:
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  // optional .ws_engine.IPL_RGB2Gray rgb2gray = 1;
+  // optional int32 worker = 1 [default = 1];
+  if (cached_has_bits & 0x00000004u) {
+    target = stream->EnsureSpace(target);
+    target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::WriteInt32ToArray(1, this->_internal_worker(), target);
+  }
+
+  // optional .ws_engine.IPL_RGB2Gray rgb2gray = 2;
   if (cached_has_bits & 0x00000001u) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
-        1, _Internal::rgb2gray(this), target, stream);
+        2, _Internal::rgb2gray(this), target, stream);
   }
 
-  // optional .ws_engine.IPL_BLUR blur = 2;
+  // optional .ws_engine.IPL_BLUR blur = 3;
   if (cached_has_bits & 0x00000002u) {
     target = stream->EnsureSpace(target);
     target = ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::
       InternalWriteMessage(
-        2, _Internal::blur(this), target, stream);
+        3, _Internal::blur(this), target, stream);
   }
 
   if (PROTOBUF_PREDICT_FALSE(_internal_metadata_.have_unknown_fields())) {
@@ -3200,19 +3261,26 @@ size_t IPL_Engine::ByteSizeLong() const {
   (void) cached_has_bits;
 
   cached_has_bits = _has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
-    // optional .ws_engine.IPL_RGB2Gray rgb2gray = 1;
+  if (cached_has_bits & 0x00000007u) {
+    // optional .ws_engine.IPL_RGB2Gray rgb2gray = 2;
     if (cached_has_bits & 0x00000001u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
           *rgb2gray_);
     }
 
-    // optional .ws_engine.IPL_BLUR blur = 2;
+    // optional .ws_engine.IPL_BLUR blur = 3;
     if (cached_has_bits & 0x00000002u) {
       total_size += 1 +
         ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::MessageSize(
           *blur_);
+    }
+
+    // optional int32 worker = 1 [default = 1];
+    if (cached_has_bits & 0x00000004u) {
+      total_size += 1 +
+        ::PROTOBUF_NAMESPACE_ID::internal::WireFormatLite::Int32Size(
+          this->_internal_worker());
     }
 
   }
@@ -3248,13 +3316,17 @@ void IPL_Engine::MergeFrom(const IPL_Engine& from) {
   (void) cached_has_bits;
 
   cached_has_bits = from._has_bits_[0];
-  if (cached_has_bits & 0x00000003u) {
+  if (cached_has_bits & 0x00000007u) {
     if (cached_has_bits & 0x00000001u) {
       _internal_mutable_rgb2gray()->::ws_engine::IPL_RGB2Gray::MergeFrom(from._internal_rgb2gray());
     }
     if (cached_has_bits & 0x00000002u) {
       _internal_mutable_blur()->::ws_engine::IPL_BLUR::MergeFrom(from._internal_blur());
     }
+    if (cached_has_bits & 0x00000004u) {
+      worker_ = from.worker_;
+    }
+    _has_bits_[0] |= cached_has_bits;
   }
 }
 
@@ -3288,6 +3360,7 @@ void IPL_Engine::InternalSwap(IPL_Engine* other) {
   swap(_has_bits_[0], other->_has_bits_[0]);
   swap(rgb2gray_, other->rgb2gray_);
   swap(blur_, other->blur_);
+  swap(worker_, other->worker_);
 }
 
 ::PROTOBUF_NAMESPACE_ID::Metadata IPL_Engine::GetMetadata() const {

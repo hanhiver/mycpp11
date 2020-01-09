@@ -49,11 +49,12 @@ message ImageParameter {
 
 // Defined a layer of the ImageProcessingEngine. 
 message ImageProcessingLayer {
-    required ImageParameter image_input = 1; 
-    required ImageParameter image_output = 2;
-    required string lib_file = 3;  // .so file that contain the func. 
-    required string func_name = 4;  // func name that call the image layer.
-    optional string func_args = 5;  // Args that call the function.   
+    required int32 layer_id = 1;
+    required ImageParameter image_input = 2; 
+    required ImageParameter image_output = 3;
+    required string lib_file = 4;  // .so file that contain the func. 
+    required string func_name = 5;  // func name that call the image layer.
+    optional string func_args = 6;  // Args that call the function.   
 }
 
 // RGB2Gray is a ImageProcessingLayer (IPL)
@@ -70,8 +71,9 @@ message IPL_BLUR {
 
 // Image Processing Engine
 message IPL_Engine {
-    optional IPL_RGB2Gray rgb2gray = 1; 
-    optional IPL_BLUR blur = 2; 
+    optional int32 worker = 1 [default = 1];
+    optional IPL_RGB2Gray rgb2gray = 2; 
+    optional IPL_BLUR blur = 3; 
 }
 
 message DisplayDevice {

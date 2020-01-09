@@ -1201,13 +1201,14 @@ class ImageProcessingLayer :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kLibFileFieldNumber = 3,
-    kFuncNameFieldNumber = 4,
-    kFuncArgsFieldNumber = 5,
-    kImageInputFieldNumber = 1,
-    kImageOutputFieldNumber = 2,
+    kLibFileFieldNumber = 4,
+    kFuncNameFieldNumber = 5,
+    kFuncArgsFieldNumber = 6,
+    kImageInputFieldNumber = 2,
+    kImageOutputFieldNumber = 3,
+    kLayerIdFieldNumber = 1,
   };
-  // required string lib_file = 3;
+  // required string lib_file = 4;
   bool has_lib_file() const;
   private:
   bool _internal_has_lib_file() const;
@@ -1227,7 +1228,7 @@ class ImageProcessingLayer :
   std::string* _internal_mutable_lib_file();
   public:
 
-  // required string func_name = 4;
+  // required string func_name = 5;
   bool has_func_name() const;
   private:
   bool _internal_has_func_name() const;
@@ -1247,7 +1248,7 @@ class ImageProcessingLayer :
   std::string* _internal_mutable_func_name();
   public:
 
-  // optional string func_args = 5;
+  // optional string func_args = 6;
   bool has_func_args() const;
   private:
   bool _internal_has_func_args() const;
@@ -1267,7 +1268,7 @@ class ImageProcessingLayer :
   std::string* _internal_mutable_func_args();
   public:
 
-  // required .ws_engine.ImageParameter image_input = 1;
+  // required .ws_engine.ImageParameter image_input = 2;
   bool has_image_input() const;
   private:
   bool _internal_has_image_input() const;
@@ -1282,7 +1283,7 @@ class ImageProcessingLayer :
   ::ws_engine::ImageParameter* _internal_mutable_image_input();
   public:
 
-  // required .ws_engine.ImageParameter image_output = 2;
+  // required .ws_engine.ImageParameter image_output = 3;
   bool has_image_output() const;
   private:
   bool _internal_has_image_output() const;
@@ -1295,6 +1296,19 @@ class ImageProcessingLayer :
   private:
   const ::ws_engine::ImageParameter& _internal_image_output() const;
   ::ws_engine::ImageParameter* _internal_mutable_image_output();
+  public:
+
+  // required int32 layer_id = 1;
+  bool has_layer_id() const;
+  private:
+  bool _internal_has_layer_id() const;
+  public:
+  void clear_layer_id();
+  ::PROTOBUF_NAMESPACE_ID::int32 layer_id() const;
+  void set_layer_id(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_layer_id() const;
+  void _internal_set_layer_id(::PROTOBUF_NAMESPACE_ID::int32 value);
   public:
 
   // @@protoc_insertion_point(class_scope:ws_engine.ImageProcessingLayer)
@@ -1312,6 +1326,7 @@ class ImageProcessingLayer :
   ::PROTOBUF_NAMESPACE_ID::internal::ArenaStringPtr func_args_;
   ::ws_engine::ImageParameter* image_input_;
   ::ws_engine::ImageParameter* image_output_;
+  ::PROTOBUF_NAMESPACE_ID::int32 layer_id_;
   friend struct ::TableStruct_config_2eproto;
 };
 // -------------------------------------------------------------------
@@ -1743,10 +1758,11 @@ class IPL_Engine :
   // accessors -------------------------------------------------------
 
   enum : int {
-    kRgb2GrayFieldNumber = 1,
-    kBlurFieldNumber = 2,
+    kRgb2GrayFieldNumber = 2,
+    kBlurFieldNumber = 3,
+    kWorkerFieldNumber = 1,
   };
-  // optional .ws_engine.IPL_RGB2Gray rgb2gray = 1;
+  // optional .ws_engine.IPL_RGB2Gray rgb2gray = 2;
   bool has_rgb2gray() const;
   private:
   bool _internal_has_rgb2gray() const;
@@ -1761,7 +1777,7 @@ class IPL_Engine :
   ::ws_engine::IPL_RGB2Gray* _internal_mutable_rgb2gray();
   public:
 
-  // optional .ws_engine.IPL_BLUR blur = 2;
+  // optional .ws_engine.IPL_BLUR blur = 3;
   bool has_blur() const;
   private:
   bool _internal_has_blur() const;
@@ -1776,6 +1792,19 @@ class IPL_Engine :
   ::ws_engine::IPL_BLUR* _internal_mutable_blur();
   public:
 
+  // optional int32 worker = 1 [default = 1];
+  bool has_worker() const;
+  private:
+  bool _internal_has_worker() const;
+  public:
+  void clear_worker();
+  ::PROTOBUF_NAMESPACE_ID::int32 worker() const;
+  void set_worker(::PROTOBUF_NAMESPACE_ID::int32 value);
+  private:
+  ::PROTOBUF_NAMESPACE_ID::int32 _internal_worker() const;
+  void _internal_set_worker(::PROTOBUF_NAMESPACE_ID::int32 value);
+  public:
+
   // @@protoc_insertion_point(class_scope:ws_engine.IPL_Engine)
  private:
   class _Internal;
@@ -1785,6 +1814,7 @@ class IPL_Engine :
   mutable ::PROTOBUF_NAMESPACE_ID::internal::CachedSize _cached_size_;
   ::ws_engine::IPL_RGB2Gray* rgb2gray_;
   ::ws_engine::IPL_BLUR* blur_;
+  ::PROTOBUF_NAMESPACE_ID::int32 worker_;
   friend struct ::TableStruct_config_2eproto;
 };
 // -------------------------------------------------------------------
@@ -2878,7 +2908,35 @@ inline void ImageParameter::set_allocated_roi_zone(::ws_engine::ROIParameter* ro
 
 // ImageProcessingLayer
 
-// required .ws_engine.ImageParameter image_input = 1;
+// required int32 layer_id = 1;
+inline bool ImageProcessingLayer::_internal_has_layer_id() const {
+  bool value = (_has_bits_[0] & 0x00000020u) != 0;
+  return value;
+}
+inline bool ImageProcessingLayer::has_layer_id() const {
+  return _internal_has_layer_id();
+}
+inline void ImageProcessingLayer::clear_layer_id() {
+  layer_id_ = 0;
+  _has_bits_[0] &= ~0x00000020u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ImageProcessingLayer::_internal_layer_id() const {
+  return layer_id_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 ImageProcessingLayer::layer_id() const {
+  // @@protoc_insertion_point(field_get:ws_engine.ImageProcessingLayer.layer_id)
+  return _internal_layer_id();
+}
+inline void ImageProcessingLayer::_internal_set_layer_id(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000020u;
+  layer_id_ = value;
+}
+inline void ImageProcessingLayer::set_layer_id(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_layer_id(value);
+  // @@protoc_insertion_point(field_set:ws_engine.ImageProcessingLayer.layer_id)
+}
+
+// required .ws_engine.ImageParameter image_input = 2;
 inline bool ImageProcessingLayer::_internal_has_image_input() const {
   bool value = (_has_bits_[0] & 0x00000008u) != 0;
   PROTOBUF_ASSUME(!value || image_input_ != nullptr);
@@ -2938,7 +2996,7 @@ inline void ImageProcessingLayer::set_allocated_image_input(::ws_engine::ImagePa
   // @@protoc_insertion_point(field_set_allocated:ws_engine.ImageProcessingLayer.image_input)
 }
 
-// required .ws_engine.ImageParameter image_output = 2;
+// required .ws_engine.ImageParameter image_output = 3;
 inline bool ImageProcessingLayer::_internal_has_image_output() const {
   bool value = (_has_bits_[0] & 0x00000010u) != 0;
   PROTOBUF_ASSUME(!value || image_output_ != nullptr);
@@ -2998,7 +3056,7 @@ inline void ImageProcessingLayer::set_allocated_image_output(::ws_engine::ImageP
   // @@protoc_insertion_point(field_set_allocated:ws_engine.ImageProcessingLayer.image_output)
 }
 
-// required string lib_file = 3;
+// required string lib_file = 4;
 inline bool ImageProcessingLayer::_internal_has_lib_file() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   return value;
@@ -3069,7 +3127,7 @@ inline void ImageProcessingLayer::set_allocated_lib_file(std::string* lib_file) 
   // @@protoc_insertion_point(field_set_allocated:ws_engine.ImageProcessingLayer.lib_file)
 }
 
-// required string func_name = 4;
+// required string func_name = 5;
 inline bool ImageProcessingLayer::_internal_has_func_name() const {
   bool value = (_has_bits_[0] & 0x00000002u) != 0;
   return value;
@@ -3140,7 +3198,7 @@ inline void ImageProcessingLayer::set_allocated_func_name(std::string* func_name
   // @@protoc_insertion_point(field_set_allocated:ws_engine.ImageProcessingLayer.func_name)
 }
 
-// optional string func_args = 5;
+// optional string func_args = 6;
 inline bool ImageProcessingLayer::_internal_has_func_args() const {
   bool value = (_has_bits_[0] & 0x00000004u) != 0;
   return value;
@@ -3399,7 +3457,35 @@ inline void IPL_BLUR::set_blur_level(::PROTOBUF_NAMESPACE_ID::int32 value) {
 
 // IPL_Engine
 
-// optional .ws_engine.IPL_RGB2Gray rgb2gray = 1;
+// optional int32 worker = 1 [default = 1];
+inline bool IPL_Engine::_internal_has_worker() const {
+  bool value = (_has_bits_[0] & 0x00000004u) != 0;
+  return value;
+}
+inline bool IPL_Engine::has_worker() const {
+  return _internal_has_worker();
+}
+inline void IPL_Engine::clear_worker() {
+  worker_ = 1;
+  _has_bits_[0] &= ~0x00000004u;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 IPL_Engine::_internal_worker() const {
+  return worker_;
+}
+inline ::PROTOBUF_NAMESPACE_ID::int32 IPL_Engine::worker() const {
+  // @@protoc_insertion_point(field_get:ws_engine.IPL_Engine.worker)
+  return _internal_worker();
+}
+inline void IPL_Engine::_internal_set_worker(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _has_bits_[0] |= 0x00000004u;
+  worker_ = value;
+}
+inline void IPL_Engine::set_worker(::PROTOBUF_NAMESPACE_ID::int32 value) {
+  _internal_set_worker(value);
+  // @@protoc_insertion_point(field_set:ws_engine.IPL_Engine.worker)
+}
+
+// optional .ws_engine.IPL_RGB2Gray rgb2gray = 2;
 inline bool IPL_Engine::_internal_has_rgb2gray() const {
   bool value = (_has_bits_[0] & 0x00000001u) != 0;
   PROTOBUF_ASSUME(!value || rgb2gray_ != nullptr);
@@ -3459,7 +3545,7 @@ inline void IPL_Engine::set_allocated_rgb2gray(::ws_engine::IPL_RGB2Gray* rgb2gr
   // @@protoc_insertion_point(field_set_allocated:ws_engine.IPL_Engine.rgb2gray)
 }
 
-// optional .ws_engine.IPL_BLUR blur = 2;
+// optional .ws_engine.IPL_BLUR blur = 3;
 inline bool IPL_Engine::_internal_has_blur() const {
   bool value = (_has_bits_[0] & 0x00000002u) != 0;
   PROTOBUF_ASSUME(!value || blur_ != nullptr);
