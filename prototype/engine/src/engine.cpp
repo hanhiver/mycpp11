@@ -13,14 +13,16 @@
 #include <stdio.h> 
 
 #include "core/params.hpp"
+#include "core/init.hpp"
 
 int main(int argc, char** argv)
 {   
-    if (!Params::Get().ParaseParamsFile("config.cfg"))
+    if (GlobalInit(&argc, &argv) != 0)
     {
-        std::cerr << "Failed to read configuration file. " << std::endl; 
         return EXIT_FAILURE;
     }
-
-    Params::Get().PrintParams();
+    
+    auto params = Params::Get();
+    std::cout << "Print configures: " << std::endl; 
+    params.PrintParams();
 }

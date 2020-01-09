@@ -6,7 +6,7 @@ find_package(Threads REQUIRED)
 list(APPEND WS_LINKER_LIBS ${CMAKE_THREAD_LIBS_INIT})
 
 # ---[ Google-glog
-include("cmake/glog.cmake")
+include("glog.cmake")
 include_directories(SYSTEM ${GLOG_INCLUDE_DIRS})
 list(APPEND WS_LINKER_LIBS ${GLOG_LIBRARIES})
 

@@ -26,3 +26,5 @@ if (UNIX OR APPLE)
 endif()
 
 add_subdirectory(src)
+add_subdirectory(proto)
+
