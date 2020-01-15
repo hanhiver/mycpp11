@@ -1,5 +1,6 @@
 #include <iostream>
 #include <future> 
+#include <string> 
 
 void helloThread(int i)
 {
@@ -15,6 +16,12 @@ struct sayHello
     }
 };
 
+int returnTask(std::string str)
+{
+    std::cout << "Return 1, msg: " << str << std::endl;
+    return 1; 
+}
+
 int main()
 {
     helloThread(2);
@@ -26,11 +33,13 @@ int main()
 
     std::packaged_task<int(int)> t2(sh);
     t2(5);
-    /*
+    
+    std::packaged_task<int(std::string)> task(returnTask);
     std::future<int> f = task.get_future();
-    std::thread th(std::move(task), "dhan");
-    th.join();
-    */
+    task("dhan");
+    //std::thread th(std::move(task), "dhan");
+    //th.join();
+    
     //t2(str);
     
     //sayHello()("dhan");
