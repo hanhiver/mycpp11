@@ -88,5 +88,6 @@
         "any": "cpp",
         "variant": "cpp",
         "filesystem": "cpp"
-    }
+    },
+    "cmake.configureOnOpen": false
 }

@@ -2,6 +2,8 @@
 #include <vector> 
 #include <boost/algorithm/cxx11/all_of.hpp> 
 
+using namespace boost::algorithm;
+
 #define pbool(i)                 \
 do {                             \
     std::cout << std::boolalpha  \
