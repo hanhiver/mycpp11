@@ -15,8 +15,8 @@
                 "${file}",
                 "-pthread", 
                 "-I /usr/local/include", 
-                "-L /usr/local/lib"//, 
-                //"-lboost_context"
+                "-L /usr/local/lib", 
+                "-lboost_context"
             ],
             "group": {
                 "kind": "build",
