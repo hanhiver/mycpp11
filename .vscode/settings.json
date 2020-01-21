@@ -87,7 +87,11 @@
         "stack": "cpp",
         "any": "cpp",
         "variant": "cpp",
-        "filesystem": "cpp"
+        "filesystem": "cpp",
+        "hash_map": "cpp",
+        "hash_set": "cpp",
+        "cfenv": "cpp",
+        "valarray": "cpp"
     },
     "cmake.configureOnOpen": false
 }

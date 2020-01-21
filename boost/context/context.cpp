@@ -24,6 +24,7 @@ int main()
         source = std::move(source).resume();
         std::cout << a << " "; 
     }
+    std::cout << std::endl; 
 
     return EXIT_SUCCESS;
 }
