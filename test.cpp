@@ -25,4 +25,6 @@ int main()
 
 	auto [num, str] (std::make_pair(42, "world"));
 	std::cout << num << ", " << str << std::endl; 
+	
+	return 0; 
 }
