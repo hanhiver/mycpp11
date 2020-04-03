@@ -56,9 +56,13 @@ private:
     }
 
 public:
-    thread_pool() : done(false), joiner(threads), ready(false)
+    thread_pool(int pool_size=0) : done(false), joiner(threads), ready(false)
     {
-        unsigned const thread_count = std::thread::hardware_concurrency();
+        if (pool_size <= 0)
+        {
+            pool_size = std::thread::hardware_concurrency()/2;
+        }
+        unsigned const thread_count = pool_size;
 
         try
         {
@@ -99,7 +103,7 @@ void sayHello()
 int main()
 {
     unsigned long const TASK_NUM = 10;
-    thread_pool tpool; 
+    thread_pool tpool(3); 
     
     for (unsigned long i=0; i<TASK_NUM; ++i)
     {
