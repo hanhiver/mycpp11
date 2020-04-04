@@ -15,7 +15,7 @@ int main()
     std::atomic_int num_tasks;
 
     unsigned long const TASK_NUM = 30;
-    thread_pool tpool(10); 
+    threads_pool tpool(10); 
     
     num_tasks = TASK_NUM;
     for (unsigned long i=0; i<TASK_NUM; ++i)
@@ -30,6 +30,7 @@ int main()
     //while(!tpool.queue_empty())
     while(num_tasks>0)
     {
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
         std::this_thread::yield();
     }
 

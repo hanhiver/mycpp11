@@ -145,7 +145,7 @@ public:
     }
 };
 
-class thread_pool
+class threads_pool
 {
 private:
     std::atomic_bool done; 
@@ -175,7 +175,7 @@ private:
     }
 
 public:
-    thread_pool(int pool_size) : done(false), joiner(threads), ready(false)
+    threads_pool(int pool_size) : done(false), joiner(threads), ready(false)
     {
         if (pool_size <= 0)
         {
@@ -187,7 +187,7 @@ public:
         {
             for (unsigned i=0; i<thread_count; ++i)
             {
-                threads.push_back(std::thread(&thread_pool::work_thread, this));
+                threads.push_back(std::thread(&threads_pool::work_thread, this));
             }
         }
         catch(...)
@@ -202,7 +202,7 @@ public:
         }
     }
 
-    ~thread_pool()
+    ~threads_pool()
     {
         done = true; 
     }
