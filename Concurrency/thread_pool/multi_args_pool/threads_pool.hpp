@@ -27,7 +27,7 @@ class thread_pool
     std::atomic<int> idlThrNum; 
 
 public: 
-    inline thread_pool(unsigned short size = 4) : stopped(false)
+    inline thread_pool(unsigned short size = 1) : stopped(false)
     {
         idlThrNum = size<1 ? 1 : size; 
         

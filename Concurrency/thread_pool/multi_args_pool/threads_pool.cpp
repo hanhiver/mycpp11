@@ -10,7 +10,7 @@ void hello(int idx)
 
 int main()
 {
-    thread_pool tpool(4);
+    thread_pool tpool(1);
 
     for (int i=0; i<12; ++i)
     {

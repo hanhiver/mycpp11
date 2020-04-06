@@ -1,11 +1,11 @@
-APPS=surf.out surf_gpu.out
+APPS=surf.out surf_gpu.out surf_bench.out
 ARGS=$(shell pkg-config --cflags --libs opencv4)
 
 all: $(APPS)
 
 %.out: %.cpp
 	@echo "Compile the cpp files."
-	g++ -o $@ $< $(ARGS)
+	g++ -o $@ $< $(ARGS) -pthread
 
 .PHONY: clean
 clean:

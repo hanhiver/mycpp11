@@ -9,8 +9,8 @@ using namespace std;
 
 int main()
 {
-    Mat img1 = imread("surf_pic1.jpg", 1);
-    Mat img2 = imread("surf_pic2.jpg", 1); 
+    Mat img1 = imread("surf_pic1.jpg", cv::IMREAD_GRAYSCALE);
+    Mat img2 = imread("surf_pic2.jpg", cv::IMREAD_GRAYSCALE); 
 
     if ((img1.data == NULL) || (img2.data == NULL))
     {
@@ -28,7 +28,7 @@ int main()
     drawKeypoints(img1, keypoints_1, img1); 
     drawKeypoints(img2, keypoints_2, img2); 
 
-    
+    /*
     namedWindow("img1", 0);
     resizeWindow("img1", 500, 500); 
     imshow("img1", img1); 
@@ -36,7 +36,7 @@ int main()
     namedWindow("img2", 0);
     resizeWindow("img2", 500, 500); 
     imshow("img2", img2); 
-    
+    */
 
     FlannBasedMatcher matcher; 
     std::vector<DMatch> matches; 
@@ -69,11 +69,11 @@ int main()
                 vector<char>(), DrawMatchesFlags::NOT_DRAW_SINGLE_POINTS); 
     
     imwrite("res.jpg", img_matches); 
-    
+    /*
     namedWindow("Good Matches", 0);
     resizeWindow("Good Matches", 800, 800); 
     imshow("Good Matches", img_matches); 
-    
+    */
 
     for (int i=0; i<(int)good_matches.size(); i++)
     {
@@ -83,6 +83,6 @@ int main()
              << endl; 
     }
 
-    waitKey(0); 
+    //waitKey(0); 
     return 0; 
 }
