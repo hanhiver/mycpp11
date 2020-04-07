@@ -91,7 +91,8 @@
         "hash_map": "cpp",
         "hash_set": "cpp",
         "cfenv": "cpp",
-        "valarray": "cpp"
+        "valarray": "cpp",
+        "*.ipp": "cpp"
     },
     "cmake.configureOnOpen": false
 }

@@ -1,5 +1,6 @@
 #include <iostream> 
 #include <vector> 
+#include <chrono>
 
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/xfeatures2d/cuda.hpp>
@@ -80,11 +81,17 @@ int main()
     cv::cuda::setDevice(0);
 
     // Create two GPU mat and upload the images. 
+    auto start = std::chrono::high_resolution_clock::now();
     cv::cuda::GpuMat gmat1; 
     cv::cuda::GpuMat gmat2;
     gmat1.upload(img1);
     gmat2.upload(img2);
+    auto end = std::chrono::high_resolution_clock::now();
+    auto dur = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    double period = double(dur.count());
+    std::cout << "Create GpuMat and upload images: " << period << " us." << std::endl;
 
+    start = std::chrono::high_resolution_clock::now();
     cv::cuda::SURF_CUDA surf_gpu(1000);
 
     // Create GpuMat to store the keypoints and relevant descritors. 
@@ -95,10 +102,31 @@ int main()
     surf_gpu(gmat1, cv::cuda::GpuMat(), keypt1, desc1);
     surf_gpu(gmat2, cv::cuda::GpuMat(), keypt2, desc2);
 
+    end = std::chrono::high_resolution_clock::now();
+    dur = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    period = double(dur.count());
+    std::cout << "Create and caculate surf: " << period << " us." << std::endl;
+
+    start = std::chrono::high_resolution_clock::now();
+    vector<cv::KeyPoint> keypt1_host;
+    vector<cv::KeyPoint> keypt2_host;
+    surf_gpu.downloadKeypoints(keypt1, keypt1_host);
+    surf_gpu.downloadKeypoints(keypt2, keypt2_host);
+    end = std::chrono::high_resolution_clock::now();
+    dur = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    period = double(dur.count());
+    std::cout << "Download keypoints from GPU: " << period << " us." << std::endl;
+
+
+    start = std::chrono::high_resolution_clock::now();
     // Create Brute-Force Matcher. 
     auto matcher = cv::cuda::DescriptorMatcher::createBFMatcher(cv::NORM_L2);
     vector<cv::DMatch> match_vect; 
     matcher->match(desc1, desc2, match_vect);
+    end = std::chrono::high_resolution_clock::now();
+    dur = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    period = double(dur.count());
+    std::cout << "Create and caculate matchs: " << period << " us." << std::endl;
 
     double max_dist = 0; 
     double min_dist = 100; 
