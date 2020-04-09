@@ -5,13 +5,13 @@
 using namespace std;
 
 const int N = 10000000;
-atomic_int num{ 0 };
 
 void run()
 {
+    int b = 0;
     for (int i=0; i<N; i++)
     {
-        num++;
+        b = b + i;
     }
 }
 
@@ -23,7 +23,7 @@ int main()
     t.join();
     clock_t end = clock();
 
-    cout<<"[ATOMIC] num = "<<num<<" runtime: "<<end-start<<endl;
+    cout<<"Runtime: "<<end-start<<endl;
 
     cout << "\n=== Two Threads ===" << endl; 
     start = clock();
@@ -33,7 +33,7 @@ int main()
     t2.join();
     end = clock();
 
-    cout<<"[ATOMIC] num = "<<num<<" runtime: "<<end-start<<endl;
+    cout<<"Runtime: "<<end-start<<endl;
 
     return 0;
 }

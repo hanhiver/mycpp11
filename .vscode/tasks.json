@@ -98,7 +98,7 @@
         {
             "label": "Build C++17",
             "type": "shell",
-            "command": "g++",
+            "command": "g++-9",
             "args": [
                 "-std=c++17",
                 "-g",
@@ -142,7 +142,7 @@
         {
             "label": "Build C++17 Parallel",
             "type": "shell",
-            "command": "g++",
+            "command": "g++-9",
             "args": [
                 "-std=c++17",
                 "-g",
