@@ -7,6 +7,7 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/xfeatures2d/cuda.hpp>
 #include <opencv2/cudafeatures2d.hpp>
+#include <opencv2/imgproc/types_c.h>
 
 #include "ThreadPool.h"
 
@@ -14,6 +15,7 @@ using namespace std;
 
 void surf_CPU(cv::Mat& img1, cv::Mat& img2)
 {
+    return;
     cv::Ptr<cv::Feature2D> surf = cv::xfeatures2d::SURF::create(1000);
     
     vector<cv::KeyPoint> keypoints_1, keypoints_2; 
@@ -31,6 +33,7 @@ void surf_CPU(cv::Mat& img1, cv::Mat& img2)
 
 void surf_GPU(cv::Mat& img1, cv::Mat& img2)
 {
+    return;
     // Create two GPU mat and upload the images. 
     cv::cuda::GpuMat gmat1; 
     cv::cuda::GpuMat gmat2;
@@ -60,6 +63,31 @@ void surf_GPU(cv::Mat& img1, cv::Mat& img2)
     std::cout << "#"; 
 }
 
+void hist_comp(cv::Mat& img1, cv::Mat& img2)
+{
+    cv::Mat img1c; 
+    cv::Mat img2c;
+    cvtColor(img1, img1c, cv::COLOR_GRAY2RGB);
+    cvtColor(img2, img2c, cv::COLOR_GRAY2RGB);
+    int hBins = 256, sBins = 256;
+	int histSize[] = { hBins, sBins };
+	//H:0~180, S:0~255,V:0~255
+	//H色调取值范围
+	float hRanges[] = { 0, 180 };
+	//S饱和度取值范围
+	float sRanges[] = { 0, 255 };
+	const float* ranges[] = { hRanges, sRanges };
+	int channels[] = { 0, 1 };//二维直方图
+	cv::MatND hist1, hist2;
+    cv::calcHist(&img1c, 1, channels, cv::Mat(), hist1, 2, histSize, ranges, true, false);
+	cv::normalize(hist1, hist1, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
+	cv::calcHist(&img2c, 1, channels, cv::Mat(), hist2, 2, histSize, ranges, true, false);
+	cv::normalize(hist2, hist2, 0, 1, cv::NORM_MINMAX, -1, cv::Mat());
+	//double similarityValue = compareHist(hist1, hist2, cv::CV_COMP_CORREL);
+    double similarityValue = compareHist(hist1, hist2, cv::HISTCMP_CORREL);
+    std::cout << "Similarity: " << similarityValue << std::endl; 
+}
+
 int main(int argc, char* argv[])
 {
     int LOOP = 20; 
@@ -76,6 +104,8 @@ int main(int argc, char* argv[])
     
     cv::Mat img1 = cv::imread("surf_pic1.jpg", cv::IMREAD_GRAYSCALE);
     cv::Mat img2 = cv::imread("surf_pic2.jpg", cv::IMREAD_GRAYSCALE); 
+    //cv::Mat img1 = cv::imread("surf_pic1.jpg");
+    //cv::Mat img2 = cv::imread("surf_pic2.jpg"); 
 
     if ((img1.data == NULL) || (img2.data == NULL))
     {
@@ -160,6 +190,43 @@ int main(int argc, char* argv[])
     dur = std::chrono::duration<double>(end - start);
     period = double(dur.count());
     std::cout << "\nsurf_GPU MT time consumer: " << period << " s, speed-up ratio: " << stand_period*100/period << "%." << std::endl;
+
+    // === HIST Single thread. 
+    std::cout << "\n=== HIST Single thread." << std::endl; 
+    start = std::chrono::high_resolution_clock::now();
+    for (int i=0; i<LOOP; i++)
+    {
+        hist_comp(img1, img2);
+    }
+    end = std::chrono::high_resolution_clock::now();
+
+    //auto dur = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    dur = std::chrono::duration<double>(end - start);
+    period = double(dur.count());
+    std::cout << "\nHIST time consumer: " << period << " s, speed-up ratio: " << stand_period*100/period << "%." << std::endl;
+
+    // === HIST Multiple threads. 
+    std::cout << "\n=== HIST Multiple threads." << std::endl; 
+    start = std::chrono::high_resolution_clock::now();
+    num_tasks = LOOP;
+    for (int i=0; i<LOOP; i++)
+    {
+        tpool.enqueue([&, i](){
+            hist_comp(img1, img2);
+            -- num_tasks;
+        });
+    }
+    while (num_tasks > 0)
+    {
+        //std::this_thread::sleep_for(std::chrono::milliseconds(1));
+        std::this_thread::yield();
+    }
+    end = std::chrono::high_resolution_clock::now();
+
+    //auto dur = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    dur = std::chrono::duration<double>(end - start);
+    period = double(dur.count());
+    std::cout << "\nHIST MT time consumer: " << period << " s, speed-up ratio: " << stand_period*100/period << "%." << std::endl;
 
     std::cout << "\n=== Test Done === " << std::endl; 
     return 0; 
