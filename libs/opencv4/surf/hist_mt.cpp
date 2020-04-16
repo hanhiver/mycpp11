@@ -41,8 +41,8 @@ double hist_comp(cv::Mat& img1, cv::Mat& img2)
 
 int main(int argc, char* argv[])
 {
-    int LOOP = 300; 
-    int POOL_SIZE = 2;
+    int LOOP = 1; 
+    int POOL_SIZE = 1;
 
     if (argc == 3)
     {
@@ -72,12 +72,25 @@ int main(int argc, char* argv[])
     auto start = std::chrono::high_resolution_clock::now();
     for (int i=0; i<LOOP; i++)
     {
-        hist_comp(img1, img2);
+        std::cout << hist_comp(img1, img2) << std::endl;
     }
     auto end = std::chrono::high_resolution_clock::now();
     auto dur = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
     double period = double(dur.count());
     double stand_period = period; 
+    std::cout << "\nHIST time consumer: " << period/1000.0 << " ms. " << std::endl;
+
+    // === HIST Single thread. 
+    std::cout << "\n=== HIST Single thread." << std::endl; 
+    start = std::chrono::high_resolution_clock::now();
+    for (int i=0; i<LOOP; i++)
+    {
+        std::cout << hist_comp(img2, img1) << std::endl;
+    }
+    end = std::chrono::high_resolution_clock::now();
+    dur = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    period = double(dur.count());
+    stand_period = period; 
     std::cout << "\nHIST time consumer: " << period/1000.0 << " ms. " << std::endl;
 
     // === HIST Multiple threads. 
