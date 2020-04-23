@@ -1,6 +1,7 @@
 #include <iostream> 
 
-int const LENGTH = 10;
+//int const LENGTH = 10;
+const int LENGTH = 10; 
 
 int main()
 {
