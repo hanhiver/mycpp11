@@ -2,6 +2,8 @@
 #include <vector> 
 #include <chrono>
 #include <algorithm>
+#include <fstream>
+#include <sstream>
 
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/xfeatures2d/cuda.hpp>
@@ -12,9 +14,9 @@
 
 using namespace std;
 
-int POOL_SIZE = 2; 
+int POOL_SIZE = 4; 
 
-double HIST_MATCH_RATE = 0.9;
+double HIST_MATCH_RATE = 0.95;
 double COMB_RECHECK_RATE = 0.95;
 bool SHOW_UNMATCHS = false;
 
@@ -106,7 +108,8 @@ double surf_GPU(cv::Mat& img1, cv::Mat& img2)
 
     if (good_matches.size()>4)
     {
-        return 1.0;
+        //std::cout << static_cast<double>(good_matches.size())/std::min(img1.total(), img2.total()) << std::endl;
+        return static_cast<double>(good_matches.size())/std::min(img1.total(), img2.total());
     }
     else
     {
@@ -197,7 +200,8 @@ std::vector<std::string> get_file_list(std::string folder)
     return file_list; 
 }
 
-int main(int argc, char* argv[])
+// Main for time statistics. 
+int main1(int argc, char* argv[])
 {
     if (argc != 2)
     {
@@ -461,5 +465,301 @@ int main(int argc, char* argv[])
     img_queue.clear();
     imgs_name.clear();
     std::cout << std::endl;
+    return 0; 
+}
+
+int main(int argc, char* argv[])
+{
+    if (argc != 2)
+    {
+        std::cout << "Usage: " << argv[0] << " <folder of the images>." << std::endl; 
+        exit(-1);
+    }
+
+    std::cout << argv[1] << std::endl; 
+
+    // Open the csv file to save all compare results. 
+    std::ofstream csv_file("./output.csv");
+    if (!csv_file)
+    {
+        std::cerr << "Failed to open ./output.csv." << std::endl;
+        exit(EXIT_FAILURE);
+    }
+    
+    auto file_list = get_file_list(std::string(argv[1]));
+    int num_files = static_cast<int>(file_list.size());
+
+    //std::array<double, num_files/2> matches_rates_surf; 
+    double* matches_rates_surf = new double[num_files/2]();
+    std::vector<double> time_static; 
+
+    std::vector<std::string> imgs_name;
+    std::vector<cv::Mat> img_queue; 
+    std::vector<int> img_idx_queue;
+    int frame = 0; 
+
+    auto start = std::chrono::high_resolution_clock::now();
+    auto end = std::chrono::high_resolution_clock::now();
+    auto dur = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+    double period = double(dur.count());
+
+    ThreadPool tpool(POOL_SIZE);
+
+    // === SURF ===
+    //std::cout << "=== SURF ===" << std::endl; 
+    for (int i=0; i<num_files; i++)
+    {
+        //std::cout << item << std::endl; 
+        int frame_idx;
+        int trk_idx; 
+        char pos;
+        
+        phase_filename(file_list[i], &frame_idx, &trk_idx, &pos); 
+        cv::Mat img = cv::imread(file_list[i], cv::IMREAD_GRAYSCALE);
+        
+        if (frame == frame_idx)
+        {
+            // 如果是同一帧画面。
+            img_queue.push_back(img); 
+            img_idx_queue.push_back(i);
+            imgs_name.push_back(file_list[i]);
+            continue; 
+        }
+        else
+        {
+            start = std::chrono::high_resolution_clock::now();
+            frame = frame_idx;
+            for (int j=0; j<img_queue.size(); j+=2)
+            {
+                double res = surf_GPU(img_queue[j], img_queue[j+1]);
+                matches_rates_surf[img_idx_queue[j]/2] = res;
+            }
+            end = std::chrono::high_resolution_clock::now();
+            dur = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+            period = double(dur.count());
+            time_static.push_back(period);
+
+            img_idx_queue.clear();
+            img_idx_queue.push_back(i);
+            img_queue.clear();
+            img_queue.push_back(img); 
+            imgs_name.clear();
+            imgs_name.push_back(file_list[i]);
+        }  
+    }
+
+    double sum_match_rate = 0; 
+    //for (auto& item : matches_rates_surf)
+    for (int i=0; i<num_files/2; i++)
+    {
+        sum_match_rate += matches_rates_surf[i]; 
+    }
+    std::cout << "SURF total match rate: " 
+              << double(sum_match_rate)/double(num_files/2)*100.0
+              << "%, "; 
+
+    double sum_match_time = 0;
+    for (auto& item : time_static)
+    {
+        sum_match_time += item; 
+    }
+    std::cout << "total time: " << sum_match_time/1000.0/1000.0 << " s, "
+              << "avg per frame: " << sum_match_time/double(time_static.size()) << " us. "
+              << std::endl; 
+
+    //match_rates.clear();
+    time_static.clear();
+    img_idx_queue.clear();
+    img_queue.clear();
+    imgs_name.clear();
+    
+    // === HIST ===
+    //std::cout << "=== HIST ===" << std::endl; 
+    std::vector<std::future<double>> results; 
+    double* matches_rates_hist = new double[num_files/2]();
+
+    for (int i=0; i<num_files; i++)
+    {
+        //std::cout << item << std::endl; 
+        int frame_idx;
+        int trk_idx; 
+        char pos;
+        
+        phase_filename(file_list[i], &frame_idx, &trk_idx, &pos); 
+        cv::Mat img = cv::imread(file_list[i], cv::IMREAD_GRAYSCALE);
+        
+        if (frame == frame_idx)
+        {
+            // 如果是同一帧画面。
+            img_queue.push_back(img); 
+            img_idx_queue.push_back(i);
+            imgs_name.push_back(file_list[i]);
+            continue; 
+        }
+        else
+        {
+            frame = frame_idx;
+            results.clear();
+
+            start = std::chrono::high_resolution_clock::now();
+            for (int j=0; j<img_queue.size(); j+=2)
+            {
+                results.emplace_back(tpool.enqueue(hist_comp, img_queue[j], img_queue[j+1]));
+            }
+
+            for (int k=0; k<results.size(); ++k)
+            {
+                double res = results[k].get();
+                if (res < HIST_MATCH_RATE)
+                {
+                    matches_rates_hist[img_idx_queue[k*2]/2] = 0.0;
+                    if (SHOW_UNMATCHS)
+                    {
+                        std::cout << "NOT match: " << res << ", " << imgs_name[2*i] 
+                              << " & " << imgs_name[2*i+1] << std::endl;
+                    }
+                }
+                else
+                {
+                    matches_rates_hist[img_idx_queue[k*2]/2] = res;
+                }
+            }
+
+            end = std::chrono::high_resolution_clock::now();
+            dur = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+            period = double(dur.count());
+            time_static.push_back(period);
+
+            img_idx_queue.clear();
+            img_idx_queue.push_back(i);
+            img_queue.clear();
+            img_queue.push_back(img); 
+            imgs_name.clear();
+            imgs_name.push_back(file_list[i]);
+        }  
+    }
+
+    sum_match_rate = 0; 
+    for (int i=0; i<num_files/2; i++)
+    {
+        sum_match_rate += matches_rates_hist[i]; 
+    }
+    std::cout << "HIST total match rate: " 
+              << double(sum_match_rate)/double(num_files/2)*100.0
+              << "%, "; 
+
+    sum_match_time = 0;
+    for (auto& item : time_static)
+    {
+        sum_match_time += item; 
+    }
+    std::cout << "total time: " << sum_match_time/1000.0/1000.0 << " s, "
+              << "avg per frame: " << sum_match_time/double(time_static.size()) << " us. "
+              << std::endl; 
+
+    time_static.clear();
+    img_idx_queue.clear();
+    img_queue.clear();
+    imgs_name.clear();
+
+    // === COMB ===
+    //std::cout << "=== COMB ===" << std::endl; 
+    double* matches_rates_comb = new double[num_files/2]();
+    for (int i=0; i<num_files; i++)
+    {
+        //std::cout << item << std::endl; 
+        int frame_idx;
+        int trk_idx; 
+        char pos;
+        
+        phase_filename(file_list[i], &frame_idx, &trk_idx, &pos); 
+        cv::Mat img = cv::imread(file_list[i], cv::IMREAD_GRAYSCALE);
+        
+        if (frame == frame_idx)
+        {
+            // 如果是同一帧画面。
+            img_queue.push_back(img); 
+            img_idx_queue.push_back(i);
+            imgs_name.push_back(file_list[i]);
+            continue; 
+        }
+        else
+        {
+            frame = frame_idx;
+            results.clear();
+
+            start = std::chrono::high_resolution_clock::now();
+            for (int j=0; j<img_queue.size(); j+=2)
+            {
+                results.emplace_back(tpool.enqueue(combine, img_queue[j], img_queue[j+1]));
+            }
+
+            for (int k=0; k<results.size(); ++k)
+            {
+                double res = results[k].get();
+                matches_rates_comb[img_idx_queue[k*2]/2] = res;
+                if (res < HIST_MATCH_RATE)
+                {
+                    if (SHOW_UNMATCHS)
+                    {
+                        std::cout << "NOT match: " << res << ", " << imgs_name[2*i] 
+                              << " & " << imgs_name[2*i+1] << std::endl;
+                    }
+                }
+            }
+            
+            end = std::chrono::high_resolution_clock::now();
+            dur = std::chrono::duration_cast<std::chrono::microseconds>(end - start);
+            period = double(dur.count());
+            time_static.push_back(period);
+
+            img_idx_queue.clear();
+            img_idx_queue.push_back(i);
+            img_queue.clear();
+            img_queue.push_back(img); 
+            imgs_name.clear();
+            imgs_name.push_back(file_list[i]);
+        }  
+    }
+
+    sum_match_rate = 0; 
+    for (int i=0; i<num_files/2; i++)
+    {
+        sum_match_rate += matches_rates_comb[i]; 
+    }
+    std::cout << "COMB total match rate: " 
+              << double(sum_match_rate)/double(num_files/2)*100.0
+              << "%, "; 
+
+    sum_match_time = 0;
+    for (auto& item : time_static)
+    {
+        sum_match_time += item; 
+    }
+    std::cout << "total time: " << sum_match_time/1000.0/1000.0 << " s, "
+              << "avg per frame: " << sum_match_time/double(time_static.size()) << " us. "
+              << std::endl; 
+
+    time_static.clear();
+    img_idx_queue.clear();
+    img_queue.clear();
+    imgs_name.clear();
+    std::cout << std::endl;
+    
+    // === Save output csv file === //
+    csv_file << "index, img1, img2, SURF, HIST, COMB\n";
+    for (int i=0; i<num_files; i+=2)
+    {
+        csv_file << std::to_string(i) << ", "
+                 << file_list[i] << ", " << file_list[i+1] << ", ";
+        std::ostringstream double_string;
+        double_string.precision(15);
+        double_string << matches_rates_surf[i/2] << ", " 
+                      << matches_rates_hist[i/2] << ", "
+                      << matches_rates_comb[i/2];
+        csv_file << double_string.str() << "\n";
+    }
+    csv_file.close();
+
     return 0; 
 }

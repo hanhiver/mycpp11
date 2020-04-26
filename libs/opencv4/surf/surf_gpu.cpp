@@ -5,6 +5,7 @@
 #include <opencv2/imgcodecs.hpp>
 #include <opencv2/xfeatures2d/cuda.hpp>
 #include <opencv2/cudafeatures2d.hpp>
+#include <opencv2/calib3d.hpp>
 
 using namespace std;
 
@@ -152,11 +153,40 @@ int main()
 
     for (int i=0; i<(int)good_matches.size(); i++)
     {
+        /*
         cout << "-- Good Match " << i 
              << " Keypoint 1: " << good_matches[i].queryIdx 
              << " Keypoint 2: " << good_matches[i].trainIdx 
              << endl; 
+        */
     }
+    std::cout << "Good Matches: " << good_matches.size() << std::endl; 
+    
+    cv::Point2f point1_tmp;
+    cv::Point2f point2_tmp;
+    std::vector<cv::Point2f> pts1, pts1f;
+    std::vector<cv::Point2f> pts2, pts2f;
+    std::vector<int> match_mask;
+
+    for (int i=0; i<static_cast<int>(good_matches.size()); i++)
+    {
+        if (good_matches[i].queryIdx < keypt1_host.size() && 
+                good_matches[i].trainIdx<keypt2_host.size())
+        {
+            pts1f.push_back(keypt1_host[good_matches[i].queryIdx].pt);
+            pts2f.push_back(keypt2_host[good_matches[i].trainIdx].pt);
+        }
+    }
+    std::cout << pts1f.size() << ", " << pts2f.size() << std::endl; 
+
+    if((pts1f.size()>0) && (pts2f.size()>0))
+    {
+        cv::Mat H = cv::findHomography(pts1f, pts2f, cv::RANSAC, 4, match_mask);
+    }
+    std::cout << "H: " << match_mask.size() << std::endl; 
+    std::cout << "SURF: " 
+              << static_cast<double>(match_mask.size()) / std::min(img1.total(), img2.total()) 
+              << std::endl; 
 
     return 0; 
 }
