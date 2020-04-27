@@ -141,6 +141,7 @@ int main()
 
     cout << "-- Max dist: " << max_dist << endl; 
     cout << "-- Min dist: " << min_dist << endl; 
+    cout << "-- Total Matches: " << match_vect.size() << endl; 
 
     vector<cv::DMatch> good_matches;
     for (int i=0; i<desc1.rows; i++)
