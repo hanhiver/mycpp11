@@ -1,5 +1,5 @@
-APPS=first_example.out
-ARGS=$(shell pkg-config --cflags --libs gtest) -std=c++17
+APPS=first_example.out assert_test.out GlobalTest.out map_test.out dead_test.out general_test.out
+ARGS=$(shell pkg-config --cflags --libs gtest) -std=c++11
 
 all: $(APPS)
 
