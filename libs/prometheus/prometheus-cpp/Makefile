@@ -1,4 +1,4 @@
-APPS=example.out
+APPS=example.out histogram.out
 ARGS=-lprometheus-cpp-pull -lprometheus-cpp-core -lz -std=c++17
 
 all: $(APPS)

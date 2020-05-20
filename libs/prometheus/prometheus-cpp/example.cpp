@@ -21,15 +21,19 @@ int main(int argc, char* argv[])
     // add a new counter family to the registry. 
     // families combine values with the same name, 
     // but distinct label dimensions. 
-    auto& counter_family = BuildCounter()
-                            .Name("time_runing_seconds_total")
-                            .Help("How many seconds is this server running? ")
-                            .Labels({{"label", "value"}})
-                            .Register(*registry);
+    auto& counter_family = 
+        BuildCounter()
+        .Name("time_runing_seconds_total")
+        .Help("How many seconds is this server running? ")
+        .Labels({{"label", "value"}})
+        .Register(*registry);
 
     // add a counter to the metric family
     auto& time_counter = counter_family.Add(
         {{"another_label", "value"}, {"yet_another_label", "value"}});
+
+    auto& restart_counter = counter_family.Add(
+        {{"content", "restart"}, {"index", "times"}});
 
     // ask the exposer to scrape the registry on incoming scrapes. 
     exposer.RegisterCollectable(registry);
@@ -39,6 +43,11 @@ int main(int argc, char* argv[])
         std::this_thread::sleep_for(std::chrono::seconds(1));
         // increment the counter by one (second)
         time_counter.Increment();
+        restart_counter.Increment(3);
+        if (restart_counter.Value()>30)
+        {
+            counter_family.Remove(&restart_counter);
+        }
     }
     return 0;
 }
