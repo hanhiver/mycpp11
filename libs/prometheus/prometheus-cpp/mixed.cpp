@@ -27,13 +27,15 @@ int main(int argc, char* argv[])
     // Create a metrics registry. 
     auto registry = std::make_shared<Registry>();
 
+    // 需要分成不同model分别对应的，还要区分resful和grpc不同的量。
     auto& edi_service_served_clients = 
             BuildCounter()
                 .Name("edi_service_served_clients")
                 .Help("Total  Inference requests to an EDI severed model")
                 .Labels({{"apps", "EDI"}})
                 .Register(*registry);
-    
+
+    // isd
     auto& edi_service_pending_requests = 
             BuildGauge()
                 .Name("edi_service_pending_requests")
