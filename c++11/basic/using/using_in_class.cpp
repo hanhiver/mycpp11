@@ -1,5 +1,6 @@
 #include <iostream> 
 #include <string> 
+#include <thread>
 
 //using mystr=std::string;
 
@@ -21,6 +22,12 @@ public:
         std::cout << data << std::endl;
     }
 
+    void run()
+    {
+        std::thread t(Test::print, Object);
+        t.join();
+    }
+
 private:
     mystr data; 
 };
@@ -30,7 +37,8 @@ int main()
 {
     dd::Test* a;
     a = new dd::Test {};
-    a->print();
+    a->run();
+    //a->print();
 
     delete a; 
     return 0; 

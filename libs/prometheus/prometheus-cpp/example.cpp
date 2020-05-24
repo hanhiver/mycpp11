@@ -23,23 +23,30 @@ int main(int argc, char* argv[])
     std::pair<std::string, std::string> my_label1 = std::make_pair("label1", "DHAN");
     std::pair<std::string, std::string> my_label2 = std::make_pair("label2", "HWC");
 
+    //std::shared_ptr<prometheus::Counter> time_counter; 
+    prometheus::Counter* time_counter; 
     // add a new counter family to the registry. 
     // families combine values with the same name, 
     // but distinct label dimensions. 
     //auto& counter_family = 
-    Family_Counter counter_family =
+    //Family_Counter counter_family =
+    
+    time_counter = &( 
         BuildCounter()
         .Name("time_runing_seconds_total")
         .Help("How many seconds is this server running? ")
         .Labels({})
-        .Register(*registry);
+        .Register(*registry)
+        .Add({my_label1, my_label2}));
+    
+    //time_counter = std::make_shared(temp);
 
     // add a counter to the metric family
-    auto& time_counter = counter_family.Add({my_label1, my_label2});
+    //auto& time_counter = counter_family.Add({my_label1, my_label2});
         //{{"another_label", "value"}, {"yet_another_label", "value"}});
 
-    auto& restart_counter = counter_family.Add(
-        {{"content", "restart"}, {"index", "times"}});
+    //auto& restart_counter = counter_family.Add(
+    //    {{"content", "restart"}, {"index", "times"}});
 
     // ask the exposer to scrape the registry on incoming scrapes. 
     //exposer.RegisterCollectable(registry);
@@ -49,7 +56,7 @@ int main(int argc, char* argv[])
     {
         std::this_thread::sleep_for(std::chrono::seconds(1));
         // increment the counter by one (second)
-        time_counter.Increment();
+        time_counter->Increment();
         //restart_counter.Increment(3);
     }
     return 0;
