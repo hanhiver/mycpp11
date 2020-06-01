@@ -24,7 +24,7 @@ template <typename F, typename ... Ts>
 static auto for_each(F f, Ts ... xs)
 {
     // Thus, here we force to transfer the f(xs) return value to void. 
-    // And uses (f(xs), 0).. to let program abandent the return value but put 0 to the initialize list. 
+    // And uses (f(xs), 0).. to let program abandon the return value but put 0 to the initialize list. 
     (void) std::initializer_list<int> { ((void) f(xs), 0)... };
 }
 
