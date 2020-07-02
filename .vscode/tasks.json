@@ -17,7 +17,8 @@
                 "-I /usr/local/include", 
                 "-L /usr/local/lib", 
                 "-lboost_context", 
-                "-lboost_regex"
+                "-lboost_regex", 
+                "-lboost_filesystem"
             ],
             "group": {
                 "kind": "build",
