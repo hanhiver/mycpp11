@@ -94,5 +94,6 @@
         "valarray": "cpp",
         "*.ipp": "cpp"
     },
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "python.pythonPath": "/Users/dhan/opt/anaconda3/envs/py38/bin/python"
 }

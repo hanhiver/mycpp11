@@ -34,3 +34,6 @@
 # CMake build folder
 build/
 *.dSYM/
+
+# Local History
+.history
