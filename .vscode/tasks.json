@@ -103,6 +103,8 @@
             "args": [
                 "-std=c++17",
                 "-g",
+                "-I /usr/local/include", 
+                "-L /usr/local/lib", 
                 "-o",
                 "${fileDirname}/${fileBasenameNoExtension}.out",
                 "${file}",
