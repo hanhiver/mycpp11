@@ -17,6 +17,9 @@
 //Value Computed by CMake
 Async2_BINARY_DIR:STATIC=/home/hd275562/myprog/mycpp11/CMAKE/threadTest/build
 
+//Dependencies for target
+Async2_LIB_DEPENDS:STATIC=
+
 //Value Computed by CMake
 Async2_SOURCE_DIR:STATIC=/home/hd275562/myprog/mycpp11/CMAKE/threadTest
 
