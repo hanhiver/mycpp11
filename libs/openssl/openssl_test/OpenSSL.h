@@ -4,17 +4,20 @@
 #include <string>
 #include <vector>
 #include <cassert>
+#include <cstring>
+#include <iostream> 
 #include "base64.h"
 #include "openssl/md5.h" 
 #include "openssl/sha.h"
 #include "openssl/des.h" 
 #include "openssl/rsa.h"    
 #include "openssl/pem.h" 
+#include "openssl/evp.h"
 
-// ---- rsa非对称加解密 ---- //    
-#define KEY_LENGTH  1024              // 密钥长度  
-#define PUB_KEY_FILE "pubkey.pem"    // 公钥路径  
-#define PRI_KEY_FILE "prikey.pem"    // 私钥路径 
+// ---- rsa encrypt ---- //    
+#define KEY_LENGTH  1024             // length of the key
+#define PUB_KEY_FILE "pubkey.pem"    // path to the public key  
+#define PRI_KEY_FILE "prikey.pem"    // path to the private key. 
 
 class COpenSSL
 {
@@ -22,34 +25,33 @@ public:
 	COpenSSL();
 	~COpenSSL();
 
-	// ---- md5摘要哈希 ---- // 
+	// ---- md5 hash ---- // 
 	void md5(const std::string &srcStr, std::string &encodedHexStr);
 
-	// ---- sha256摘要哈希 ---- //  
+	// ---- sha256 hash ---- //  
 	void sha256(const std::string &srcStr, std::string &encodedHexStr);
 
-	// ---- des对称加解密 ---- //    
-	// 加密 ecb模式    
+	// ---- des symmetric encription ---- //    
+	// encrypt ecb mode:  
 	std::string des_encrypt(const std::string &clearText, const std::string &key);
-	// 解密 ecb模式    
+	// decrypt ecb mode:     
 	std::string des_decrypt(const std::string &cipherText, const std::string &key);
 
-	// 函数方法生成密钥对   
+	// function to generate the key pair.   
 	void generateRSAKey(std::string strKey[2]);
 
-	// 命令行方法生成公私钥对（begin public key/ begin private key）  
-	// 找到openssl命令行工具，运行以下  
+	// command line to create private key and public key. 
 	// openssl genrsa -out prikey.pem 1024   
 	// openssl rsa - in privkey.pem - pubout - out pubkey.pem  
 
-	// 公钥加密    
+	// public key encription
 	std::string rsa_pub_encrypt(const std::string &clearText, const std::string &pubKey);
-	// 私钥解密    
+	// private key decription
 	std::string rsa_pri_decrypt(const std::string &cipherText, const std::string &priKey);
 
-	//私钥签名
+	// private key signature
 	std::string signMessage(std::string privateKey, std::string plainText);
-	//公钥验证
+	// publich key verification 
 	bool verifySignature(std::string &publicKey, std::string &plainText, std::string &signatureBase64);
 
 private:

@@ -1,29 +1,30 @@
 #include "OpenSSL.h"
+using namespace std; 
 
 COpenSSL::COpenSSL()
 {
 	privateKey = "-----BEGIN RSA PRIVATE KEY-----\n"\
-		"MIICXgIBAAKBgQCd9MBL+TqW6RQztVC1611LKCtt7KDGqiudAFEpujTrOWxfEIs/\n"\
-		"wiC0noj6neKskdlIIfmLkiE0h0amTqziDnIo21RMTIQwQ6gX7YZLUg1Ck4kczVjO\n"\
-		"vynqAYKWQyGISRr36XIzRuB7WY3YX+ciVp4zR72yizrx+OduDioesslcawIDAQAB\n"\
-		"AoGBAIgKT8QfNvLac2fFdWn4+DTOt/jIn//6d+2UZFLH6OPeZRPLL+MN0xU8pUUT\n"\
-		"zjJKuxSBDmfCx45yI8sAX62iO3bNKPF1cyvoi9JNbtjez0xxdiHPzrzFlCh339fJ\n"\
-		"Zyny6+dj2umv78evHJYthGdCy5V/QwiuVxD0y/Qv10RA/u6hAkEAqPBRgKWsqbAg\n"\
-		"G0mI8MhNS+NR1vAH0XXCmdUba1lBZXeesq9UsH4webSZzj0K8Rtma4u2utB8zLhT\n"\
-		"Uu2mP9hCPwJBAO9bg4CvuFKwv46+jdDAG8qoFP2glC8sbN69ynrmk6f6rElh6Yzj\n"\
-		"nAct0OROndTaVV1mNuC5/rBJ/Hi/rA+6QtUCQQCnImIvuTiSBDovZNfDBxdZvcJo\n"\
-		"t720XyGwWWIwGPSW8vohY06Q8bb5oVAM9t1NXcM9INMeDUd6rd1ZjN3OCiC3AkBA\n"\
-		"lD5MsBxZIxrr1nnIwqw851CShYq1l5TgG/DPa/qWrcliGyq6OobUYQYlMxjeXvH9\n"\
-		"OyC/TS9sPOoDYiN4MtbpAkEApZ4sZ/oJ/+OV9ojdXLbkYb03uK3h4k5Musw1uPGR\n"\
-		"KAO/c/GNYwHbuKVFNm6GBM2BqFcLX22y14XfH0D1fznWbA==\n"\
+		"MIICXgIBAAKBgQDT3YXzRLSdzbNpNS8QfujfY33MpONEPVMYsDzDIhSVuWvYYy6c\n"\
+		"nmzSZrWsWLa6vrdZur0Gsf4tKJsZwVeWgXIiD0fuD+s2jxgR731jbsYoeAZuNqoV\n"\
+		"40YAvsHDPb/fDHlB8MzbxkRVJwLQo1DGrbF6b1J+Rv9wCDn47zBJYvrheQIDAQAB\n"\
+		"AoGBAJtJ73iTj19q+mnO1aRdoQq7veVVpk7KNDIQWzkbrcLgma+NYwjhBhphth+R\n"\
+		"Fr5iM7nNKefSZt9qt+R01mI2lxQRJ/qc2NNZ7QTaYmGSJRCIyTFYTE0j2qOcm8TA\n"\
+		"Kk1LeiWAzbF7k5VAo86YmiLCC+ol9WbRC0jPsgcpI6T20WkRAkEA/n8e5TDEQ4ry\n"\
+		"Ovruy1Z6jkMME4bU16/VpZFBD/6wfHs0dn68GHjo7Sm11T08yGDrI41S2lgN0Awe\n"\
+		"EqQmitWdowJBANUd7j5CC4fmEPpe4JC6FXv4PS+0x6nZBbuscLhdc5mRHaRTcN6w\n"\
+		"4NSmI5XmtjE2JYJjO83vXMn5gXCPYu61PjMCQQCLDybwkN8NEQUe2TJWBSDeTyBw\n"\
+		"IwJ2AGw7Fc15Ue9ZdXDLNqDMtnR/8oSayeVGkD6rpHMbP3X8skJUaUFuJx8FAkAo\n"\
+		"3oyJs/CyJxSqbvdxyb3FAF37gBeqIsxOqUsUkBdTI9kjYj0K97CmFxZL8OqPlWqs\n"\
+		"Douxem247fg8tcKrNGaxAkEA3au6Q9fYqaXB+8kHv4GDiJjyRwQ8K6bStx51vNQv\n"\
+		"Bv1aIvPBcJult6yzpE6ihMNRG08zckUR3z/qAPbllcLUwg==\n"\
 		"-----END RSA PRIVATE KEY-----\n\0";
 
 	publicKey = "-----BEGIN PUBLIC KEY-----\n"\
-		"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQCd9MBL+TqW6RQztVC1611LKCtt\n"\
-		"7KDGqiudAFEpujTrOWxfEIs/wiC0noj6neKskdlIIfmLkiE0h0amTqziDnIo21RM\n"\
-		"TIQwQ6gX7YZLUg1Ck4kczVjOvynqAYKWQyGISRr36XIzRuB7WY3YX+ciVp4zR72y\n"\
-		"izrx+OduDioesslcawIDAQAB\n"\
-		"-----END PUBLIC KEY-----\n";
+		"MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDT3YXzRLSdzbNpNS8QfujfY33M\n"\
+		"pONEPVMYsDzDIhSVuWvYYy6cnmzSZrWsWLa6vrdZur0Gsf4tKJsZwVeWgXIiD0fu\n"\
+		"D+s2jxgR731jbsYoeAZuNqoV40YAvsHDPb/fDHlB8MzbxkRVJwLQo1DGrbF6b1J+\n"\
+		"Rv9wCDn47zBJYvrheQIDAQAB\n"\
+		"-----END PUBLIC KEY-----\n\0";
 }
 
 
@@ -33,11 +34,11 @@ COpenSSL::~COpenSSL()
    
 void COpenSSL::md5(const std::string &srcStr, std::string &encodedHexStr)
 {
-	// 调用md5哈希    
+	// call md5 hash.    
 	unsigned char mdStr[33] = { 0 };
 	MD5((const unsigned char *)srcStr.c_str(), srcStr.length(), mdStr);
 
-	// 哈希后的十六进制串 32字节    
+	// Hex chars 32bytes after hash. 
 	char buf[65] = { 0 };
 	char tmp[3] = { 0 };
 	for (int i = 0; i < 32; i++)
@@ -45,17 +46,17 @@ void COpenSSL::md5(const std::string &srcStr, std::string &encodedHexStr)
 		sprintf(tmp, "%02x", mdStr[i]);
 		strcat(buf, tmp);
 	}
-	buf[32] = '\0'; // 后面都是0，从32字节截断    
+	buf[32] = '\0'; // '\0' after 32 chars.
 	encodedHexStr = std::string(buf);
 }
   
 void COpenSSL::sha256(const std::string &srcStr, std::string &encodedHexStr)
 {
-	// 调用sha256哈希    
+	// call sha256 hash.    
 	unsigned char mdStr[65] = { 0 };
 	SHA256((const unsigned char *)srcStr.c_str(), srcStr.length(), mdStr);
 
-	// 哈希后的十六进制串 32字节    
+	// Hex chars 32bytes after hash. 
 	char buf[129] = { 0 };
 	char tmp[3] = { 0 };
 	for (int i = 0; i < 32; i++)
@@ -63,28 +64,28 @@ void COpenSSL::sha256(const std::string &srcStr, std::string &encodedHexStr)
 		sprintf(tmp, "%02x", mdStr[i]);
 		strcat(buf, tmp);
 	}
-	buf[128] = '\0'; // 后面都是0，从32字节截断    
+	buf[128] = '\0'; // '\0' after 32 chars.
 	encodedHexStr = std::string(buf);
 }
 
 std::string COpenSSL::des_encrypt(const std::string &clearText, const std::string &key)
 {
-	std::string cipherText; // 密文    
+	std::string cipherText; // encripted string.
 
 	DES_cblock keyEncrypt;
 	memset(keyEncrypt, 0, 8);
 
-	// 构造补齐后的密钥    
+	// Establish the key with certain length. 
 	if (key.length() <= 8)
 		memcpy(keyEncrypt, key.c_str(), key.length());
 	else
 		memcpy(keyEncrypt, key.c_str(), 8);
 
-	// 密钥置换    
+	// switch the key. 
 	DES_key_schedule keySchedule;
 	DES_set_key_unchecked(&keyEncrypt, &keySchedule);
 
-	// 循环加密，每8字节一次    
+	// encription loop, 8 bytes each time. 
 	const_DES_cblock inputText;
 	DES_cblock outputText;
 	std::vector<unsigned char> vecCiphertext;
@@ -106,7 +107,7 @@ std::string COpenSSL::des_encrypt(const std::string &clearText, const std::strin
 		int tmp2 = clearText.length() - tmp1;
 		memset(inputText, 0, 8);
 		memcpy(inputText, clearText.c_str() + tmp1, tmp2);
-		// 加密函数    
+		// encription function. 
 		DES_ecb_encrypt(&inputText, &outputText, &keySchedule, DES_ENCRYPT);
 		memcpy(tmp, outputText, 8);
 
@@ -122,7 +123,7 @@ std::string COpenSSL::des_encrypt(const std::string &clearText, const std::strin
 
 std::string COpenSSL::des_decrypt(const std::string &cipherText, const std::string &key)
 {
-	std::string clearText; // 明文    
+	std::string clearText; // clear test. 
 
 	DES_cblock keyEncrypt;
 	memset(keyEncrypt, 0, 8);
@@ -156,7 +157,7 @@ std::string COpenSSL::des_decrypt(const std::string &cipherText, const std::stri
 		int tmp2 = cipherText.length() - tmp1;
 		memset(inputText, 0, 8);
 		memcpy(inputText, cipherText.c_str() + tmp1, tmp2);
-		// 解密函数    
+		// decription function. 
 		DES_ecb_encrypt(&inputText, &outputText, &keySchedule, DES_DECRYPT);
 		memcpy(tmp, outputText, 8);
 
@@ -172,14 +173,24 @@ std::string COpenSSL::des_decrypt(const std::string &cipherText, const std::stri
 
 void COpenSSL::generateRSAKey(std::string strKey[2])
 {
-	// 公私密钥对    
+	// key pair. 
 	size_t pri_len;
 	size_t pub_len;
 	char *pri_key = NULL;
 	char *pub_key = NULL;
 
-	// 生成密钥对    
-	RSA *keypair = RSA_generate_key(KEY_LENGTH, RSA_3, NULL, NULL);
+	// generate key pair. 
+	// deprecated: 
+	// RSA *keypair = RSA_generate_key(KEY_LENGTH, RSA_3, NULL, NULL);
+	RSA *keypair = RSA_new();
+	BIGNUM* bne = BN_new();
+	BN_set_word(bne,RSA_3);
+	int res = RSA_generate_key_ex(keypair, KEY_LENGTH, bne, NULL);
+	if (res != 1)
+	{
+		std::cerr << "Error when generate key pair. " << std::endl; 
+		exit(-1);
+	}
 
 	BIO *pri = BIO_new(BIO_s_mem());
 	BIO *pub = BIO_new(BIO_s_mem());
@@ -187,11 +198,11 @@ void COpenSSL::generateRSAKey(std::string strKey[2])
 	PEM_write_bio_RSAPrivateKey(pri, keypair, NULL, NULL, 0, NULL, NULL);
 	PEM_write_bio_RSAPublicKey(pub, keypair);
 
-	// 获取长度    
+	// get length. 
 	pri_len = BIO_pending(pri);
 	pub_len = BIO_pending(pub);
 
-	// 密钥对读取到字符串    
+	// read key pair. 
 	pri_key = (char *)malloc(pri_len + 1);
 	pub_key = (char *)malloc(pub_len + 1);
 
@@ -201,11 +212,12 @@ void COpenSSL::generateRSAKey(std::string strKey[2])
 	pri_key[pri_len] = '\0';
 	pub_key[pub_len] = '\0';
 
-	// 存储密钥对    
+	// store the key pair. 
 	strKey[0] = pub_key;
 	strKey[1] = pri_key;
 
-	// 存储到磁盘（这种方式存储的是begin rsa public key/ begin rsa private key开头的）  
+	// save the key pare to files. 
+	// File will be (start with rsa public key/ begin rsa private key) 
 	FILE *pubFile = fopen(PUB_KEY_FILE, "w");
 	if (pubFile == NULL)
 	{
@@ -224,7 +236,6 @@ void COpenSSL::generateRSAKey(std::string strKey[2])
 	fputs(pri_key, priFile);
 	fclose(priFile);
 
-	// 内存释放  
 	RSA_free(keypair);
 	BIO_free_all(pub);
 	BIO_free_all(pri);
@@ -238,10 +249,11 @@ std::string COpenSSL::rsa_pub_encrypt(const std::string &clearText, const std::s
 	std::string strRet;
 	RSA *rsa = NULL;
 	BIO *keybio = BIO_new_mem_buf((unsigned char *)pubKey.c_str(), -1);
-	// 此处有三种方法  
-	// 1, 读取内存里生成的密钥对，再从内存生成rsa  
-	// 2, 读取磁盘里生成的密钥对文本文件，在从内存生成rsa  
-	// 3，直接从读取文件指针生成rsa  
+	
+	// Here we have 3 metheod:
+	// 1. Read the key pair from memory, then generate the rsa in memory. 
+	// 2. Read the key pair from file, then generate the rsa in memory.
+	// 3. Generate rsa directly in memory.  
 	RSA* pRSAPublicKey = RSA_new();
 	rsa = PEM_read_bio_RSAPublicKey(keybio, &rsa, NULL, NULL);
 
@@ -249,12 +261,11 @@ std::string COpenSSL::rsa_pub_encrypt(const std::string &clearText, const std::s
 	char *encryptedText = (char *)malloc(len + 1);
 	memset(encryptedText, 0, len + 1);
 
-	// 加密函数  
+	// encrypt function.  
 	int ret = RSA_public_encrypt(clearText.length(), (const unsigned char*)clearText.c_str(), (unsigned char*)encryptedText, rsa, RSA_PKCS1_PADDING);
 	if (ret >= 0)
 		strRet = std::string(encryptedText, ret);
 
-	// 释放内存  
 	free(encryptedText);
 	BIO_free_all(keybio);
 	RSA_free(rsa);
@@ -269,22 +280,21 @@ std::string COpenSSL::rsa_pri_decrypt(const std::string &cipherText, const std::
 	BIO *keybio;
 	keybio = BIO_new_mem_buf((unsigned char *)priKey.c_str(), -1);
 
-	// 此处有三种方法  
-	// 1, 读取内存里生成的密钥对，再从内存生成rsa  
-	// 2, 读取磁盘里生成的密钥对文本文件，在从内存生成rsa  
-	// 3，直接从读取文件指针生成rsa  
+	// Here we have 3 metheod:
+	// 1. Read the key pair from memory, then generate the rsa in memory. 
+	// 2. Read the key pair from file, then generate the rsa in memory.
+	// 3. Generate rsa directly in memory.  
 	rsa = PEM_read_bio_RSAPrivateKey(keybio, &rsa, NULL, NULL);
 
 	int len = RSA_size(rsa);
 	char *decryptedText = (char *)malloc(len + 1);
 	memset(decryptedText, 0, len + 1);
 
-	// 解密函数  
+	// decript function. 
 	int ret = RSA_private_decrypt(cipherText.length(), (const unsigned char*)cipherText.c_str(), (unsigned char*)decryptedText, rsa, RSA_PKCS1_PADDING);
 	if (ret >= 0)
 		strRet = std::string(decryptedText, ret);
 
-	// 释放内存  
 	free(decryptedText);
 	BIO_free_all(keybio);
 	RSA_free(rsa);
@@ -358,7 +368,7 @@ bool COpenSSL::RSASign(RSA* rsa, const unsigned char* Msg, size_t MsgLen, unsign
 	if (EVP_DigestSignFinal(m_RSASignCtx, *EncMsg, MsgLenEnc) <= 0) {
 		return false;
 	}
-	EVP_MD_CTX_cleanup(m_RSASignCtx);
+	EVP_MD_CTX_reset(m_RSASignCtx);
 	return true;
 }
 
@@ -378,17 +388,17 @@ bool COpenSSL::RSAVerifySignature(RSA* rsa, unsigned char* MsgHash, size_t MsgHa
 	int AuthStatus = EVP_DigestVerifyFinal(m_RSAVerifyCtx, MsgHash, MsgHashLen);
 	if (AuthStatus == 1) {
 		*Authentic = true;
-		EVP_MD_CTX_cleanup(m_RSAVerifyCtx);
+		EVP_MD_CTX_reset(m_RSAVerifyCtx);
 		return true;
 	}
 	else if (AuthStatus == 0) {
 		*Authentic = false;
-		EVP_MD_CTX_cleanup(m_RSAVerifyCtx);
+		EVP_MD_CTX_reset(m_RSAVerifyCtx);
 		return true;
 	}
 	else {
 		*Authentic = false;
-		EVP_MD_CTX_cleanup(m_RSAVerifyCtx);
+		EVP_MD_CTX_reset(m_RSAVerifyCtx);
 		return false;
 	}
 }

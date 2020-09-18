@@ -1,10 +1,17 @@
+/*
+g++ -c OpenSSL.cpp
+g++ -c base64.cpp
+g++ -c main.cpp
+g++ -o main.out main.o base64.o OpenSSL.o -lcrypto -lpthread
+*/
+
 #include <iostream>    
 #include <string>     
 #include "OpenSSL.h"
 
 int main() 
 {
-	// Ô­Ê¼Ã÷ÎÄ    
+	// åŽŸå§‹æ˜Žæ–‡
 	std::string srcText = "123";
 
 	std::string encryptText;
@@ -13,47 +20,47 @@ int main()
 
 	COpenSSL ssl;
 
-	std::cout << "=== Ô­Ê¼Ã÷ÎÄ ===" << std::endl;
+	std::cout << "=== æ˜Žæ–‡ä¿¡æ¯ ===" << std::endl;
 	std::cout << srcText << std::endl << std::endl;
 
 	// md5    
-	std::cout << "=== md5¹þÏ£ ===" << std::endl;
+	std::cout << "=== md5å“ˆå¸Œ ===" << std::endl;
 	ssl.md5(srcText, encryptHexText);
-	std::cout << "ÕªÒª´®:" << encryptHexText << std::endl << std::endl;
+	std::cout << "æ‘˜è¦ä¸²:" << encryptHexText << std::endl << std::endl;
 
 	// sha256    
-	std::cout << "=== sha256¹þÏ£ ===" << std::endl;
+	std::cout << "=== sha256å“ˆå¸Œ ===" << std::endl;
 	ssl.sha256(srcText, encryptHexText);
-	std::cout << "ÕªÒª´®:" << encryptHexText << std::endl << std::endl;
+	std::cout << "æ‘˜è¦:" << encryptHexText << std::endl << std::endl;
 
 	// des    
-	std::cout << "=== des¼Ó½âÃÜ ===" << std::endl;
+	std::cout << "=== desåŠ è§£å¯† ===" << std::endl;
 	std::string desKey = "12345";
 	encryptText = ssl.des_encrypt(srcText, desKey);
-	std::cout << "¼ÓÃÜ×Ö·û£º " << std::endl;
+	std::cout << "åŠ å¯†å­—ç¬¦ï¼š" << std::endl;
 	std::cout << encryptText << std::endl;
 	decryptText = ssl.des_decrypt(encryptText, desKey);
-	std::cout << "½âÃÜ×Ö·û£º " << std::endl;
+	std::cout << "è§£å¯†å­—ç¬¦ï¼š" << std::endl;
 	std::cout << decryptText << std::endl << std::endl;
 
-	// rsa¼Ó½âÃÜ    
-	std::cout << "=== rsa¼Ó½âÃÜ ===" << std::endl;
+	// rsa
+	std::cout << "=== rsaåŠ è§£å¯† ===" << std::endl;
 	std::string key[2];
 	ssl.generateRSAKey(key);
-	std::cout << "¹«Ô¿: " << std::endl;
+	std::cout << "å…¬é’¥ï¼š" << std::endl;
 	std::cout << key[0] << std::endl;
-	std::cout << "Ë½Ô¿£º " << std::endl;
+	std::cout << "ç§é’¥ï¼š" << std::endl;
 	std::cout << key[1] << std::endl;
 	encryptText = ssl.rsa_pub_encrypt(srcText, key[0]);
-	std::cout << "¼ÓÃÜ×Ö·û£º " << std::endl;
+	std::cout << "åŠ å¯†å­—ç¬¦ï¼š" << std::endl;
 	std::cout << encryptText << std::endl;
 	decryptText = ssl.rsa_pri_decrypt(encryptText, key[1]);
-	std::cout << "½âÃÜ×Ö·û£º " << std::endl;
+	std::cout << "è§£å¯†å­—ç¬¦ï¼š" << std::endl;
 	std::cout << decryptText << std::endl << std::endl;
 
-	//rsa+md5Ç©ÃûÑéÖ¤
+	//rsa+md5ç­¾åéªŒè¯
 	std::string signature = ssl.signMessage(ssl.privateKey, srcText);
-	std::cout << "Ç©Ãûbase64×Ö·û£º " << std::endl;
+	std::cout << "ç­¾åbase64å­—ç¬¦ï¼š" << std::endl;
 	std::cout << signature << std::endl << std::endl;
 	bool authentic = ssl.verifySignature(ssl.publicKey, srcText, signature);
 	if (authentic) {
@@ -61,6 +68,17 @@ int main()
 	}
 	else {
 		std::cout << "Not Authentic" << std::endl << std::endl;
+	}
+
+	for (int i = 0; i < 1000; ++i) 
+	{
+		std::string key[2];
+		ssl.generateRSAKey(key);
+		encryptText = ssl.rsa_pub_encrypt(srcText, key[0]);
+		decryptText = ssl.rsa_pri_decrypt(encryptText, key[1]);
+
+		std::string signature = ssl.signMessage(ssl.privateKey, srcText);
+		bool authentic = ssl.verifySignature(ssl.publicKey, srcText, signature);
 	}
 
 	return 0;
