@@ -1,9 +1,9 @@
 syntax = "proto2";
 
-package sdk_online_auth;
+package sdk_online_manager;
 
 // 系统级参数，影响整个程序的运行。 
-message SystemParameter {
+message SystemParams {
     // 远端服务器的地址，可以是IP也可以是URL
     required string server_address = 1;
     // 远端服务器的服务地址，默认服务地址8998
@@ -40,4 +40,9 @@ message KeyInfo {
     optional string verify_message = 6;
     // 秘钥的备注说明信息
     optional string issue_message = 7; 
+}
+
+message ClientParams {
+    required SystemParams sys_params = 1; 
+    required KeyInfo key_info = 2;
 }
