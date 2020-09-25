@@ -8,7 +8,7 @@ set(CMAKE_VERBOSE_MAKEFILE ON)
 #INCLUDE_DIRECTORIES(${PROTO_HDRS})
 INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 add_subdirectory(core)
-add_executable(sdk_test sdk_test.cpp)
+#add_executable(sdk_test sdk_test.cpp)
 
 target_link_libraries(sdk_test proto_config cores ${PROTOBUF_LIBRARIES})
 
