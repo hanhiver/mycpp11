@@ -1,0 +1,43 @@
+syntax = "proto2";
+
+package sdk_online_auth;
+
+// 系统级参数，影响整个程序的运行。 
+message SystemParameter {
+    // 远端服务器的地址，可以是IP也可以是URL
+    required string server_address = 1;
+    // 远端服务器的服务地址，默认服务地址8998
+    optional int32 server_port = 2 [default = 8998];
+    // 日志文件存储目录，默认为/tmp目录
+    optional string debug_file_root = 3 [default = "/tmp"];
+    // 日志级别，默认为info级别
+    optional string debug_level = 4 [default = "info"];
+    // 和服务器通信失败后重试次数，初始重试等待1秒，每次翻倍，默认重试3次
+    optional int32 comm_retry_count = 5 [default = 3];
+    // 算法SDK调用满多少次之后向服务器汇报统计次数，默认500次调用达到就汇报
+    optional int32 default_report_call_count = 6 [default = 500];
+    // 向服务器汇报统计次数倒计时时间（秒），默认为120秒
+    optional int32 default_report_countdown_time = 7 [default = 120];
+    // 是否使用verify_message校验KeyInfo里面的各个属性，默认为false
+    // 生成秘钥的时候，将KeyInfo里面的信息打包加密生成verify_mssage，如果参数设置为True，
+    // 则在启动的时候使用秘钥解码这个信息然后去比对KeyInfo里面设置的值预防篡改。
+    optional bool verify_key_info = 8 [default = false];
+}
+
+// 秘钥信息，包含该秘钥的接收方的信息。
+message KeyInfo {
+    // 秘钥索引信息，用于服务器端索引对应秘钥
+    required string key_index = 1; 
+    // 秘钥接收方的称谓
+    required string vendor_name = 2;
+    // 秘钥最终使用方称谓
+    optional string end_user = 3;
+    // 秘钥签发时间
+    optional string issue_date = 4;
+    // 秘钥  
+    required string key = 5; 
+    // 秘钥的校验信息
+    optional string verify_message = 6;
+    // 秘钥的备注说明信息
+    optional string issue_message = 7; 
+}
