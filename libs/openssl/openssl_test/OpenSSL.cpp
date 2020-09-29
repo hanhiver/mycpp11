@@ -196,7 +196,8 @@ void COpenSSL::generateRSAKey(std::string strKey[2])
 	BIO *pub = BIO_new(BIO_s_mem());
 
 	PEM_write_bio_RSAPrivateKey(pri, keypair, NULL, NULL, 0, NULL, NULL);
-	PEM_write_bio_RSAPublicKey(pub, keypair);
+	// PEM_write_bio_RSAPublicKey(pub, keypair);
+	PEM_write_bio_RSA_PUBKEY(pub, keypair);
 
 	// get length. 
 	pri_len = BIO_pending(pri);
@@ -255,7 +256,10 @@ std::string COpenSSL::rsa_pub_encrypt(const std::string &clearText, const std::s
 	// 2. Read the key pair from file, then generate the rsa in memory.
 	// 3. Generate rsa directly in memory.  
 	RSA* pRSAPublicKey = RSA_new();
-	rsa = PEM_read_bio_RSAPublicKey(keybio, &rsa, NULL, NULL);
+	// -----BEGIN RSA PUBLIC KEY----- 
+	// rsa = PEM_read_bio_RSAPublicKey(keybio, &rsa, NULL, NULL);
+	// -----BEGIN PUBLIC KEY-----
+	rsa = PEM_read_bio_RSA_PUBKEY(keybio, &rsa, NULL, NULL);
 
 	int len = RSA_size(rsa);
 	char *encryptedText = (char *)malloc(len + 1);
@@ -284,7 +288,10 @@ std::string COpenSSL::rsa_pri_decrypt(const std::string &cipherText, const std::
 	// 1. Read the key pair from memory, then generate the rsa in memory. 
 	// 2. Read the key pair from file, then generate the rsa in memory.
 	// 3. Generate rsa directly in memory.  
+	// -----BEGIN RSA PRIVATE KEY-----
 	rsa = PEM_read_bio_RSAPrivateKey(keybio, &rsa, NULL, NULL);
+	// -----BEGIN PRIVATE KEY-----
+	//rsa = PEM_read_bio_PrivateKey(keybio, &rsa, NULL, NULL);
 
 	int len = RSA_size(rsa);
 	char *decryptedText = (char *)malloc(len + 1);

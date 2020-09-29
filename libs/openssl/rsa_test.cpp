@@ -89,15 +89,17 @@ std::string DecodeRSAKeyFile( const std::string& strPemFileName, const std::stri
 int main()  
 {  
     //原文  
-    const string one = "Hello, I shall be enscapted. ";  
+    const string one1 = "Hello, I shall be enscapted. ";  
+    const std::string one = "{\"funcName\": \"raw2jpg\",\"callCount\": 12345}";
+
     cout << "Original Msg: " << one << endl;  
   
     //密文（二进制数据）  
-    string two = EncodeRSAKeyFile("/tmp/pubkey.pem", one);  
+    string two = EncodeRSAKeyFile("/home/hd275562/myprog/mycpp11/libs/openssl/genkey/ppub.pem", one);  
     cout << "Enscaped Msg: " << two << endl;  
   
     //顺利的话，解密后的文字和原文是一致的  
-    string three = DecodeRSAKeyFile("/tmp/prikey.pem", two);  
+    string three = DecodeRSAKeyFile("/home/hd275562/myprog/mycpp11/libs/openssl/genkey/ppri.pem", two);  
     cout << "Recovered Msg: " << three << endl;  
     return 0;  
 }  
