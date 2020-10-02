@@ -95,8 +95,8 @@ int main()
 	std::cout << decryptText << std::endl << std::endl;
 
 	//rsa+md5签名验证
-	std::string signature = ssl.signMessage(key[1], srcText);
-	//std::string signature = "HIgdmsrarZK457JlefoqRhAm2IX58Wz1i0E8qj6nG+UGDIP0YObquvdTDmdo5MNkKVAL7QyyeZQVWdjfTqRtsxOeGqULoyD+kMmGflKuCeEJ1wezlJyu9VrfkhQh+3smSS/L3ySiMl1IELxOi6RebZuB1Av+bDJFJr5IcE13aOI=";
+	//std::string signature = ssl.signMessage(key[1], srcText);
+	std::string signature = "cWedxjfVOmveUUOVj8S04x6rRIRSUgNnt6qHH0bL0SoOtd0oCR7OcReIfu+qa63fWiWXXfwy865nZ7KGSTjXTYOtBOdmSk0JpmLu9q0dan22W9P1eVCHanHqfxhHLfcK5L4Mhte+TSX1DRskb9mSb2HKBcZykQFjrBSIMOIZtsM=";
 	//std::cout << "签名base64-decode: " << base64_encode((unsigned char*)srcText.c_str(), srcText.length());
 	std::cout << "签名base64字符：" << std::endl;
 	std::cout << signature << std::endl;
