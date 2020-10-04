@@ -14,8 +14,17 @@ target_include_directories(
 
 target_include_directories(
     copenssl
-    PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/copenssl/include)
+    PUBLIC ${PROJECT_SOURCE_DIR}/copenssl/include)
 
-set_target_properties(copenssl PROPERTIES POSITION_INDEPENDENT_CODE ON)
+set_target_properties(
+    base64 PROPERTIES 
+    POSITION_INDEPENDENT_CODE ON
+    CXX_EXTENSIONS OFF)
+
+set_target_properties(
+    copenssl PROPERTIES 
+    POSITION_INDEPENDENT_CODE ON
+    CXX_EXTENSIONS OFF)
+
+target_compile_features(base64 PUBLIC cxx_std_11)
 target_compile_features(copenssl PUBLIC cxx_std_11)
-set_target_properties(copenssl PROPERTIES CXX_EXTENSIONS OFF)
