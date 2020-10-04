@@ -17,11 +17,10 @@ SET(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 add_executable(COpenSSL_test COpenSSL_test.cpp)
 
 target_link_libraries(
-    COpenSSL_test PRIVATE
-    copenssl 
-    base64 
-    ${THREADS_PREFER_PTHREAD_FLAG} 
-    ${OPENSSL_CRYPTO_LIBRARIES})
+    COpenSSL_test
+    PRIVATE copenssl 
+    PRIVATE ${THREADS_PREFER_PTHREAD_FLAG} 
+    PRIVATE ${OPENSSL_CRYPTO_LIBRARIES})
 
 target_compile_features(COpenSSL_test PUBLIC cxx_std_11)
 set_target_properties(COpenSSL_test PROPERTIES CXX_EXTENSIONS OFF)
