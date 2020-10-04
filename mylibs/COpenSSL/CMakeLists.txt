@@ -13,8 +13,7 @@ find_package(OpenSSL REQUIRED)
 find_package(Threads REQUIRED)
 find_library(MATH_LIBRARY m REQUIRED)
 
-SET(LIBRARY_OUTPUT_PATH ${PROJECT_SOURCE_DIR}/lib)
-
+SET(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 add_executable(COpenSSL_test COpenSSL_test.cpp)
 
 target_link_libraries(

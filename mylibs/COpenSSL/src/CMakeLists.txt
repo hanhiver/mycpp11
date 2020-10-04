@@ -11,7 +11,7 @@ target_link_libraries(
 target_include_directories(
     base64
     PUBLIC 
-    ${CMAKE_CURRENT_SOURCE_DIR}/../copenssl/include)
+    ${PROJECT_SOURCE_DIR}/copenssl/include)
 
 target_include_directories(
     copenssl
