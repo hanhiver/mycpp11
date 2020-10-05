@@ -1,5 +1,5 @@
-#include <cstdlib>
-#include <cstdio>
+//#include <cstdlib>
+//#include <cstdio>
 #include <iostream> 
 #include <curl/curl.h>
 

@@ -15,6 +15,7 @@ add_executable(curl_version curl_version.cpp)
 add_executable(http_post_c http_post.c)
 add_executable(post_callback_c post_callback_c.c)
 add_executable(save_page save_page.cpp)
+add_executable(post_binary_data post_binary_data.cpp)
 
 #include_directories(${CURL_INCLUDE_DIR})
 #link_libraries(curl)

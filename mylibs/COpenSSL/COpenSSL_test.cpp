@@ -59,10 +59,12 @@ int main()
 	std::cout << "签名base64字符：" << std::endl;
 	std::cout << signature << std::endl << std::endl;
 	bool authentic = ssl.verifySignature(ssl.publicKey, srcText, signature);
-	if (authentic) {
+	if (authentic) 
+	{
 		std::cout << "签名验证成功！" << std::endl << std::endl;
 	}
-	else {
+	else 
+	{
 		std::cout << "签名验证失败！" << std::endl << std::endl;
 	}
 	
