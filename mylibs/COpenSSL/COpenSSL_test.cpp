@@ -26,6 +26,16 @@ int main()
 	ssl.sha256(srcText, encryptHexText);
 	std::cout << "摘要:" << encryptHexText << std::endl << std::endl;
 
+	// sha384    
+	std::cout << "=== sha384哈希 ===" << std::endl;
+	ssl.sha384(srcText, encryptHexText);
+	std::cout << "摘要:" << encryptHexText << std::endl << std::endl;
+
+	// sha512    
+	std::cout << "=== sha512哈希 ===" << std::endl;
+	ssl.sha512(srcText, encryptHexText);
+	std::cout << "摘要:" << encryptHexText << std::endl << std::endl;
+
 	// des    
 	std::cout << "=== des加解密 ===" << std::endl;
 	std::string desKey = "12345";

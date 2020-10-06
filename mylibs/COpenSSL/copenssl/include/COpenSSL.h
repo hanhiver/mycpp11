@@ -34,6 +34,12 @@ public:
 	// ---- sha256哈希 ---- //  
 	void sha256(const std::string &srcStr, std::string &encodedHexStr);
 
+	// ---- sha384哈希 ---- //  
+	void sha384(const std::string &srcStr, std::string &encodedHexStr);
+
+	// ---- sha512哈希 ---- //  
+	void sha512(const std::string &srcStr, std::string &encodedHexStr);
+
 	// ---- des对称加密 ---- //    
 	// ecb加密:  
 	std::string des_encrypt(const std::string &clearText, const std::string &key);

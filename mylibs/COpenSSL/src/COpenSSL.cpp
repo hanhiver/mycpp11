@@ -69,6 +69,42 @@ void COpenSSL::sha256(const std::string &srcStr, std::string &encodedHexStr)
 	encodedHexStr = std::string(buf);
 }
 
+void COpenSSL::sha384(const std::string &srcStr, std::string &encodedHexStr)
+{
+	// call sha256 hash.    
+	unsigned char mdStr[97] = { 0 };
+	SHA384((const unsigned char *)srcStr.c_str(), srcStr.length(), mdStr);
+
+	// Hex chars 48bytes after hash. 
+	char buf[385] = { 0 };
+	char tmp[3] = { 0 };
+	for (int i = 0; i < 48; i++)
+	{
+		sprintf(tmp, "%02x", mdStr[i]);
+		strcat(buf, tmp);
+	}
+	buf[384] = '\0'; // '\0' after 256 chars.
+	encodedHexStr = std::string(buf);
+}
+
+void COpenSSL::sha512(const std::string &srcStr, std::string &encodedHexStr)
+{
+	// call sha256 hash.    
+	unsigned char mdStr[129] = { 0 };
+	SHA512((const unsigned char *)srcStr.c_str(), srcStr.length(), mdStr);
+
+	// Hex chars 64bytes after hash. 
+	char buf[257] = { 0 };
+	char tmp[3] = { 0 };
+	for (int i = 0; i < 64; i++)
+	{
+		sprintf(tmp, "%02x", mdStr[i]);
+		strcat(buf, tmp);
+	}
+	buf[256] = '\0'; // '\0' after 256 chars.
+	encodedHexStr = std::string(buf);
+}
+
 std::string COpenSSL::des_encrypt(const std::string &clearText, const std::string &key)
 {
     // encripted string.

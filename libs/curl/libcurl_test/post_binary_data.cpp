@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
     http_headers = curl_slist_append(http_headers, "Content-Type: text/xml");
 
     curl_easy_setopt(easy_handle, CURLOPT_HTTPHEADER, http_headers);
-    curl_easy_setopt(easy_handle, CURLOPT_URL, "http://localhost:8288");
+    curl_easy_setopt(easy_handle, CURLOPT_URL, "http://localhost:8288/register");
     curl_easy_setopt(easy_handle, CURLOPT_POSTFIELDS, data);
     curl_easy_setopt(easy_handle, CURLOPT_POSTFIELDSIZE, sizeof(data));
 
