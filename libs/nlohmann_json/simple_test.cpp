@@ -66,4 +66,6 @@ int main()
     std::cout << std::boolalpha
               << "valid_text是否有效：" << json::accept(valid_text) << '\n'
               << "invalid_text是否有效：" << json::accept(invalid_text) << '\n';
+
+    std::cout << "json结构J的输出： " << j.dump() << std::endl;
 }
