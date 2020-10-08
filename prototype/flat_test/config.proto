@@ -43,6 +43,6 @@ message KeyInfo {
 }
 
 message ClientParams {
-    required SystemParams sys_params = 1; 
-    required KeyInfo key_info = 2;
+    optional SystemParams sys_params = 1; 
+    optional KeyInfo key_info = 2;
 }

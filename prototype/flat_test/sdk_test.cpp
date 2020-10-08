@@ -17,18 +17,19 @@
 int main(int argc, char** argv)
 {
     
-    //auto params = Params::Get();
+    auto params = Params::Get();
+    params.ParaseParamsFile("../test.config");
 
-    auto sys_params = Params::Get().GetSystemParams();
-    auto key_info = Params::Get().GetKeyInfo();
-    //auto sys_params = params.GetSystemParams();
-    //auto key_info = params.GetKeyInfo();
+    //auto sys_params = Params::Get().GetSystemParams();
+    //auto key_info = Params::Get().GetKeyInfo();
+    auto sys_params = params.GetSystemParams();
+    auto key_info = params.GetKeyInfo();
 
     std::cout << "\nsys_params: " << std::endl;
-    //sys_params.PrintDebugString();
+    sys_params.PrintDebugString();
 
     std::cout << "\nkey_info: " << std::endl;
-    //key_info.PrintDebugString();
+    key_info.PrintDebugString();
     
     std::cout << "Done. " << std::endl;
     return 0;

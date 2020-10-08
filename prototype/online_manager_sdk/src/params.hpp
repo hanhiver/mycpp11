@@ -39,8 +39,7 @@ public:
     void PrintParams();
 
 private: 
-    Params(){}
-
+    Params() {}
     static sdk_online_manager::ClientParams mParams; 
 };
 

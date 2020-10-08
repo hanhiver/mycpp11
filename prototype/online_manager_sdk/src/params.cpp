@@ -6,7 +6,7 @@
 
 #include "params.hpp"
 
-// sdk_online_manager::ClientParams Params::mParams;
+sdk_online_manager::ClientParams Params::mParams;
 
 bool Params::ParaseParamsFile(std::string filename)
 {

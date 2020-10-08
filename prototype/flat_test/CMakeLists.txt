@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8...3.18)
-set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_VERBOSE_MAKEFILE OFF)
 
 project(sdk_online_manager
     VERSION 0.1.1
