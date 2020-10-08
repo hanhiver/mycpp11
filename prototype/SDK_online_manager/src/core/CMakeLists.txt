@@ -1,6 +1,10 @@
 # 查找当前目录下的所有源文件
 # 并将名称保存到 DIR_LIB_SRCS 变量
 aux_source_directory(. DIR_LIB_SRCS)
+
 # 生成链接库
-add_library (init ${DIR_LIB_SRCS})
-add_library (params ${DIR_LIB_SRCS})
+add_library(core SHARED ${DIR_LIB_SRCS})
+target_link_libraries(core PUBLIC proto_config)
+target_link_directories(core PUBLIC ${CMAKE_BINARY_DIR})
+#target_include_directories(core PRIVATE ${CMAKE_BINARY_DIR})
+#target_include_directories(core PUBLIC ${PROTO_HDRS})

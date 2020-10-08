@@ -1,23 +1,11 @@
-cmake_minimum_required(VERSION 3.4.0)
+cmake_minimum_required(VERSION 3.8...3.18)
 set(CMAKE_VERBOSE_MAKEFILE ON)
 
-project(sdk_online_manager)
+project(sdk_online_manager
+    VERSION 0.1.1
+    LANGUAGES CXX)
 
-set(TARGET_VERSION "0.1.1")
-set(TARGET_SOVERSION "0.1")
-
-# --- [ Includes
-#set(PROJECT_INCLUDE_DIR ${PROJECT_SOURCE_DIR}/src
-#                        ${PROJECT_SOURCE_DIR}/proto)
-#include_directories(${PROJECT_INCLUDE_DIR}
-#                    ${PROJECT_BINARY_DIR})
-
-# --- [ Dependency
-#include (cmake/Dependency.cmake)
-
-if (UNIX OR APPLE)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
-endif()
+#set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
 
 find_package(Threads REQUIRED)
 find_package(Gflags REQUIRED)
@@ -36,10 +24,11 @@ endif()
 
 message(STATUS "PROTO_FILES" ${PROTO_FILES})
 PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS ${PROTO_FILES})
-add_library(proto_config ${PROTO_SRCS} ${PROTO_HDRS})
+add_library(proto_config SHARED ${PROTO_SRCS} ${PROTO_HDRS})
 
-include_directories(${PROTOBUF_INCLUDE_DIRS})
-INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
+include_directories(${CMAKE_CURRENT_BINARY_DIR})
+#include_directories(${PROTOBUF_INCLUDE_DIRS})
+#INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 # 自动添加.目录下所有的Source文件到变量DIR_LIB_SRCS中。
 #aux_source_directory(. DIR_LIB_SRCS)
@@ -52,4 +41,4 @@ INCLUDE_DIRECTORIES(${CMAKE_CURRENT_BINARY_DIR})
 
 #target_link_libraries(s_test ${PROTOBUF_LIBRARIES})
 add_subdirectory(${SRC_DIR})
-add_executable(sdk_test src/sdk_test.cpp ${PROTO_SRCS} ${PROTO_HDRS})
+#add_executable(sdk_test src/sdk_test.cpp ${PROTO_SRCS} ${PROTO_HDRS})
