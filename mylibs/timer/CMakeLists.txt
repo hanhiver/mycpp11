@@ -11,4 +11,7 @@ add_executable(timer_test timer_test.cpp)
 target_include_directories(timer_test 
     PUBLIC ${CMAKE_SOURCE_DIR}/include)
 target_link_libraries(timer_test
+    PRIVATE timer
     PUBLIC Threads::Threads)
+
+add_subdirectory(src)

@@ -30,8 +30,29 @@ public:
     Timer(const Timer& timer);
     ~Timer();
     
+    /** 
+     * @brief 启动周期定时器
+     * @param interval 指定的运行时间周期（毫秒）
+     * @param task     定时时间执行的任务
+     *
+     * @return 无
+     */
     void start_timer(int interval, std::function<void()> task);
+
+    /** 
+     * @brief 启动单次定时器
+     * @param interval 指定的运行的延迟时间（毫秒）
+     * @param task     定时时间执行的任务
+     *
+     * @return 无
+     */
     void start_once(int delay, std::function<void()> task);
+
+    /** 
+     * @brief 停止计时器的运行
+     *
+     * @return 无
+     */
     void stop_timer();
 
 private:
