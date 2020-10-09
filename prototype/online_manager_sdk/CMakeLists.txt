@@ -29,9 +29,9 @@ PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS ${PROTO_FILES})
 add_library(proto_config SHARED ${PROTO_SRCS} ${PROTO_HDRS})
 
 add_executable(sdk_test sdk_test.cpp)
-target_include_directories(sdk_test PUBLIC ${CMAKE_SOURCE_DIR}/src)
+target_include_directories(sdk_test PUBLIC ${CMAKE_SOURCE_DIR}/src/cores)
 target_link_libraries(sdk_test 
-    PUBLIC core
+    PUBLIC cores
     PUBLIC proto_config
     PUBLIC ${Protobuf_LIBRARIES})
 
