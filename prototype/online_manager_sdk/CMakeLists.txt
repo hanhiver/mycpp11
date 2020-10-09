@@ -28,10 +28,17 @@ message(STATUS "PROTO_FILES" ${PROTO_FILES})
 PROTOBUF_GENERATE_CPP(PROTO_SRCS PROTO_HDRS ${PROTO_FILES})
 add_library(proto_config SHARED ${PROTO_SRCS} ${PROTO_HDRS})
 
+SET(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
+
 add_executable(sdk_test sdk_test.cpp)
-target_include_directories(sdk_test PUBLIC ${CMAKE_SOURCE_DIR}/src/cores)
+target_include_directories(sdk_test 
+    PUBLIC ${CMAKE_SOURCE_DIR}/src/cores
+    PUBLIC ${CMAKE_SOURCE_DIR}/src/copenssl
+    PUBLIC ${CMAKE_SOURCE_DIR}/src/nlohmann)
+
 target_link_libraries(sdk_test 
     PUBLIC cores
+    PUBLIC copenssl
     PUBLIC proto_config
     PUBLIC ${Protobuf_LIBRARIES})
 
