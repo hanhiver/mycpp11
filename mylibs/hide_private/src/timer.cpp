@@ -29,5 +29,5 @@ void Timer::set_name(std::string in)
 
 void Timer::hello(std::string in)
 {
-    std::cout << in << " say Goodbye to " << impl->mName << std::endl;
+    std::cout << in << " say Hello to " << impl->mName << std::endl;
 }
