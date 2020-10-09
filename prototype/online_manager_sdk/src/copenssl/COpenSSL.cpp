@@ -1,4 +1,4 @@
-#include "COpenSSL.h"
+#include "COpenSSL.hpp"
 using namespace std; 
 
 COpenSSL::COpenSSL()
@@ -129,7 +129,7 @@ std::string COpenSSL::des_encrypt(const std::string &clearText, const std::strin
 	std::vector<unsigned char> vecCiphertext;
 	unsigned char tmp[8];
 
-	for (int i = 0; i < clearText.length() / 8; i++)
+	for (unsigned int i = 0; i < clearText.length() / (unsigned int)8; i++)
 	{
 		memcpy(inputText, clearText.c_str() + i * 8, 8);
 		DES_ecb_encrypt(&inputText, &outputText, &keySchedule, DES_ENCRYPT);
@@ -180,7 +180,7 @@ std::string COpenSSL::des_decrypt(const std::string &cipherText, const std::stri
 	std::vector<unsigned char> vecCleartext;
 	unsigned char tmp[8];
 
-	for (int i = 0; i < cipherText.length() / 8; i++)
+	for (unsigned int i = 0; i < cipherText.length() / 8; i++)
 	{
 		memcpy(inputText, cipherText.c_str() + i * 8, 8);
 		DES_ecb_encrypt(&inputText, &outputText, &keySchedule, DES_DECRYPT);
@@ -287,14 +287,13 @@ void COpenSSL::generateRSAKey(std::string strKey[2])
 std::string COpenSSL::rsa_pub_encrypt(const std::string &clearText, const std::string &pubKey)
 {
 	std::string strRet;
-	RSA *rsa = NULL;
+	RSA *rsa = RSA_new();
 	BIO *keybio = BIO_new_mem_buf((unsigned char *)pubKey.c_str(), -1);
 	
 	// Here we have 3 metheod:
 	// 1. Read the key pair from memory, then generate the rsa in memory. 
 	// 2. Read the key pair from file, then generate the rsa in memory.
 	// 3. Generate rsa directly in memory.  
-	RSA* pRSAPublicKey = RSA_new();
 	// -----BEGIN RSA PUBLIC KEY----- 
 	// rsa = PEM_read_bio_RSAPublicKey(keybio, &rsa, NULL, NULL); // If the key is PKCS1 format
 	// -----BEGIN PUBLIC KEY-----
@@ -362,7 +361,6 @@ std::string COpenSSL::signMessage(std::string privateKey, std::string plainText)
 bool COpenSSL::verifySignature(std::string &publicKey, std::string &plainText, std::string &signatureBase64)
 {
 	RSA* publicRSA = createPublicRSA(publicKey);
-	unsigned char* encMessage;
 	bool authentic;
 	std::string encMessageTmp = base64_decode((char *)signatureBase64.c_str());
 	bool result = RSAVerifySignature(publicRSA, (unsigned char*)encMessageTmp.c_str(), encMessageTmp.size(), plainText.c_str(), plainText.length(), &authentic);

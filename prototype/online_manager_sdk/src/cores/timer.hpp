@@ -15,6 +15,9 @@
  *
  */
 
+#ifndef DAMO_SDK_ONLINE_MANAGER_TIMER_HPP
+#define DAMO_SDK_ONLINE_MANAGER_TIMER_HPP
+
 #include <functional>
 #include <chrono>
 #include <thread> 
@@ -62,3 +65,4 @@ private:
     std::condition_variable _expired_cond; 
 };
 
+#endif   // DAMO_SDK_ONLINE_MANAGER_TIMER_HPP
