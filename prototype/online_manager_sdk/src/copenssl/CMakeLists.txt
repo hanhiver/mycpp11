@@ -1,5 +1,5 @@
-add_library(copenssl SHARED COpenSSL.cpp)
-add_library(base64 SHARED base64.cpp)
+add_library(copenssl STATIC COpenSSL.cpp)
+add_library(base64 STATIC base64.cpp)
 
 target_link_libraries(
     copenssl
