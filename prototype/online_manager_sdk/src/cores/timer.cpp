@@ -1,32 +1,32 @@
 #include "timer.hpp"
 
-Timer::Timer(): _expired(true), _try_to_expire(false)
+Timer::Timer(): mExpired(true), mTryToExpire(false)
 {}
 
 Timer::Timer(const Timer& timer)
 {
-    _expired = timer._expired.load();
-    _try_to_expire = timer._try_to_expire.load();
+    mExpired = timer.mExpired.load();
+    mTryToExpire = timer.mTryToExpire.load();
 }
 
 Timer::~Timer()
 {
-    stop_timer();
+    StopTimer();
 }
 
-void Timer::start_timer(int interval, std::function<void()> task)
+void Timer::StartTimer(int interval, std::function<void()> task)
 {
     // 如果timer已经启动，避免二次启动。
-    if (_expired == false)
+    if (mExpired == false)
     {
         return; 
     }
 
     // 启动一个异步的计时器，生成一个新的线程并等待。
-    _expired = false;
+    mExpired = false;
     std::thread([this, interval, task]()
     {
-        while (!_try_to_expire)
+        while (!mTryToExpire)
         {
             // 线程睡眠interval时间然后执行task，直到计时器停止。
             std::this_thread::sleep_for(std::chrono::milliseconds(interval));
@@ -35,14 +35,14 @@ void Timer::start_timer(int interval, std::function<void()> task)
 
         {
             // 计时器需要停止，更新条件变量，唤醒主线程。
-            std::lock_guard<std::mutex> locker(_mutex);
-            _expired = true;
-            _expired_cond.notify_one();
+            std::lock_guard<std::mutex> locker(mMutex);
+            mExpired = true;
+            mExpiredCond.notify_one();
         }
     }).detach();
 }
 
-void Timer::start_once(int delay, std::function<void()> task)
+void Timer::StartOnce(int delay, std::function<void()> task)
 {
     std::thread([delay, task]()
     {
@@ -51,32 +51,32 @@ void Timer::start_once(int delay, std::function<void()> task)
     }).detach();
 }
 
-void Timer::stop_timer()
+void Timer::StopTimer()
 {
     // 已经停止就不要再次停止。
-    if (_expired)
+    if (mExpired)
     {
         return;
     }
 
-    if (_try_to_expire)
+    if (mTryToExpire)
     {
         return;
     }
 
     // 等待倒计时终止。
-    _try_to_expire = true;
+    mTryToExpire = true;
     {
-        std::unique_lock<std::mutex> locker(_mutex);
-        _expired_cond.wait(locker, [this]()
+        std::unique_lock<std::mutex> locker(mMutex);
+        mExpiredCond.wait(locker, [this]()
         {
-            return _expired == true;
+            return mExpired == true;
         });
 
         // 重置计时器状态。
-        if (_expired = true)
+        if (mExpired = true)
         {
-            _try_to_expire = false;
+            mTryToExpire = false;
         }
     }
 }

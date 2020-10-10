@@ -18,8 +18,7 @@
 
 
 #include <string> 
-
-#include "timer.hpp"
+#include <memory>
 
 #include <iostream> 
 #include <unordered_map>
@@ -27,26 +26,135 @@
 #include <atomic> 
 #include <thread> 
 
+#include "timer.hpp"
+#include "params.hpp"
+
 class SDKManager
 {
 public:
-    static SDKManager& Get();
+    static SDKManager& Get()
+    {
+        static SDKManager instance;
+        return instance;
+    }
+
     void Init(const std::string config_filepath);
     bool Auth(); 
-    bool Count(const std::string func_name, unsigned int call_count);
+    void Count(const std::string func_name, unsigned int call_count);
     void Shutdown();
 
 private:
-    SDKManager();
-    SDKManager(const SDKManager&);
+    SDKManager(); 
     ~SDKManager();
+    SDKManager(const SDKManager&);
     class SDKManagerImpl;
-    SDKManagerImpl *impl; 
+    std::unique_ptr<SDKManagerImpl> mImpl; 
 };
 
 class SDKManager::SDKManagerImpl
 {
-private:
-    unsigned int countDown; 
-    bool auth_status; 
+public:
+    void ConnectServer();
+    void HouseKeeping();
+
+    bool GetAuthStatus();
+    void SetAuthStatus(bool status);
+    void CountUsage(const std::string func_name, unsigned int call_count = 1);
+    void ResetCountdown(unsigned int countdown_tick);
+
+    Timer timer; 
+    std::mutex mMutex; 
+    std::unordered_map<std::string, unsigned int> mSDKCallStatus;
+    
+    unsigned int mCountDown; 
+    unsigned int mRetryTime;
+    std::atomic<bool> mAuthValid; 
+};
+
+/*
+SDKManager& SDKManager::Get()
+{
+    static SDKManager instance;
+    return instance;
+}
+*/
+void SDKManager::Init(const std::string config_filepath)
+{
+    auto params = Params::Get();
+    params.ParaseParamsFile(config_filepath);
+    std::cout << "====== Read config file ======" << std::endl;
+    params.PrintParams();
+
+    mImpl->mCountDown = params.GetSystemParams().default_report_countdown_time();
+    mImpl->mRetryTime = 0; 
+    mImpl->mAuthValid.store(false); 
+
+    mImpl->ConnectServer();
+    //mImpl->timer.start_once(mImpl->mCountDown, 
+    //    std::bind(&SDKManager::SDKManagerImpl::ConnectServer, *mImpl));
+}
+
+bool SDKManager::Auth()
+{
+    return mImpl->GetAuthStatus();
+}
+
+void SDKManager::Count(const std::string func_name, unsigned int call_count)
+{
+    mImpl->CountUsage(func_name, call_count);
+}
+
+void SDKManager::Shutdown()
+{
+    mImpl->mAuthValid.store(false);
+}
+
+SDKManager::SDKManager()
+{
+    // C++11 Limitation, chagne to use std::make_unique after C++14. 
+    auto temp_ptr = std::unique_ptr<SDKManagerImpl>();
+    mImpl = std::move(temp_ptr);
+    mImpl->mCountDown = 0;
+    mImpl->mRetryTime = 0;
+    mImpl->mAuthValid.store(false);
+}
+
+SDKManager::~SDKManager()
+{
+    mImpl->mAuthValid = false; 
+}
+
+void SDKManager::SDKManagerImpl::ConnectServer()
+{
+    std::cout << "Connecting the server. " << std::endl;
+    timer.StartOnce(mCountDown*1000, std::bind(&SDKManager::SDKManagerImpl::ConnectServer, *this));
+}
+
+void SDKManager::SDKManagerImpl::HouseKeeping()
+{
+    std::cout << "House keeping. " << std::endl;
+}
+
+bool SDKManager::SDKManagerImpl::GetAuthStatus()
+{
+    return mAuthValid.load();
+}
+
+void SDKManager::SDKManagerImpl::SetAuthStatus(bool status)
+{
+    mAuthValid.store(status);
+}
+
+void SDKManager::SDKManagerImpl::CountUsage(std::string func_name, unsigned int call_count)
+{
+    std::cout << "Count usage of: " << func_name << " increased " << call_count << std::endl;
+    {
+        std::lock_guard<std::mutex> lock(mMutex);
+        mSDKCallStatus[func_name] += call_count;
+    }
+}
+
+void SDKManager::SDKManagerImpl::ResetCountdown(unsigned int countdown_tick)
+{
+    mCountDown = countdown_tick;
 }

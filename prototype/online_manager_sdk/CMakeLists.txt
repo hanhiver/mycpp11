@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8...3.18)
-set(CMAKE_VERBOSE_MAKEFILE ON)
+set(CMAKE_VERBOSE_MAKEFILE OFF)
 
 project(sdk_online_manager
     VERSION 0.1.1
@@ -32,6 +32,7 @@ SET(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 
 add_executable(sdk_test sdk_test.cpp)
 target_include_directories(sdk_test 
+    PUBLIC ${CMAKE_SOURCE_DIR}/src
     PUBLIC ${CMAKE_SOURCE_DIR}/src/cores
     PUBLIC ${CMAKE_SOURCE_DIR}/src/copenssl
     PUBLIC ${CMAKE_SOURCE_DIR}/src/nlohmann)

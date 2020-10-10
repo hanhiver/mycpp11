@@ -40,7 +40,7 @@ public:
      *
      * @return 无
      */
-    void start_timer(int interval, std::function<void()> task);
+    void StartTimer(int interval, std::function<void()> task);
 
     /** 
      * @brief 启动单次定时器
@@ -49,20 +49,20 @@ public:
      *
      * @return 无
      */
-    void start_once(int delay, std::function<void()> task);
+    void StartOnce(int delay, std::function<void()> task);
 
     /** 
      * @brief 停止计时器的运行
      *
      * @return 无
      */
-    void stop_timer();
+    void StopTimer();
 
 private:
-    std::atomic<bool> _expired;
-    std::atomic<bool> _try_to_expire; 
-    std::mutex _mutex; 
-    std::condition_variable _expired_cond; 
+    std::atomic<bool> mExpired;
+    std::atomic<bool> mTryToExpire; 
+    std::mutex mMutex; 
+    std::condition_variable mExpiredCond; 
 };
 
 #endif   // DAMO_SDK_ONLINE_MANAGER_TIMER_HPP
