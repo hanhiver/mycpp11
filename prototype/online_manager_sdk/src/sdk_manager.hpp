@@ -110,9 +110,6 @@ void SDKManager::Shutdown()
 
 SDKManager::SDKManager()
 {
-    // C++11 Limitation, chagne to use std::make_unique after C++14. 
-    // auto temp_ptr = std::unique_ptr<SDKManagerImpl>();
-    // mImpl = std::move(temp_ptr);
     mImpl = new SDKManagerImpl;
     mImpl->mCountDown = 0;
     mImpl->mRetryTime = 0;

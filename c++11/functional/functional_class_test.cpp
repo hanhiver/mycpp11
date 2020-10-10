@@ -14,6 +14,7 @@ public:
     ~Timer();
 
     void hi();
+    void callhi();
     void set_name(std::string);
     void hello(std::string);
     
@@ -25,6 +26,8 @@ private:
 class Timer::TimerImpl
 {
 public:
+    void greeting();
+    void call_greeting();
     std::string mName; 
 };
 
@@ -57,6 +60,30 @@ void Timer::hello(std::string in)
 void Timer::hi()
 {
     std::cout << "Timer hi. " << std::endl; 
+    std::function<void()> mFunc; 
+    mFunc = std::bind(&Timer::TimerImpl::greeting, *impl);
+    mFunc();
+}
+
+void Timer::callhi()
+{
+    std::cout << "Timer callhi. " << std::endl; 
+    std::function<void()> mFunc; 
+    mFunc = std::bind(&Timer::TimerImpl::call_greeting, *impl);
+    mFunc();
+}
+
+void Timer::TimerImpl::greeting()
+{
+    std::cout << "Greeting! " << std::endl; 
+}
+
+void Timer::TimerImpl::call_greeting()
+{
+    std::cout << "TimerImpl call_greeting" << std::endl; 
+    std::function<void()> mFunc; 
+    mFunc = std::bind(&Timer::TimerImpl::greeting, this);
+    mFunc();
 }
 
 int main()
@@ -67,12 +94,21 @@ int main()
     t.set_name("Biden");
     t.hello("Handong");
     */
+    
+    std::function<void()> Func1;
+    Func1 = sayhi;
+    Func1();
+    
+    std::cout << "=====" << std::endl;
 
-    std::function<void()> Func;
-    Func = sayhi;
-    Func();
+    std::function<void()> Func2 = std::bind(&Timer::hi, &t);
+    Func2(); 
+    
+    std::cout << "=====" << std::endl;
 
-    Func = std::bind(&Timer::hi, t);
-    Func(); 
+    t.callhi();
+
+    std::cout << "=====" << std::endl;
+
     return 0;
 }
