@@ -5,7 +5,7 @@ project(sdk_online_manager
     VERSION 0.1.1
     LANGUAGES CXX)
 
-set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -std=c++11")
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -std=c++11")
 
 find_package(Threads REQUIRED)
 find_package(Gflags REQUIRED)

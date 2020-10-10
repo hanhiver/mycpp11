@@ -18,12 +18,11 @@
 
 int main(int argc, char* argv[])
 {
-    auto sdk_mgr = SDKManager::Get();
-    sdk_mgr.Init("/home/hd275562/myprog/mycpp11/prototype/online_manager_sdk/test.config");
+    SDKManager::Get().Init("/home/hd275562/myprog/mycpp11/prototype/online_manager_sdk/test.config");
     
     std::this_thread::sleep_for(std::chrono::seconds(5));
     std::cout << "Main thread Done. " << std::endl;
-    sdk_mgr.Shutdown();
+    SDKManager::Get().Shutdown();
 }
 
 /*

@@ -29,14 +29,14 @@
 #include "timer.hpp"
 #include "params.hpp"
 
+void hello()
+{
+    std::cout << "Hello! " << std::endl; 
+}
 class SDKManager
 {
 public:
-    static SDKManager& Get()
-    {
-        static SDKManager instance;
-        return instance;
-    }
+    static SDKManager& Get();
 
     void Init(const std::string config_filepath);
     bool Auth(); 
@@ -48,7 +48,7 @@ private:
     ~SDKManager();
     SDKManager(const SDKManager&);
     class SDKManagerImpl;
-    std::unique_ptr<SDKManagerImpl> mImpl; 
+    SDKManagerImpl* mImpl; 
 };
 
 class SDKManager::SDKManagerImpl
@@ -71,13 +71,12 @@ public:
     std::atomic<bool> mAuthValid; 
 };
 
-/*
 SDKManager& SDKManager::Get()
 {
     static SDKManager instance;
     return instance;
 }
-*/
+
 void SDKManager::Init(const std::string config_filepath)
 {
     auto params = Params::Get();
@@ -87,7 +86,7 @@ void SDKManager::Init(const std::string config_filepath)
 
     mImpl->mCountDown = params.GetSystemParams().default_report_countdown_time();
     mImpl->mRetryTime = 0; 
-    mImpl->mAuthValid.store(false); 
+    mImpl->mAuthValid = false; 
 
     mImpl->ConnectServer();
     //mImpl->timer.start_once(mImpl->mCountDown, 
@@ -106,28 +105,31 @@ void SDKManager::Count(const std::string func_name, unsigned int call_count)
 
 void SDKManager::Shutdown()
 {
-    mImpl->mAuthValid.store(false);
+    mImpl->mAuthValid = false;
 }
 
 SDKManager::SDKManager()
 {
     // C++11 Limitation, chagne to use std::make_unique after C++14. 
-    auto temp_ptr = std::unique_ptr<SDKManagerImpl>();
-    mImpl = std::move(temp_ptr);
+    // auto temp_ptr = std::unique_ptr<SDKManagerImpl>();
+    // mImpl = std::move(temp_ptr);
+    mImpl = new SDKManagerImpl;
     mImpl->mCountDown = 0;
     mImpl->mRetryTime = 0;
-    mImpl->mAuthValid.store(false);
+    mImpl->mAuthValid = false;
 }
 
 SDKManager::~SDKManager()
 {
     mImpl->mAuthValid = false; 
+    delete mImpl;
 }
 
 void SDKManager::SDKManagerImpl::ConnectServer()
 {
     std::cout << "Connecting the server. " << std::endl;
-    timer.StartOnce(mCountDown*1000, std::bind(&SDKManager::SDKManagerImpl::ConnectServer, *this));
+    timer.StartTimer(mCountDown*1000, &hello);
+    //timer.StartOnce(mCountDown*1000, std::bind(&SDKManager::SDKManagerImpl::ConnectServer, *this));
 }
 
 void SDKManager::SDKManagerImpl::HouseKeeping()
