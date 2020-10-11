@@ -6,7 +6,7 @@
 #include <cassert>
 #include <algorithm>
 
-#include "mutext_obj.hpp"
+#include "mutex_obj.hpp"
 #include "event.hpp"
 
 
@@ -33,6 +33,7 @@ public:
         run = true;
         event.Reset();
     }
+
     void Close()
     {
         run = false;
@@ -56,6 +57,7 @@ public:
             }
         });
     }
+
     template<typename Fun, typename... Args>
     std::future< typename std::result_of<Fun(Args...)>::type > Submit(Fun && fun, Args&&... args)
     {
@@ -79,8 +81,10 @@ public:
         event.NotifyOne();
 
         if (NeedNewThread())
+        {
             NewThread();
-
+        }
+        
         return task->get_future();
     }
 

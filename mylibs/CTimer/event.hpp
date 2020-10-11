@@ -14,7 +14,9 @@ public:
             return this->flag || this->all;
         });
         if (!all)
+        {
             flag = false;
+        }
     }
 
     template <typename _Rep, typename _Period>
@@ -27,7 +29,9 @@ public:
             return this->flag || this->all;
         });
         if (ret && !all)
+        {
             flag = false;
+        }
         return ret;
     }
 
@@ -41,7 +45,10 @@ public:
             return this->flag || this->all;
         });
         if (ret && !all)
+        {
             flag = false;
+        }
+        
         return ret;
     }
 
