@@ -27,6 +27,7 @@ void consume()
     event.Wait();
     std::unique_lock<std::mutex> lock(mu);
     auto t = que.front();
+    std::cout << t << std::endl;
     que.pop();
     std::cout << "consume end" << std::endl;
 }
@@ -34,7 +35,7 @@ void consume()
 int main()
 {
     auto th = std::thread(consume);
-    std::this_thread::sleep_for(std::chrono::seconds(2));
+    std::this_thread::sleep_for(std::chrono::seconds(1));
     std::thread(produce).join();
     th.join();
     return 0;
