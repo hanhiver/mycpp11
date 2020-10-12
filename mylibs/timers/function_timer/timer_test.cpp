@@ -5,7 +5,9 @@
 #include <functional>
 #include <atomic> 
 #include "timer.hpp"
+//#include "cpptime.h"
 
+//void test(CppTime::timer_id)
 void test()
 {
 	std::cout << "Test OK. " << std::endl; 
@@ -19,6 +21,7 @@ public:
 		static Greeting instance; 
 		return instance; 
 	}
+
 	void hello();
 	void shutdown();
 
@@ -34,8 +37,11 @@ class Greeting::GreetingImpl
 {
 public: 
 	Timer timer; 
+	//CppTime::Timer timer; 
+	//void real_hello(CppTime::timer_id);
 	void real_hello();
-	bool loop; 
+	//bool loop; 
+	std::atomic<bool> loop;
 };
 
 Greeting::Greeting()
@@ -62,6 +68,7 @@ void Greeting::shutdown()
 	impl->timer.stop_timer();
 }
 
+//void Greeting::GreetingImpl::real_hello(CppTime::timer_id)
 void Greeting::GreetingImpl::real_hello()
 {
 	std::cout << "Greeting::GreeetingImpl::real_hello" << std::endl; 
@@ -69,6 +76,8 @@ void Greeting::GreetingImpl::real_hello()
 	if (loop)
 	{
 		timer.start_once(100, std::bind(&Greeting::GreetingImpl::real_hello, *this));
+		//timer.add(std::chrono::milliseconds(100), test);
+		//timer.add(std::chrono::milliseconds(100), std::bind(&Greeting::GreetingImpl::real_hello, *this, std::placeholders::_1));
 	}
 }
 
@@ -80,5 +89,6 @@ int main(int argc, char* argv[])
 	Greeting::Get().shutdown();
 	std::this_thread::sleep_for(std::chrono::seconds(1));
 	std::cout << "DONE! " << std::endl; 
+
 	return 0;
 }
