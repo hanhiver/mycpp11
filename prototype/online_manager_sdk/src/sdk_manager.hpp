@@ -29,10 +29,6 @@
 #include "timer.hpp"
 #include "params.hpp"
 
-void hello()
-{
-    std::cout << "Hello! " << std::endl; 
-}
 class SDKManager
 {
 public:
@@ -64,10 +60,11 @@ public:
 
     Timer timer; 
     std::mutex mMutex; 
-    std::unordered_map<std::string, unsigned int> mSDKCallStatus;
+    std::unordered_map<std::string, unsigned int> mCallRecord;
     
-    unsigned int mCountDown; 
+    //unsigned int mCountDown; 
     unsigned int mRetryTime;
+    std::atomic<unsigned int> mCountDown;
     std::atomic<bool> mAuthValid; 
 };
 
@@ -89,8 +86,8 @@ void SDKManager::Init(const std::string config_filepath)
     mImpl->mAuthValid = false; 
 
     mImpl->ConnectServer();
-    //mImpl->timer.start_once(mImpl->mCountDown, 
-    //    std::bind(&SDKManager::SDKManagerImpl::ConnectServer, *mImpl));
+    mImpl->timer.StartOnce(mImpl->mCountDown, 
+        std::bind(&SDKManager::SDKManagerImpl::ConnectServer, mImpl));
 }
 
 bool SDKManager::Auth()
@@ -125,8 +122,8 @@ SDKManager::~SDKManager()
 void SDKManager::SDKManagerImpl::ConnectServer()
 {
     std::cout << "Connecting the server. " << std::endl;
-    timer.StartTimer(mCountDown*1000, &hello);
-    //timer.StartOnce(mCountDown*1000, std::bind(&SDKManager::SDKManagerImpl::ConnectServer, *this));
+    //timer.StartTimer(mCountDown*1000, &hello);
+    timer.StartOnce(mCountDown*1000, std::bind(&SDKManager::SDKManagerImpl::ConnectServer, this));
 }
 
 void SDKManager::SDKManagerImpl::HouseKeeping()
@@ -147,10 +144,11 @@ void SDKManager::SDKManagerImpl::SetAuthStatus(bool status)
 void SDKManager::SDKManagerImpl::CountUsage(std::string func_name, unsigned int call_count)
 {
     std::cout << "Count usage of: " << func_name << " increased " << call_count << std::endl;
+    do
     {
         std::lock_guard<std::mutex> lock(mMutex);
-        mSDKCallStatus[func_name] += call_count;
-    }
+        mCallRecord[func_name] += call_count;
+    } while(false);
 }
 
 void SDKManager::SDKManagerImpl::ResetCountdown(unsigned int countdown_tick)

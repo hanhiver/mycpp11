@@ -4,11 +4,10 @@
 #include <chrono>
 #include <functional>
 #include <atomic> 
-#include "timer.hpp"
-//#include "cpptime.h"
 
-//void test(CppTime::timer_id)
-void test()
+#include "cpptime.h"
+
+void test(CppTime::timer_id)
 {
 	std::cout << "Test OK. " << std::endl; 
 }
@@ -22,61 +21,56 @@ public:
 		return instance; 
 	}
 
+	void hi(CppTime::timer_id id);
 	void hello();
 	void shutdown();
+	//void real_hello(CppTime::timer_id id);
 
 private: 
 	Greeting();
 	~Greeting();
 
-	class GreetingImpl;
-	GreetingImpl* impl; 
-};
-
-class Greeting::GreetingImpl
-{
-public: 
-	Timer timer; 
-	//CppTime::Timer timer; 
-	//void real_hello(CppTime::timer_id);
-	void real_hello();
+	CppTime::Timer timer; 
+	void real_hello(CppTime::timer_id id);
 	//bool loop; 
 	std::atomic<bool> loop;
 };
 
-Greeting::Greeting()
+
+Greeting::Greeting() : 
+	loop(false)
 {
-	impl = new GreetingImpl;
-	impl->loop = true; 
 }
 
 Greeting::~Greeting()
 {
-	delete impl; 
+}
+
+void Greeting::hi(CppTime::timer_id id)
+{
+	std::cout << "Hi: " << id << std::endl;
 }
 
 void Greeting::hello()
 {
 	std::cout << "Greeting::hello" << std::endl; 
-	impl->loop = true; 
-	impl->real_hello();
+	loop = true; 
+	real_hello(0);
 }
 
 void Greeting::shutdown()
 {
-	impl->loop = false; 
-	impl->timer.stop_timer();
+	loop = false; 
 }
 
-//void Greeting::GreetingImpl::real_hello(CppTime::timer_id)
-void Greeting::GreetingImpl::real_hello()
+void Greeting::real_hello(CppTime::timer_id id)
 {
-	std::cout << "Greeting::GreeetingImpl::real_hello" << std::endl; 
-	//timer.start_once(100, test);
+	std::cout << "Greeting::real_hello" << std::endl; 
 	if (loop)
 	{
-		timer.start_once(100, std::bind(&Greeting::GreetingImpl::real_hello, this));
-		//timer.start_once(100, test);
+		//timer.add(std::chrono::milliseconds(100), test);
+		//timer.add(std::chrono::milliseconds(100), std::bind(&Greeting::hi, this, std::placeholders::_1));
+		timer.add(std::chrono::milliseconds(100), std::bind(&Greeting::real_hello, this, std::placeholders::_1));
 	}
 }
 
