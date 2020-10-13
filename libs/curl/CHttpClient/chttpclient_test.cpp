@@ -7,7 +7,9 @@ int main(int argc, char* argv[])
 {
     CHttpClient client; 
     std::string response; 
-    int res = client.Get("http://www.baidu.com", response);
+    //int res = client.Get("http://www.baidu.com", response);
+    std::string body = "name=dhan";
+    int res = client.Post("http://localhost:8288", body, response);
     if (res == 0)
     {
         std::cout << response << std::endl;

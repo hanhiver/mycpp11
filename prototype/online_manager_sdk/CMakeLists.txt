@@ -10,6 +10,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -std=c++11")
 find_package(Threads REQUIRED)
 find_package(Gflags REQUIRED)
 find_package(OpenSSL REQUIRED)
+find_package(CURL REQUIRED)
 
 File(GLOB PROTO_FILES proto/*.proto)
 

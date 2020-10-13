@@ -8,6 +8,8 @@
 #include <ctime> 
 #include <exception>
 
+#include <curl/curl.h>
+
 #include "timer.hpp"
 #include "params.hpp"
 #include "json.hpp"
@@ -18,6 +20,18 @@
 
 //namespace SDKManager
 //{
+size_t OnWriteData(void* buffer, size_t size, size_t nmemb, void* lpVoid)
+{
+    std::string* str = dynamic_cast<std::string*>((std::string *)lpVoid);
+    if( NULL == str || NULL == buffer )
+    {
+        return -1;
+    }
+ 
+    char* pData = (char*)buffer;
+    str->append(pData, size * nmemb);
+    return nmemb;
+}
 class SDKManager::SDKManagerImpl
 {
 public:
@@ -31,6 +45,7 @@ public:
 
     std::string GenReport(std::unordered_map<std::string, unsigned int>& snapshot);
     int PostServer(const std::string& report, std::string& return_msg);
+    int HandleResponse(const std::string& response, const std::string& orig_report);
 
     Timer timer; 
     std::string mPubKey;
@@ -66,6 +81,8 @@ AUTH_CODE SDKManager::Init(const std::string& config_filepath)
     mImpl->mCountDown = Params::Get().GetSystemParams().default_report_countdown_time();
     mImpl->mRetryTime = 0; 
     mImpl->mAuthValid = false; 
+
+    curl_global_init(CURL_GLOBAL_ALL);
 
     mImpl->ConnectServer();
 
@@ -114,7 +131,13 @@ void SDKManager::SDKManagerImpl::ConnectServer()
 {
     std::cout << "Connecting the server. " << std::endl;
     std::unordered_map<std::string, unsigned int> snapshot; 
-    GenReport(snapshot);
+    std::string report = GenReport(snapshot);
+    std::string ret_msg; 
+    int res = PostServer(report, ret_msg);
+    if (0 != res)
+    {
+        std::cout << "Error on connect server: " << ret_msg << std::endl;
+    }
     timer.StartOnce(mCountDown*1000, std::bind(&SDKManager::SDKManagerImpl::ConnectServer, this));
 }
 
@@ -199,8 +222,77 @@ std::string SDKManager::SDKManagerImpl::GenReport(std::unordered_map<std::string
     
 int SDKManager::SDKManagerImpl::PostServer(const std::string& report, std::string& return_msg)
 {
+    CURL *easy_handle = curl_easy_init();
+    if(NULL == easy_handle)
+    {
+        return_msg = "CURL initialization failed. ";
+        return CURLE_FAILED_INIT;
+    }
+    CURLcode res;
+    curl_slist *http_headers = NULL;
+    http_headers = curl_slist_append(http_headers, "Content-Type: application/json");
+    std::string server_url = 
+        Params::Get().GetSystemParams().server_address() + 
+        ":" + std::to_string(Params::Get().GetSystemParams().server_port());
+    std::string post_response; 
+
+    curl_easy_setopt(easy_handle, CURLOPT_HTTPHEADER, http_headers);
+    curl_easy_setopt(easy_handle, CURLOPT_URL, server_url.c_str());
+    curl_easy_setopt(easy_handle, CURLOPT_POSTFIELDS, report.c_str());
+    curl_easy_setopt(easy_handle, CURLOPT_POSTFIELDSIZE, sizeof(char)*report.length());
+    curl_easy_setopt(easy_handle, CURLOPT_READFUNCTION, NULL);
+    curl_easy_setopt(easy_handle, CURLOPT_WRITEFUNCTION, OnWriteData);
+    curl_easy_setopt(easy_handle, CURLOPT_WRITEDATA, (void *)&return_msg);
+    curl_easy_setopt(easy_handle, CURLOPT_NOSIGNAL, 1);
+    curl_easy_setopt(easy_handle, CURLOPT_CONNECTTIMEOUT, 3);
+    curl_easy_setopt(easy_handle, CURLOPT_TIMEOUT, 3);
+
+    res = curl_easy_perform(easy_handle);
     
-    return 0; 
+    curl_slist_free_all(http_headers);
+    curl_easy_cleanup(easy_handle);
+    
+    if (res != CURLE_OK)
+    {
+        return_msg = curl_easy_strerror(res);
+        return res;
+    }
+    else
+    {
+        std::cout << "====== RESPONSE ======\n" << return_msg << std::endl;
+        return 0;
+    }
+}
+
+int SDKManager::SDKManagerImpl::HandleResponse(const std::string& response, const std::string& orig_report)
+{
+    nlohmann::json json_response;
+    json_response.parse(response);
+
+    int version = json_response["data"]["version"];
+    if (version != Params::Get().GetSystemParams().communicate_protocol_version())
+    {
+        // TODO 记录version不对的信息。
+        return -1;
+    }
+
+    int status = json_response["status"];
+    if (200 != status)
+    {
+        // TODO 记录服务器返回失败信息。
+        mRetryTime += 1; 
+        if(mRetryTime > 3)
+        {
+            mAuthValid = false;
+        }
+        return status;
+    }
+
+    nlohmann::json json_report;
+    json_report.parse(orig_report);
+
+
+    return 0;
 }
 
 //} // namespace SDKManager
