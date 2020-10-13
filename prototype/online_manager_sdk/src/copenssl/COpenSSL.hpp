@@ -57,7 +57,7 @@ public:
      *
      * @return 无
      */
-    void md5(const std::string &srcStr, std::string &encodedHexStr);
+    void md5(const std::string& srcStr, std::string& encodedHexStr);
 
     /**
      * @brief SHA哈希（256位）
@@ -66,7 +66,7 @@ public:
      *
      * @return 无
      */
-    void sha256(const std::string &srcStr, std::string &encodedHexStr);
+    void sha256(const std::string& srcStr, std::string& encodedHexStr);
 
     /**
      * @brief SHA哈希（384位）
@@ -75,7 +75,7 @@ public:
      *
      * @return 无
      */
-    void sha384(const std::string &srcStr, std::string &encodedHexStr);
+    void sha384(const std::string& srcStr, std::string& encodedHexStr);
 
     /**
      * @brief SHA哈希（512位）
@@ -84,7 +84,7 @@ public:
      *
      * @return 无
      */
-    void sha512(const std::string &srcStr, std::string &encodedHexStr);
+    void sha512(const std::string& srcStr, std::string& encodedHexStr);
 
     /**
      * @brief DES对称加密，ECB加密
@@ -93,7 +93,7 @@ public:
      *
      * @return 输出密文
      */
-    std::string des_encrypt(const std::string &clearText, const std::string &key);
+    std::string des_encrypt(const std::string& clearText, const std::string& key);
 
     /**
      * @brief DES对称解密，ECB解密
@@ -102,7 +102,7 @@ public:
      *
      * @return 输出明文
      */
-    std::string des_decrypt(const std::string &cipherText, const std::string &key);
+    std::string des_decrypt(const std::string& cipherText, const std::string& key);
 
     /**
      * @brief 生成RSA秘钥对函数
@@ -141,7 +141,7 @@ public:
      *
      * @return 输出密文
      */
-    std::string rsa_pub_encrypt(const std::string &clearText, const std::string &pubKey);
+    std::string rsa_pub_encrypt(const std::string& clearText, const std::string& pubKey);
 
     /**
      * @brief RSA私钥解密信息
@@ -150,7 +150,7 @@ public:
      *
      * @return 输出明文
      */
-    std::string rsa_pri_decrypt(const std::string &cipherText, const std::string &priKey);
+    std::string rsa_pri_decrypt(const std::string& cipherText, const std::string& priKey);
 
     /**
      * @brief RSA私钥签名信息
@@ -159,7 +159,7 @@ public:
      *
      * @return 输出签名信息
      */
-    std::string signMessage(std::string privateKey, std::string plainText);
+    std::string signMessage(const std::string& privateKey, const std::string& plainText);
 
     /**
      * @brief RSA公钥验证信息
@@ -170,7 +170,7 @@ public:
      * @return 输出签名验证结果
      * @retval true表示签名验证成功，false表示签名验证失败
      */
-    bool verifySignature(std::string &publicKey, std::string &plainText, std::string &signatureBase64);
+    bool verifySignature(const std::string& publicKey, const std::string& plainText, const std::string& signatureBase64);
 
     /**
      * @brief 从文件中读取Key字符串

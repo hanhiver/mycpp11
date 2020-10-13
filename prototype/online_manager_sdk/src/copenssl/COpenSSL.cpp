@@ -33,7 +33,7 @@ COpenSSL::~COpenSSL()
 {
 }
 
-void COpenSSL::md5(const std::string &srcStr, std::string &encodedHexStr)
+void COpenSSL::md5(const std::string& srcStr, std::string& encodedHexStr)
 {
 	// call md5 hash.    
 	unsigned char mdStr[33] = { 0 };
@@ -51,7 +51,7 @@ void COpenSSL::md5(const std::string &srcStr, std::string &encodedHexStr)
 	encodedHexStr = std::string(buf);
 }
   
-void COpenSSL::sha256(const std::string &srcStr, std::string &encodedHexStr)
+void COpenSSL::sha256(const std::string& srcStr, std::string& encodedHexStr)
 {
 	// call sha256 hash.    
 	unsigned char mdStr[65] = { 0 };
@@ -69,7 +69,7 @@ void COpenSSL::sha256(const std::string &srcStr, std::string &encodedHexStr)
 	encodedHexStr = std::string(buf);
 }
 
-void COpenSSL::sha384(const std::string &srcStr, std::string &encodedHexStr)
+void COpenSSL::sha384(const std::string& srcStr, std::string& encodedHexStr)
 {
 	// call sha256 hash.    
 	unsigned char mdStr[97] = { 0 };
@@ -87,7 +87,7 @@ void COpenSSL::sha384(const std::string &srcStr, std::string &encodedHexStr)
 	encodedHexStr = std::string(buf);
 }
 
-void COpenSSL::sha512(const std::string &srcStr, std::string &encodedHexStr)
+void COpenSSL::sha512(const std::string& srcStr, std::string& encodedHexStr)
 {
 	// call sha256 hash.    
 	unsigned char mdStr[129] = { 0 };
@@ -105,7 +105,7 @@ void COpenSSL::sha512(const std::string &srcStr, std::string &encodedHexStr)
 	encodedHexStr = std::string(buf);
 }
 
-std::string COpenSSL::des_encrypt(const std::string &clearText, const std::string &key)
+std::string COpenSSL::des_encrypt(const std::string& clearText, const std::string& key)
 {
     // encripted string.
 	std::string cipherText;
@@ -159,7 +159,7 @@ std::string COpenSSL::des_encrypt(const std::string &clearText, const std::strin
 	return cipherText;
 }
 
-std::string COpenSSL::des_decrypt(const std::string &cipherText, const std::string &key)
+std::string COpenSSL::des_decrypt(const std::string& cipherText, const std::string& key)
 {
     // clear text. 
 	std::string clearText; 
@@ -309,7 +309,7 @@ bool COpenSSL::rsa_verify_prikey(const std::string& priKey)
 		return true;
 }
 
-std::string COpenSSL::rsa_pub_encrypt(const std::string &clearText, const std::string &pubKey)
+std::string COpenSSL::rsa_pub_encrypt(const std::string& clearText, const std::string& pubKey)
 {
 	std::string strRet;
 	RSA *rsa = RSA_new();
@@ -340,7 +340,7 @@ std::string COpenSSL::rsa_pub_encrypt(const std::string &clearText, const std::s
 	return strRet;
 }
 
-std::string COpenSSL::rsa_pri_decrypt(const std::string &cipherText, const std::string &priKey)
+std::string COpenSSL::rsa_pri_decrypt(const std::string& cipherText, const std::string& priKey)
 {
 	std::string strRet;
 	RSA *rsa = RSA_new();
@@ -370,7 +370,7 @@ std::string COpenSSL::rsa_pri_decrypt(const std::string &cipherText, const std::
 	return strRet;
 }
 
-std::string COpenSSL::signMessage(std::string privateKey, std::string plainText)
+std::string COpenSSL::signMessage(const std::string& privateKey, const std::string& plainText)
 {
 	RSA* privateRSA = createPrivateRSA(privateKey);
 	unsigned char* encMessage;
@@ -383,7 +383,7 @@ std::string COpenSSL::signMessage(std::string privateKey, std::string plainText)
 	return signbase64;
 }
 
-bool COpenSSL::verifySignature(std::string &publicKey, std::string &plainText, std::string &signatureBase64)
+bool COpenSSL::verifySignature(const std::string& publicKey, const std::string& plainText, const std::string& signatureBase64)
 {
 	RSA* publicRSA = createPublicRSA(publicKey);
 	bool authentic;

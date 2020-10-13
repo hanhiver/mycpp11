@@ -43,7 +43,7 @@ public:
     void CountUsage(const std::string func_name, unsigned int call_count = 1);
     void ResetCountdown(unsigned int countdown_tick);
 
-    std::string GenReport(std::unordered_map<std::string, unsigned int>& snapshot);
+    std::string GenReport();
     int PostServer(const std::string& report, std::string& return_msg);
     int HandleResponse(const std::string& response, const std::string& orig_report);
 
@@ -51,6 +51,7 @@ public:
     std::string mPubKey;
     std::mutex mRecordMutex; 
     std::unordered_map<std::string, unsigned int> mCallRecord;
+    std::unordered_map<std::string, unsigned int> mSnapshot;
     unsigned int mRetryTime;
     std::atomic<unsigned int> mCountDown;
     std::atomic<bool> mAuthValid; 
@@ -130,13 +131,17 @@ SDKManager::~SDKManager()
 void SDKManager::SDKManagerImpl::ConnectServer()
 {
     std::cout << "Connecting the server. " << std::endl;
-    std::unordered_map<std::string, unsigned int> snapshot; 
-    std::string report = GenReport(snapshot);
+    std::string report = GenReport();
     std::string ret_msg; 
     int res = PostServer(report, ret_msg);
     if (0 != res)
     {
         std::cout << "Error on connect server: " << ret_msg << std::endl;
+    }
+    else
+    {
+        //std::cout << "ret_msg: " << ret_msg << std::endl;
+        HandleResponse(ret_msg, report);
     }
     timer.StartOnce(mCountDown*1000, std::bind(&SDKManager::SDKManagerImpl::ConnectServer, this));
 }
@@ -171,13 +176,12 @@ void SDKManager::SDKManagerImpl::ResetCountdown(unsigned int countdown_tick)
     mCountDown = countdown_tick;
 }
 
-std::string SDKManager::SDKManagerImpl::GenReport(std::unordered_map<std::string, unsigned int>& snapshot)
+std::string SDKManager::SDKManagerImpl::GenReport()
 {
     do
     {
         std::lock_guard<std::mutex> lock(mRecordMutex);
-        //std::unordered_map<std::string, unsigned int> temp(mCallRecord);
-        snapshot = mCallRecord; 
+        mSnapshot = mCallRecord; 
     } while(false);
     
     nlohmann::json json_report;
@@ -189,12 +193,13 @@ std::string SDKManager::SDKManagerImpl::GenReport(std::unordered_map<std::string
 
     json_report["funcNameList"] = nlohmann::json::value_t::array;
     int index = 0;
-    for (const auto& item : snapshot)
+    for (const auto& item : mSnapshot)
     {
         json_report["funcNameList"][index]["funcName"] = item.first;
         json_report["funcNameList"][index]["callCount"] = item.second;
         ++index;
     }
+    std::cout << "ORIGINAL : " << json_report.dump() << std::endl;
     
     COpenSSL openssl; 
     // 使用压缩方式的json字符串作为原始明文字符串。
@@ -266,17 +271,34 @@ int SDKManager::SDKManagerImpl::PostServer(const std::string& report, std::strin
 
 int SDKManager::SDKManagerImpl::HandleResponse(const std::string& response, const std::string& orig_report)
 {
-    nlohmann::json json_response;
-    json_response.parse(response);
+    nlohmann::json json_response = nlohmann::json::parse(response);
 
-    int version = json_response["data"]["version"];
+    //int version = json_response["data"]["version"];
+    int version;
+    int status; 
+    std::string signature; 
+    try
+    {
+        version = json_response.at("data").at("version");
+        status = json_response.at("status");
+        signature = json_response.at("data").at("signature");
+    }
+    catch(nlohmann::detail::out_of_range)
+    {
+        ++mRetryTime;
+        if (mRetryTime >= (unsigned int)Params::Get().GetSystemParams().comm_retry_count() || mRetryTime > 9)
+        {
+            mAuthValid = false;
+        }
+        return -1;
+    }
+    
     if (version != Params::Get().GetSystemParams().communicate_protocol_version())
     {
         // TODO 记录version不对的信息。
         return -1;
     }
 
-    int status = json_response["status"];
     if (200 != status)
     {
         // TODO 记录服务器返回失败信息。
@@ -287,10 +309,39 @@ int SDKManager::SDKManagerImpl::HandleResponse(const std::string& response, cons
         }
         return status;
     }
+    
+    nlohmann::json json_report = nlohmann::json::parse(orig_report);
+    json_report.erase("cipherText");
+    //std::cout << "RECOVERED: " << json_report.dump() << std::endl;
 
-    nlohmann::json json_report;
-    json_report.parse(orig_report);
-
+    COpenSSL openssl;
+    bool verify_result = openssl.verifySignature(mPubKey, json_report.dump(), signature);
+    if (true == verify_result)
+    {
+        for (auto& item : mSnapshot)
+        {
+            do
+            {
+                std::lock_guard<std::mutex> lock(mRecordMutex);
+                if (mCallRecord[item.first] >= item.second)
+                {
+                    mCallRecord[item.first] -= item.second;
+                }
+            } while(false);
+        }
+        
+        mAuthValid = true;
+        mRetryTime = 0;
+    }
+    else
+    {
+        ++mRetryTime;
+        if (mRetryTime >= (unsigned int)Params::Get().GetSystemParams().comm_retry_count() || mRetryTime > 9)
+        {
+            mAuthValid = false;
+        }
+        return -1; 
+    }
 
     return 0;
 }

@@ -1,5 +1,6 @@
 from http.server import BaseHTTPRequestHandler, HTTPServer 
 import logging 
+import json
 
 class S(BaseHTTPRequestHandler):
     def do_HEAD(self):
@@ -29,7 +30,14 @@ class S(BaseHTTPRequestHandler):
         post_data = self.rfile.read(content_length)
         logging.info("POST request,\nPath: %s\nHeaders:\n%s\n\nBody:\n%s\n",
                         str(self.path), str(self.headers), post_data.decode('utf-8'))
-        res = "You Input: " + post_data.decode('utf-8')
+        res = post_data.decode('utf-8')
+        
+        request = json.loads(res)
+        _ = request.pop('cipherText')
+        orig_report = json.JSONEncoder(separators=(',', ':')).encode(request)
+        print(orig_report)
+        
+        
         self.do_HEAD()
         self.wfile.write("{}".format(res).encode('utf-8'))
 

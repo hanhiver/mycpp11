@@ -12,7 +12,7 @@ message SystemParams {
     optional string debug_file_root = 3 [default = "/tmp"];
     // 日志级别，默认为info级别
     optional string debug_level = 4 [default = "info"];
-    // 和服务器通信失败后重试次数，初始重试等待1秒，每次翻倍，默认重试3次
+    // 和服务器通信失败后重试次数，初始重试等待1秒，每次翻倍，默认重试3次，最多10次硬编码
     optional int32 comm_retry_count = 5 [default = 3];
     // 算法SDK调用满多少次之后向服务器汇报统计次数，默认500次调用达到就汇报
     optional int32 default_report_call_count = 6 [default = 500];
