@@ -6,5 +6,6 @@ aux_source_directory(. DIR_LIB_SRCS)
 add_library(cores STATIC ${DIR_LIB_SRCS})
 target_link_libraries(cores 
     PUBLIC proto_config
-    PUBLIC ${Protobuf_LIBRARIES})
+    PUBLIC ${Protobuf_LIBRARIES}
+    PUBLIC Threads::Threads)
 target_compile_features(cores PUBLIC cxx_std_11)

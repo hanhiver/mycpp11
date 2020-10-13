@@ -1,24 +1,40 @@
 #include <iostream>
-#include <vector>
-#include <algorithm>
-#include <fstream>
-#include <string>
+//#include <vector>
+//#include <algorithm>
+//#include <fstream>
+//#include <string>
 
 //include "config.pb.h"
 //#include <google/protobuf/text_format.h>
 //#include <google/protobuf/io/zero_copy_stream_impl.h>
 
-#include <fcntl.h>
-#include <stdlib.h>
-#include <stdio.h>
+//#include <fcntl.h>
+//#include <stdlib.h>
+//#include <stdio.h>
 
-#include "params.hpp"
-#include "timer.hpp"
+//#include "params.hpp"
+//#include "timer.hpp"
+#include <thread> 
 #include "sdk_manager.hpp"
 
 int main(int argc, char* argv[])
 {
-    SDKManager::Get().Init("/home/hd275562/myprog/mycpp11/prototype/online_manager_sdk/test.config");
+    if (AUTH_CODE::SUCCESS != SDKManager::Get().Init("/home/hd275562/myprog/mycpp11/prototype/online_manager_sdk/test.config"))
+    {
+        std::cout << "Initialization failed. " << std::endl;
+        exit(-1);
+    }
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    SDKManager::Get().Count("Func1", 1);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    SDKManager::Get().Count("Func1", 1);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    SDKManager::Get().Count("Func2", 1);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    SDKManager::Get().Count("Func1", 1);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
+    SDKManager::Get().Count("Func2", 10);
+    std::this_thread::sleep_for(std::chrono::seconds(2));
     
     std::this_thread::sleep_for(std::chrono::seconds(5));
     std::cout << "Main thread Done. " << std::endl;

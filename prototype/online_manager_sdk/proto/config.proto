@@ -17,11 +17,13 @@ message SystemParams {
     // 算法SDK调用满多少次之后向服务器汇报统计次数，默认500次调用达到就汇报
     optional int32 default_report_call_count = 6 [default = 500];
     // 向服务器汇报统计次数倒计时时间（秒），默认为120秒
-    optional int32 default_report_countdown_time = 7 [default = 120];
+    optional int32 default_report_countdown_time = 7 [default = 1];
+    // 向服务器汇报时候的协议版本，默认为1
+    optional int32 communicate_protocol_version = 8 [default = 1];
     // 是否使用verify_message校验KeyInfo里面的各个属性，默认为false
     // 生成秘钥的时候，将KeyInfo里面的信息打包加密生成verify_mssage，如果参数设置为True，
     // 则在启动的时候使用秘钥解码这个信息然后去比对KeyInfo里面设置的值预防篡改。
-    optional bool verify_key_info = 8 [default = false];
+    optional bool verify_key_info = 9 [default = false];
 }
 
 // 秘钥信息，包含该秘钥的接收方的信息。

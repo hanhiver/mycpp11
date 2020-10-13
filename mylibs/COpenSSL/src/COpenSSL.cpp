@@ -284,6 +284,39 @@ void COpenSSL::generateRSAKey(std::string strKey[2])
 	free(pub_key);
 }
 
+bool COpenSSL::rsa_verify_pubkey(const std::string& pubKey)
+{
+	RSA *rsa = NULL;
+	BIO *keybio = BIO_new_mem_buf((unsigned char *)pubKey.c_str(), -1);
+	rsa = PEM_read_bio_RSA_PUBKEY(keybio, &rsa, NULL, NULL); 
+
+	if (rsa == NULL)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
+bool COpenSSL::rsa_verify_prikey(const std::string& priKey)
+{
+	RSA *rsa = NULL;
+	BIO *keybio;
+	keybio = BIO_new_mem_buf((unsigned char *)priKey.c_str(), -1);
+	rsa = PEM_read_bio_RSAPrivateKey(keybio, &rsa, NULL, NULL);
+	
+	if (rsa == NULL)
+	{
+		return false;
+	}
+	else
+	{
+		return true;
+	}
+}
+
 std::string COpenSSL::rsa_pub_encrypt(const std::string &clearText, const std::string &pubKey)
 {
 	std::string strRet;

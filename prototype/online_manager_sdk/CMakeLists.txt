@@ -9,6 +9,7 @@ set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -std=c++11")
 
 find_package(Threads REQUIRED)
 find_package(Gflags REQUIRED)
+find_package(OpenSSL REQUIRED)
 
 File(GLOB PROTO_FILES proto/*.proto)
 
@@ -31,16 +32,20 @@ add_library(proto_config STATIC ${PROTO_SRCS} ${PROTO_HDRS})
 SET(LIBRARY_OUTPUT_PATH ${CMAKE_BINARY_DIR}/lib)
 
 add_executable(sdk_test sdk_test.cpp)
-target_include_directories(sdk_test 
-    PUBLIC ${CMAKE_SOURCE_DIR}/src
-    PUBLIC ${CMAKE_SOURCE_DIR}/src/cores
-    PUBLIC ${CMAKE_SOURCE_DIR}/src/copenssl
-    PUBLIC ${CMAKE_SOURCE_DIR}/src/nlohmann)
+target_include_directories(sdk_test
+    PUBLIC ${CMAKE_SOURCE_DIR}/include)
+#    PUBLIC ${CMAKE_SOURCE_DIR}/src
+#    PUBLIC ${CMAKE_SOURCE_DIR}/src/cores
+#    PUBLIC ${CMAKE_SOURCE_DIR}/src/copenssl
+#    PUBLIC ${CMAKE_SOURCE_DIR}/src/nlohmann)
 
 target_link_libraries(sdk_test 
-    PUBLIC cores
-    PUBLIC copenssl
-    PUBLIC proto_config
-    PUBLIC ${Protobuf_LIBRARIES})
+    PUBLIC sdk_manager)
+#    PUBLIC cores
+#    PUBLIC copenssl
+#    PUBLIC proto_config
+#    PUBLIC ${Protobuf_LIBRARIES}
+#    PUBLIC ${OPENSSL_CRYPTO_LIBRARIES}
+#    PUBLIC Threads::Threads)
 
 add_subdirectory(src)

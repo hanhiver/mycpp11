@@ -52,6 +52,8 @@ public:
 	// 如下命令行可以生成对应的秘钥，此时prikey是PKCS1格式，pubkey是PKCS8格式
 	// openssl genrsa -out prikey.pem 1024   
 	// openssl rsa - in privkey.pem - pubout - out pubkey.pem  
+	bool rsa_verify_pubkey(const std::string& pubKey);
+	bool rsa_verify_prikey(const std::string& priKey);
 
 	// RSA公钥加密信息
 	std::string rsa_pub_encrypt(const std::string &clearText, const std::string &pubKey);
