@@ -9,6 +9,7 @@
 #include <exception>
 
 #include <curl/curl.h>
+#include <glog/logging.h>
 
 #include "timer.hpp"
 #include "params.hpp"
@@ -46,6 +47,10 @@ public:
     std::string GenReport();
     int PostServer(const std::string& report, std::string& return_msg);
     int HandleResponse(const std::string& response, const std::string& orig_report);
+    void AuthExtend(unsigned int new_countdown);
+    void AuthFailed();
+
+    void Shutdown(); 
 
     Timer timer; 
     std::string mPubKey;
@@ -65,21 +70,23 @@ SDKManager& SDKManager::Get()
 
 AUTH_CODE SDKManager::Init(const std::string& config_filepath)
 {
+    LOG(INFO) << "SDK Initialize, configure file: " << config_filepath;
     bool res = Params::Get().ParaseParamsFile(config_filepath);
     if (false == res)
     {
+        LOG(FATAL) << "Failed to load config file: " << config_filepath;
         return AUTH_CODE::INVALID_CONFIG_FILE;
     }
-    std::cout << "====== Read config file ======" << std::endl;
-    Params::Get().PrintParams();
 
     mImpl->mPubKey = Params::Get().GetKeyInfo().key();
     COpenSSL openssl; 
     if (false == openssl.rsa_verify_pubkey(mImpl->mPubKey))
     {
+        LOG(FATAL) << "Invalide public key: " << mImpl->mPubKey;
         return AUTH_CODE::INVALID_PUBLIC_KEY;
-    } 
+    }
     mImpl->mCountDown = Params::Get().GetSystemParams().default_report_countdown_time();
+    LOG(INFO) << "Load default_report_countdown_time: " << mImpl->mCountDown;
     mImpl->mRetryTime = 0; 
     mImpl->mAuthValid = false; 
 
@@ -92,30 +99,47 @@ AUTH_CODE SDKManager::Init(const std::string& config_filepath)
     //    std::bind(&SDKManager::SDKManagerImpl::ConnectServer, mImpl));
 }
 
-AUTH_CODE SDKManager::Auth()
+bool SDKManager::Auth()
 {
     if (false == mImpl->GetAuthStatus())
     {
-        return AUTH_CODE::SUCCESS;
+        DLOG(INFO) << "SDK got authentication successfully. "; 
+        return true;
     }
     else
     {
-        return AUTH_CODE::AUTH_EXPIRED;
+        LOG(INFO) << "SDK failed to got authentication. ";
+        return false;
     }
 }
 
 void SDKManager::Count(const std::string func_name, unsigned int call_count)
 {
+    DLOG(INFO) << "Count func_name: " << func_name << ", call_count: " << call_count;
     mImpl->CountUsage(func_name, call_count);
 }
 
 void SDKManager::Shutdown()
 {
-    mImpl->mAuthValid = false;
+    LOG(WARNING) << "SDK manager shutdown. "; 
+    mImpl->Shutdown();
 }
 
 SDKManager::SDKManager()
 {
+    DLOG(INFO) << "SDKManager() entered."; 
+    google::InitGoogleLogging("sdk_manager"); 
+    // 是否将日志输出到stderr而非文件。
+    FLAGS_logtostderr = true; 
+    //是否将日志输出到文件和stderr，如果：true，忽略FLAGS_stderrthreshold的限制，所有信息打印到终端。
+    FLAGS_alsologtostderr = false;
+    //设置可以缓冲日志的最大秒数，0指实时输出。 
+    FLAGS_logbufsecs = 0; 
+    //设置最大日志文件大小（以MB为单位）。
+    FLAGS_max_log_size = 100; 
+    //设置是否在磁盘已满时避免日志记录到磁盘。
+    FLAGS_stop_logging_if_full_disk = true; 
+
     mImpl = std::make_shared<SDKManagerImpl>(); 
     mImpl->mCountDown = 0;
     mImpl->mRetryTime = 0;
@@ -125,22 +149,23 @@ SDKManager::SDKManager()
 SDKManager::~SDKManager()
 {
     mImpl->mAuthValid = false; 
-    //delete mImpl;
+    google::ShutdownGoogleLogging();
 }
 
 void SDKManager::SDKManagerImpl::ConnectServer()
 {
-    std::cout << "Connecting the server. " << std::endl;
     std::string report = GenReport();
+    LOG(INFO) << "Connect to the server with report: " << report; 
+
     std::string ret_msg; 
     int res = PostServer(report, ret_msg);
     if (0 != res)
     {
-        std::cout << "Error on connect server: " << ret_msg << std::endl;
+        LOG(ERROR) << "Failed to connect to the server with error code: " << res << ", " << ret_msg;
+        AuthFailed();
     }
     else
     {
-        //std::cout << "ret_msg: " << ret_msg << std::endl;
         HandleResponse(ret_msg, report);
     }
     timer.StartOnce(mCountDown*1000, std::bind(&SDKManager::SDKManagerImpl::ConnectServer, this));
@@ -148,7 +173,8 @@ void SDKManager::SDKManagerImpl::ConnectServer()
 
 void SDKManager::SDKManagerImpl::HouseKeeping()
 {
-    std::cout << "House keeping. " << std::endl;
+    // 目前没有启用。
+    LOG(INFO) << "HouseKeeping() entered. ";
 }
 
 bool SDKManager::SDKManagerImpl::GetAuthStatus()
@@ -163,7 +189,6 @@ void SDKManager::SDKManagerImpl::SetAuthStatus(bool status)
 
 void SDKManager::SDKManagerImpl::CountUsage(std::string func_name, unsigned int call_count)
 {
-    std::cout << "Count usage of: " << func_name << " increased " << call_count << std::endl;
     do
     {
         std::lock_guard<std::mutex> lock(mRecordMutex);
@@ -199,7 +224,7 @@ std::string SDKManager::SDKManagerImpl::GenReport()
         json_report["funcNameList"][index]["callCount"] = item.second;
         ++index;
     }
-    std::cout << "ORIGINAL : " << json_report.dump() << std::endl;
+    //DLOG(INFO) << "Original report: " << json_report.dump();
     
     COpenSSL openssl; 
     // 使用压缩方式的json字符串作为原始明文字符串。
@@ -218,10 +243,6 @@ std::string SDKManager::SDKManagerImpl::GenReport()
     // 将校验信息添加到最终需要发送的json结构中。
     json_report["cipherText"] = cipher_text; 
 
-    std::cout << "====== REPORT ======" << std::endl;
-    // std::cout << std::setw(4) << json_report << '\n';
-    std::cout << json_report.dump() << std::endl;
-    std::cout << std::endl << std::endl; 
     return json_report.dump();
 }
     
@@ -230,6 +251,7 @@ int SDKManager::SDKManagerImpl::PostServer(const std::string& report, std::strin
     CURL *easy_handle = curl_easy_init();
     if(NULL == easy_handle)
     {
+        LOG(FATAL) << "CURL initialization failed. ";
         return_msg = "CURL initialization failed. ";
         return CURLE_FAILED_INIT;
     }
@@ -252,6 +274,8 @@ int SDKManager::SDKManagerImpl::PostServer(const std::string& report, std::strin
     curl_easy_setopt(easy_handle, CURLOPT_CONNECTTIMEOUT, 3);
     curl_easy_setopt(easy_handle, CURLOPT_TIMEOUT, 3);
 
+    LOG(INFO) << "Post request established. ";
+
     res = curl_easy_perform(easy_handle);
     
     curl_slist_free_all(http_headers);
@@ -260,90 +284,124 @@ int SDKManager::SDKManagerImpl::PostServer(const std::string& report, std::strin
     if (res != CURLE_OK)
     {
         return_msg = curl_easy_strerror(res);
+        LOG(ERROR) << "Post request failed: " << return_msg;
         return res;
     }
     else
     {
-        std::cout << "====== RESPONSE ======\n" << return_msg << std::endl;
+        LOG(INFO) << "Post request success.";
+        DLOG(INFO) << "Post response: " << return_msg;
         return 0;
     }
 }
 
 int SDKManager::SDKManagerImpl::HandleResponse(const std::string& response, const std::string& orig_report)
 {
-    nlohmann::json json_response = nlohmann::json::parse(response);
-
-    //int version = json_response["data"]["version"];
     int version;
     int status; 
+    int new_countdown;
     std::string signature; 
     try
     {
+        nlohmann::json json_response = nlohmann::json::parse(response);
         version = json_response.at("data").at("version");
         status = json_response.at("status");
+        new_countdown = json_response.at("data").at("reportCountDown");
         signature = json_response.at("data").at("signature");
     }
-    catch(nlohmann::detail::out_of_range)
+    catch(nlohmann::detail::exception& e)
     {
-        ++mRetryTime;
-        if (mRetryTime >= (unsigned int)Params::Get().GetSystemParams().comm_retry_count() || mRetryTime > 9)
-        {
-            mAuthValid = false;
-        }
+        //LOG(ERROR) << "Phase response failed: " << e.what() << ", exeception id: " << e.id << ", byte position of error: " << e.byte; 
+        LOG(ERROR) << "Phase response failed: " << e.what(); 
+        AuthFailed();
         return -1;
     }
     
     if (version != Params::Get().GetSystemParams().communicate_protocol_version())
     {
-        // TODO 记录version不对的信息。
+        LOG(ERROR) << "Protocal version not match, local version: " 
+                   << Params::Get().GetSystemParams().communicate_protocol_version()
+                   << ", response version: " << version; 
         return -1;
     }
 
     if (200 != status)
     {
-        // TODO 记录服务器返回失败信息。
-        mRetryTime += 1; 
-        if(mRetryTime > 3)
-        {
-            mAuthValid = false;
-        }
+        LOG(ERROR) << "Server response error code: " << status; 
+        AuthFailed();
         return status;
     }
     
     nlohmann::json json_report = nlohmann::json::parse(orig_report);
     json_report.erase("cipherText");
-    //std::cout << "RECOVERED: " << json_report.dump() << std::endl;
+    DLOG(INFO) << "Resumed the original clear text: " << json_report.dump();
 
     COpenSSL openssl;
     bool verify_result = openssl.verifySignature(mPubKey, json_report.dump(), signature);
     if (true == verify_result)
     {
-        for (auto& item : mSnapshot)
-        {
-            do
-            {
-                std::lock_guard<std::mutex> lock(mRecordMutex);
-                if (mCallRecord[item.first] >= item.second)
-                {
-                    mCallRecord[item.first] -= item.second;
-                }
-            } while(false);
-        }
-        
-        mAuthValid = true;
-        mRetryTime = 0;
+        LOG(INFO) << "Signature verified, extend auth. ";
+        AuthExtend(new_countdown);
     }
     else
     {
-        ++mRetryTime;
-        if (mRetryTime >= (unsigned int)Params::Get().GetSystemParams().comm_retry_count() || mRetryTime > 9)
-        {
-            mAuthValid = false;
-        }
+        LOG(ERROR) << "Signature not match: " << json_report.dump() << ", signature: " << signature;
+        AuthFailed();
         return -1; 
     }
 
     return 0;
+}
+
+void SDKManager::SDKManagerImpl::AuthExtend(unsigned int new_countdown)
+{
+    LOG(INFO) << "Extend authentication, next report countdown: " << new_countdown; 
+    SetAuthStatus(true);
+    mRetryTime = 0;
+    ResetCountdown(new_countdown);
+
+    for (auto& item : mSnapshot)
+    {
+        do
+        {
+            std::lock_guard<std::mutex> lock(mRecordMutex);
+            if (mCallRecord[item.first] >= item.second)
+            {
+                mCallRecord[item.first] -= item.second;
+            }
+            else
+            {
+                LOG(ERROR) << "Function record abnormal: " << item.first 
+                           << ", record num: " << mCallRecord[item.first] 
+                           << ", report num: " << item.second 
+                           << ", reset to 0. ";
+                mCallRecord[item.first] = 0;
+            }
+        } while(false);
+    }
+}
+
+void SDKManager::SDKManagerImpl::AuthFailed()
+{
+    ++mRetryTime;
+    LOG(INFO) << "AuthFailed, already retried: " << mRetryTime << " times. ";
+    if (mRetryTime >= (unsigned int)Params::Get().GetSystemParams().comm_retry_count() || mRetryTime > 9)
+    {
+        LOG(ERROR) << "Retry time reach the limitation, authentication disabled. ";
+        SetAuthStatus(false);
+    }
+}
+
+void SDKManager::SDKManagerImpl::Shutdown()
+{
+    SetAuthStatus(false);
+    timer.StopTimer();
+    std::string report = GenReport();
+    LOG(INFO) << "Shutdonw triggered, connect to the server with report: " << report; 
+    std::string ret_msg; 
+    int res = PostServer(report, ret_msg);
+    LOG(WARNING) << "Shutdown triggered report response, return code: " << res <<", response: " << ret_msg;
+    std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
 //} // namespace SDKManager
