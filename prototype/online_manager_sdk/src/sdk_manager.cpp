@@ -92,11 +92,10 @@ AUTH_CODE SDKManager::Init(const std::string& config_filepath)
 
     curl_global_init(CURL_GLOBAL_ALL);
 
+    // 主动联系服务器并获取第一次鉴权。
     mImpl->ConnectServer();
 
     return AUTH_CODE::SUCCESS;
-    //mImpl->timer.StartOnce(mImpl->mCountDown, 
-    //    std::bind(&SDKManager::SDKManagerImpl::ConnectServer, mImpl));
 }
 
 bool SDKManager::Auth()
@@ -193,7 +192,14 @@ void SDKManager::SDKManagerImpl::CountUsage(std::string func_name, unsigned int 
     {
         std::lock_guard<std::mutex> lock(mRecordMutex);
         mCallRecord[func_name] += call_count;
+        if (mCallRecord[func_name] > Params::Get().GetSystemParams().default_report_call_count())
+        {
+            // 由于目前的timer组件并不提供任务优先级和任务排队功能，所以此处只是简单的插入一个立刻执行的汇报任务。
+            // 未来在有需要的时候，扩展timer组件就可以做到任务排队和提前的功能，避免额外的服务器连接。
+            timer.StartOnce(0, std::bind(&SDKManager::SDKManagerImpl::ConnectServer, this));
+        }
     } while(false);
+
 }
 
 void SDKManager::SDKManagerImpl::ResetCountdown(unsigned int countdown_tick)
@@ -203,16 +209,19 @@ void SDKManager::SDKManagerImpl::ResetCountdown(unsigned int countdown_tick)
 
 std::string SDKManager::SDKManagerImpl::GenReport()
 {
+    // 获取当前报告生成时候的信息快照，以便在服务器连接成功之后的信息更新。
     do
     {
         std::lock_guard<std::mutex> lock(mRecordMutex);
         mSnapshot = mCallRecord; 
     } while(false);
     
+    // 生成服务器通信所需的json结构
     nlohmann::json json_report;
     json_report["version"] = Params::Get().GetSystemParams().communicate_protocol_version();
     json_report["keyInfo"]["keyType"] = "RSA";
     json_report["keyInfo"]["keyIndex"] = Params::Get().GetKeyInfo().key_index();
+    json_report["sdkName"] = Params::Get().GetKeyInfo().sdk_name();
     json_report["vendorName"] = Params::Get().GetKeyInfo().vendor_name();
     json_report["curTime"] = (int)std::time(0);
 
@@ -297,9 +306,9 @@ int SDKManager::SDKManagerImpl::PostServer(const std::string& report, std::strin
 
 int SDKManager::SDKManagerImpl::HandleResponse(const std::string& response, const std::string& orig_report)
 {
-    int version;
-    int status; 
-    int new_countdown;
+    unsigned int version;
+    unsigned int status; 
+    unsigned int new_countdown;
     std::string signature; 
     try
     {
@@ -311,7 +320,6 @@ int SDKManager::SDKManagerImpl::HandleResponse(const std::string& response, cons
     }
     catch(nlohmann::detail::exception& e)
     {
-        //LOG(ERROR) << "Phase response failed: " << e.what() << ", exeception id: " << e.id << ", byte position of error: " << e.byte; 
         LOG(ERROR) << "Phase response failed: " << e.what(); 
         AuthFailed();
         return -1;
@@ -385,7 +393,7 @@ void SDKManager::SDKManagerImpl::AuthFailed()
 {
     ++mRetryTime;
     LOG(INFO) << "AuthFailed, already retried: " << mRetryTime << " times. ";
-    if (mRetryTime >= (unsigned int)Params::Get().GetSystemParams().comm_retry_count() || mRetryTime > 9)
+    if (mRetryTime >= Params::Get().GetSystemParams().comm_retry_count() || mRetryTime > 9)
     {
         LOG(ERROR) << "Retry time reach the limitation, authentication disabled. ";
         SetAuthStatus(false);
@@ -394,14 +402,19 @@ void SDKManager::SDKManagerImpl::AuthFailed()
 
 void SDKManager::SDKManagerImpl::Shutdown()
 {
+    // 首先终止鉴权下发。
     SetAuthStatus(false);
+    // 停止计时器。
+    // 收到目前简单计时器模块的局限，计时器停止之后最后一次任务并没有被取消，所以此处存在最后一次任务完成之后鉴权重新被有效获取的情况。 
+    // 但是由于程序已经进入shutdown流程，整个模块进入退出状态。日后扩展定时器模块可以加入任务优先级和任务管理功能。
     timer.StopTimer();
+
+    // 退出前立刻进行一次汇报并丢弃服务器返回。
     std::string report = GenReport();
     LOG(INFO) << "Shutdonw triggered, connect to the server with report: " << report; 
     std::string ret_msg; 
     int res = PostServer(report, ret_msg);
     LOG(WARNING) << "Shutdown triggered report response, return code: " << res <<", response: " << ret_msg;
-    std::this_thread::sleep_for(std::chrono::seconds(2));
 }
 
 //} // namespace SDKManager
