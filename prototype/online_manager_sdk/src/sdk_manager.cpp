@@ -216,6 +216,8 @@ std::string SDKManager::SDKManagerImpl::GenReport()
         mSnapshot = mCallRecord; 
     } while(false);
     
+    
+    
     // 生成服务器通信所需的json结构
     nlohmann::json json_report;
     json_report["version"] = Params::Get().GetSystemParams().communicate_protocol_version();
@@ -223,8 +225,10 @@ std::string SDKManager::SDKManagerImpl::GenReport()
     json_report["keyInfo"]["keyIndex"] = Params::Get().GetKeyInfo().key_index();
     json_report["sdkName"] = Params::Get().GetKeyInfo().sdk_name();
     json_report["vendorName"] = Params::Get().GetKeyInfo().vendor_name();
-    json_report["curTime"] = (int)std::time(0);
+    auto timeNow = std::chrono::duration_cast<std::chrono::milliseconds>(std::chrono::system_clock::now().time_since_epoch());
+    json_report["curTime"] = timeNow.count();
 
+    // 初始化一个json空列表存储后续函数调用信息
     json_report["funcNameList"] = nlohmann::json::value_t::array;
     int index = 0;
     for (const auto& item : mSnapshot)
@@ -233,24 +237,21 @@ std::string SDKManager::SDKManagerImpl::GenReport()
         json_report["funcNameList"][index]["callCount"] = item.second;
         ++index;
     }
-    //DLOG(INFO) << "Original report: " << json_report.dump();
+    DLOG(INFO) << "Original report: " << json_report.dump();
     
     COpenSSL openssl; 
-    // 使用压缩方式的json字符串作为原始明文字符串。
-    std::string clear_text = json_report.dump();
-
-    // 将明文字符串经过SHA384哈希后得到哈希字符串存到hash_text中。
+    // 此处的数据加密流程：
+    // 1. 使用压缩方式的json字符串作为原始明文字符串clear_text。
+    // 2. 将明文字符串经过SHA384哈希后得到哈希字符串存到hash_text中。
+    // 3. 将哈希字符串使用配置文件中获取到的公钥加密，密文存储到encript_text中。
+    // 4. 将密文经过base64进行编码，编码后的字符串存储到cipher_text中。   
+    // 5. 将校验信息添加到最终需要发送的json结构中"cipherText"字段。
+    std::string clear_text = json_report.dump(); // (1)
     std::string hash_text; 
-    openssl.sha384(clear_text, hash_text);
-
-    // 将哈希字符串使用配置文件中获取到的公钥加密，密文存储到encript_text中。
-    std::string encript_text = openssl.rsa_pub_encrypt(hash_text, mPubKey);
-
-    // 将密文经过base64进行编码，编码后的字符串存储到cipher_text中。
-    std::string cipher_text = base64_encode((const unsigned char *)encript_text.c_str(), encript_text.length());
-    
-    // 将校验信息添加到最终需要发送的json结构中。
-    json_report["cipherText"] = cipher_text; 
+    openssl.sha384(clear_text, hash_text); // (2)
+    std::string encript_text = openssl.rsa_pub_encrypt(hash_text, mPubKey); // (3)
+    std::string cipher_text = base64_encode((const unsigned char *)encript_text.c_str(), encript_text.length()); // (4)
+    json_report["cipherText"] = cipher_text; // (5)
 
     return json_report.dump();
 }
@@ -267,9 +268,7 @@ int SDKManager::SDKManagerImpl::PostServer(const std::string& report, std::strin
     CURLcode res;
     curl_slist *http_headers = NULL;
     http_headers = curl_slist_append(http_headers, "Content-Type: application/json");
-    std::string server_url = 
-        Params::Get().GetSystemParams().server_address() + 
-        ":" + std::to_string(Params::Get().GetSystemParams().server_port());
+    std::string server_url = Params::Get().GetSystemParams().server_address();
     std::string post_response; 
 
     curl_easy_setopt(easy_handle, CURLOPT_HTTPHEADER, http_headers);
@@ -306,30 +305,21 @@ int SDKManager::SDKManagerImpl::PostServer(const std::string& report, std::strin
 
 int SDKManager::SDKManagerImpl::HandleResponse(const std::string& response, const std::string& orig_report)
 {
-    unsigned int version;
+    LOG(INFO) << "HandleResponse entered. ";
+    nlohmann::json json_response;
+    LOG(INFO) << "json response established. ";
     unsigned int status; 
-    unsigned int new_countdown;
-    std::string signature; 
     try
     {
-        nlohmann::json json_response = nlohmann::json::parse(response);
-        version = json_response.at("data").at("version");
+        LOG(INFO) << "First parse";
+        json_response = nlohmann::json::parse(response);
         status = json_response.at("status");
-        new_countdown = json_response.at("data").at("reportCountDown");
-        signature = json_response.at("data").at("signature");
+        LOG(INFO) << "Status: " << status;
     }
     catch(nlohmann::detail::exception& e)
     {
-        LOG(ERROR) << "Phase response failed: " << e.what(); 
+        LOG(ERROR) << "First phase response failed: " << e.what(); 
         AuthFailed();
-        return -1;
-    }
-    
-    if (version != Params::Get().GetSystemParams().communicate_protocol_version())
-    {
-        LOG(ERROR) << "Protocal version not match, local version: " 
-                   << Params::Get().GetSystemParams().communicate_protocol_version()
-                   << ", response version: " << version; 
         return -1;
     }
 
@@ -339,13 +329,40 @@ int SDKManager::SDKManagerImpl::HandleResponse(const std::string& response, cons
         AuthFailed();
         return status;
     }
-    
+
+    unsigned int version;
+    unsigned int new_countdown;
+    std::string signature; 
+    try
+    {
+        version = json_response.at("data").at("version");
+        new_countdown = json_response.at("data").at("reportCountDown");
+        signature = json_response.at("data").at("signature");
+    }
+    catch(nlohmann::detail::out_of_range& e)
+    {
+        LOG(ERROR) << "Phase response failed: " << e.what();
+        AuthFailed();
+        return -1;
+    }
+
+    if (version != Params::Get().GetSystemParams().communicate_protocol_version())
+    {
+        LOG(ERROR) << "Protocal version not match, local version: " 
+                   << Params::Get().GetSystemParams().communicate_protocol_version()
+                   << ", response version: " << version; 
+        return -1;
+    }
+
     nlohmann::json json_report = nlohmann::json::parse(orig_report);
     json_report.erase("cipherText");
     DLOG(INFO) << "Resumed the original clear text: " << json_report.dump();
 
     COpenSSL openssl;
-    bool verify_result = openssl.verifySignature(mPubKey, json_report.dump(), signature);
+    std::string hash_text; 
+    openssl.sha384(json_report.dump(), hash_text);
+
+    bool verify_result = openssl.verifySignature(mPubKey, hash_text, signature);
     if (true == verify_result)
     {
         LOG(INFO) << "Signature verified, extend auth. ";
@@ -414,7 +431,7 @@ void SDKManager::SDKManagerImpl::Shutdown()
     LOG(INFO) << "Shutdonw triggered, connect to the server with report: " << report; 
     std::string ret_msg; 
     int res = PostServer(report, ret_msg);
-    LOG(WARNING) << "Shutdown triggered report response, return code: " << res <<", response: " << ret_msg;
+    LOG(WARNING) << "Shutdown triggered report response, return code: " << res;
 }
 
 //} // namespace SDKManager

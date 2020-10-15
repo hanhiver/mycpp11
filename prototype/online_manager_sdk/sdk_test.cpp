@@ -36,7 +36,7 @@ int main(int argc, char* argv[])
     SDKManager::Get().Count("Func2", 10);
     std::this_thread::sleep_for(std::chrono::seconds(2));
     
-    std::this_thread::sleep_for(std::chrono::seconds(10));
+    //std::this_thread::sleep_for(std::chrono::seconds(10));
     std::cout << "Main thread Done. " << std::endl;
     SDKManager::Get().Shutdown();
 }
