@@ -31,3 +31,9 @@ void Params::PrintParams()
 {
     mParams.PrintDebugString();
 }
+
+std::string Params::ParamsString()
+{
+    std::string res(mParams.DebugString());
+    return res;
+}

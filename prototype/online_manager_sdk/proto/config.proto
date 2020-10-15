@@ -46,7 +46,16 @@ message KeyInfo {
     optional string issue_message = 8; 
 }
 
+message InternalDebugOptions {
+    // 以下为调试参数，请不要泄漏给最终客户
+    // 使用毫秒作为连接服务器倒计时单位（默认是秒）
+    optional bool update_server_unit_millisecond = 1 [default = false]; 
+    // 将错误输出重定向到标准错误输出
+    optional bool log_redirect_sterr = 2 [default = false];
+}
+
 message ClientParams {
     required SystemParams sys_params = 1; 
     required KeyInfo key_info = 2;
+    optional InternalDebugOptions internal_debug_options = 3;
 }

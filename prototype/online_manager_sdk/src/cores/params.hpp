@@ -79,10 +79,27 @@ public:
     }
     
     /** 
+     * @brief 获取KeyInfo的读取入口
+     *
+     * @return 返回KeyInfo的配置读取入口
+     */
+    inline static const sdk_online_manager::InternalDebugOptions& GetInternalDebugOptions()
+    {
+        return mParams.internal_debug_options();
+    }
+
+    /** 
      * @brief 打印出读取到的配置信息
      *
      */
     void PrintParams();
+
+    /** 
+     * @brief 输出读取到的配置信息的字符串
+     *
+     * @retval 配置文件信息字符串
+     */
+    std::string ParamsString();
 
 private: 
     Params() {}
