@@ -7,6 +7,7 @@
 #include <thread> 
 #include <ctime> 
 #include <exception>
+#include <algorithm>
 
 #include <curl/curl.h>
 #include <glog/logging.h>
@@ -124,16 +125,15 @@ void SDKManager::Shutdown()
 SDKManager::SDKManager()
 {
     DLOG(INFO) << "SDKManager() entered."; 
+    
     // glog全局初始化。
-    google::InitGoogleLogging("sdk_manager"); 
-    // 是否将日志输出到stderr而非文件。
-    FLAGS_logtostderr = Params::Get().GetInternalDebugOptions().log_redirect_sterr(); 
-    //是否将日志输出到文件和stderr，如果：true，忽略FLAGS_stderrthreshold的限制，所有信息打印到终端。
-    FLAGS_alsologtostderr = Params::Get().GetInternalDebugOptions().log_redirect_sterr();
+    google::InitGoogleLogging("sdk_manager");
+    google::InstallFailureSignalHandler();
+
+    // stderr彩色输出。
+    FLAGS_colorlogtostderr = true;
     //设置可以缓冲日志的最大秒数，0指实时输出。 
     FLAGS_logbufsecs = 0; 
-    //设置最大日志文件大小（以MB为单位）。
-    FLAGS_max_log_size = 100; 
     //设置是否在磁盘已满时避免日志记录到磁盘。
     FLAGS_stop_logging_if_full_disk = true; 
 
@@ -166,6 +166,29 @@ AUTH_CODE SDKManager::SDKManagerImpl::Init(const std::string& config_filepath)
         LOG(FATAL) << "Failed to load config file: " << config_filepath;
         return AUTH_CODE::INVALID_CONFIG_FILE;
     }
+
+    // 设置日志存储位置
+    std::string log_destination = Params::Get().GetSystemParams().log_file_root();
+    // 确保设置的是一个带目录前缀，目前没有考虑Windows兼容性。
+    if (log_destination[log_destination.length()-1] != '/')
+    {
+        log_destination += "/";
+    }
+    google::SetLogDestination(google::GLOG_INFO, (log_destination + "info_").c_str()); 
+    google::SetLogDestination(google::GLOG_WARNING, (log_destination + "warning_").c_str());
+    google::SetLogDestination(google::GLOG_ERROR, (log_destination + "error_").c_str());
+    google::SetLogDestination(google::GLOG_FATAL, (log_destination + "fatal_").c_str());
+    // 设置日志级别
+    FLAGS_minloglevel = Params::Get().GetSystemParams().log_level();
+    // 设置日志文件最大尺寸，默认100M
+    FLAGS_max_log_size = Params::Get().GetSystemParams().log_file_max_size();
+    // 是否将日志输出到stderr而非文件，默认false
+    FLAGS_logtostderr = Params::Get().GetInternalDebugOptions().log_redirect_sterr(); 
+    //是否将日志输出到文件和stderr，如果：true，忽略FLAGS_stderrthreshold的限制，所有信息打印到终端，默认false
+    FLAGS_alsologtostderr = Params::Get().GetInternalDebugOptions().log_also_log_stderr();
+    // 除了将日志输出到文件之外，还将此错误级别和更高错误级别的日志同时输出到stderr，默认2(ERROR)
+    FLAGS_stderrthreshold = Params::Get().GetInternalDebugOptions().log_stderr_threshold();
+
     LOG(INFO) << Params::Get().ParamsString();
 
     // 从配置文件中获取公钥并进行验证，验证失败则初始化失败。
@@ -196,6 +219,7 @@ AUTH_CODE SDKManager::SDKManagerImpl::Init(const std::string& config_filepath)
     return AUTH_CODE::SUCCESS;
 }
 
+// 连接服务器获取鉴权和汇报调用量
 void SDKManager::SDKManagerImpl::ConnectServer()
 {
     // 检测连接服务器启动标志。
@@ -484,6 +508,7 @@ void SDKManager::SDKManagerImpl::AuthExtend(unsigned int new_countdown)
             }
             else
             {
+                // 如果出现汇报次数大于当前已经调用次数，表示出错，将当前存储次数归零。
                 LOG(ERROR) << "Function record abnormal: " << item.first 
                            << ", record num: " << mCallRecord[item.first] 
                            << ", report num: " << item.second 
