@@ -1,0 +1,18 @@
+PROJECT_NAME  = SDK_Manager
+FILE_PATTERNS  = *.c \
+                 *.cc \
+                 *.cxx \
+                 *.cpp \
+                 *.c++ \
+                 *.h \
+                 *.hxx \
+                 *.hpp \
+PROJECT_BRIEF  = SDK在线鉴权和调用统计平台
+OUTPUT_DIRECTORY = doc
+OUTPUT_LANGUAGE = Chinese
+DOXYFILE_ENCODING = UTF-8
+INPUT = .
+INPUT_ENCODING = UTF-8
+RECURSIVE = YES
+EXCLUDE_PATTERNS = src/nlohmann \
+                   src/build \

@@ -27,7 +27,7 @@ int main(int argc, char* argv[])
     std::this_thread::sleep_for(std::chrono::seconds(2));
     */
 
-    for(int i = 0; i < LOOP_TIME; ++i)
+    for(int i = 1; i < LOOP_TIME+1; ++i)
     {
         SDKManager::Get().Count("StressTest_817_16_1M", 1);
         std::this_thread::sleep_for(std::chrono::milliseconds(1));
