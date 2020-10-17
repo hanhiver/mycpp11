@@ -256,7 +256,7 @@ void SDKManager::SDKManagerImpl::ConnectServer()
     else
     {
         // 测试模式，按照毫秒来进行汇报延时
-        timer.StartOnce(mCountDown, std::bind(&SDKManager::SDKManagerImpl::ConnectServer, this));
+        timer.StartOnce(10, std::bind(&SDKManager::SDKManagerImpl::ConnectServer, this));
     }
 }
 

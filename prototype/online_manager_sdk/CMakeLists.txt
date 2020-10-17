@@ -52,4 +52,15 @@ target_link_libraries(sdk_test
 #    PUBLIC ${OPENSSL_CRYPTO_LIBRARIES}
 #    PUBLIC Threads::Threads)
 
+add_executable(stress_test stress_test.cpp)
+target_include_directories(stress_test
+    PUBLIC ${CMAKE_SOURCE_DIR}/include
+    PUBLIC ${GLOG_INCLUDE_DIRS}
+    PUBLIC Threads::Threads)
+
+target_link_libraries(stress_test 
+    PUBLIC sdk_manager
+    PUBLIC glog::glog
+    PUBLIC Threads::Threads)
+
 add_subdirectory(src)
