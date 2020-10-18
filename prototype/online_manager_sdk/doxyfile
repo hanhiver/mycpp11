@@ -14,5 +14,16 @@ DOXYFILE_ENCODING = UTF-8
 INPUT = .
 INPUT_ENCODING = UTF-8
 RECURSIVE = YES
-EXCLUDE_PATTERNS = src/nlohmann \
-                   src/build \
+EXCLUDE_PATTERNS = */nlohmann/* \
+                   */build/* \
+INLINE_SOURCES = 文档内嵌代码接口实现，一般我设置为YES。如果公开给客户，需要关闭吧，设置为NO
+STRIP_CODE_COMMENTS = NO
+GENERATE_HTML = 设置为YES，如果需要要生成html格式的
+HTML_OUTPUT = html   
+HTML_FILE_EXTENSION = .html 
+INCLUDE_GRAPH = YES
+INCLUDED_BY_GRAPH = YES
+CALL_GRAPH = YES
+CALLER_GRAPH = YES
+GRAPHICAL_HIERARCHY = YES
+DIRECTORY_GRAPH = YES
