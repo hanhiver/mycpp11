@@ -4,12 +4,6 @@
 extern "C"
 {
 
-void test(const char* input)
-{
-    std::string name(input);
-    std::cout << "Hello, " << name << std::endl; 
-}
-
 AUTH_CODE SDKM_Init(const char* config_file_path)
 {
     std::string str(config_file_path);
