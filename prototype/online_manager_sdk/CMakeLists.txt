@@ -1,5 +1,6 @@
 cmake_minimum_required(VERSION 3.8...3.18)
 set(CMAKE_VERBOSE_MAKEFILE OFF)
+set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 project(sdk_online_manager
     VERSION 0.1.1
@@ -8,7 +9,7 @@ project(sdk_online_manager
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -g -Wall -std=c++11")
 
 find_package(Threads REQUIRED)
-find_package(Gflags REQUIRED)
+#find_package(Gflags REQUIRED)
 find_package(glog REQUIRED)
 find_package(OpenSSL REQUIRED)
 find_package(CURL REQUIRED)
@@ -59,6 +60,18 @@ target_include_directories(stress_test
     PUBLIC Threads::Threads)
 
 target_link_libraries(stress_test 
+    PUBLIC sdk_manager
+    PUBLIC glog::glog
+    PUBLIC Threads::Threads)
+
+add_library(sdk_manager_py SHARED py_wrapper.cpp)
+set_target_properties(sdk_manager_py PROPERTIES PREFIX "")
+target_include_directories(sdk_manager_py
+    PUBLIC ${CMAKE_SOURCE_DIR}/include
+    PUBLIC ${GLOG_INCLUDE_DIRS}
+    PUBLIC Threads::Threads)
+
+target_link_libraries(sdk_manager_py 
     PUBLIC sdk_manager
     PUBLIC glog::glog
     PUBLIC Threads::Threads)

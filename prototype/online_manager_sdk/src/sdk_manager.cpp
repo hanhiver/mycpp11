@@ -159,6 +159,8 @@ SDKManager::~SDKManager()
 
 AUTH_CODE SDKManager::SDKManagerImpl::Init(const std::string& config_filepath)
 {
+    LOG(INFO) << "Initialize with config file: " << config_filepath;
+
     // 读取配置文件，读取失败则初始化失败。
     bool res = Params::Get().ParaseParamsFile(config_filepath);
     if (false == res)
