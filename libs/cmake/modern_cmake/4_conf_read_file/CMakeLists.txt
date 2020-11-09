@@ -9,6 +9,9 @@ if(EXISTS "${LOC_PATH}")
     message(FATAL_ERROR "you cannot build in a source directory. Feel free to remove CMakeCache.txt and CMakeFiles.")
 endif()
 
+string(TIMESTAMP BUILD_TIME [%Y-%m-%d_%H:%M:%S])
+message(STATUS "BUILD_TIME: " ${BUILD_TIME})
+
 configure_file(
     "${PROJECT_SOURCE_DIR}/version.h.in"
     "${PROJECT_BINARY_DIR}/version.h"
