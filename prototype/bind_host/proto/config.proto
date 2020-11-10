@@ -1,0 +1,21 @@
+syntax = "proto2";
+
+package bind_host;
+
+// 秘钥信息。
+message KeyInfo {
+    // 获取解密的应用名称
+    required string app_name = 1;
+    // 解密秘钥
+    required string key = 6; 
+}
+
+message InternalDebugOptions {
+    // 额外的解码秘钥
+    optional string ext_key = 1;
+}
+
+message HostKey {
+    required KeyInfo key_info = 1;
+    optional InternalDebugOptions internal_debug_options = 2;
+}

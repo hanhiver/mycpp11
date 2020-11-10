@@ -25,15 +25,15 @@ target_link_libraries(
 target_compile_features(COpenSSL_test PUBLIC cxx_std_11)
 set_target_properties(COpenSSL_test PROPERTIES CXX_EXTENSIONS OFF)
 
-add_executable(commmunicate_java_test commmunicate_java_test.cpp)
-target_link_libraries(
-    commmunicate_java_test
-    PRIVATE copenssl 
-    PRIVATE ${THREADS_PREFER_PTHREAD_FLAG} 
-    PRIVATE ${OPENSSL_CRYPTO_LIBRARIES})
+#add_executable(commmunicate_java_test commmunicate_java_test.cpp)
+#target_link_libraries(
+#    commmunicate_java_test
+#    PRIVATE copenssl 
+#    PRIVATE ${THREADS_PREFER_PTHREAD_FLAG} 
+#    PRIVATE ${OPENSSL_CRYPTO_LIBRARIES})
 
-target_compile_features(commmunicate_java_test PUBLIC cxx_std_11)
-set_target_properties(commmunicate_java_test PROPERTIES CXX_EXTENSIONS OFF)
+#target_compile_features(commmunicate_java_test PUBLIC cxx_std_11)
+#set_target_properties(commmunicate_java_test PROPERTIES CXX_EXTENSIONS OFF)
 
 add_executable(verify_keys verify_keys.cpp)
 target_link_libraries(
