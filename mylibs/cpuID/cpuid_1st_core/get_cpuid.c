@@ -7,8 +7,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <cpuid.h>
-
-//char cpuid[512] = {0};
+static char cpuid[512];
 
 char* get_cpu_id_c()
 //int get_cpu_id_c(char* cpu_id)
@@ -43,11 +42,13 @@ char* get_cpu_id_c()
         return NULL;
     }
 
+    /*
     char* cpuid = (char*)malloc(512*sizeof(char));
     if (NULL == cpuid)
     {
         return NULL;
     }
+    */
     // 设置cpuid获取的相关变量。
     int ax, bx, cx, dx;
     int level;

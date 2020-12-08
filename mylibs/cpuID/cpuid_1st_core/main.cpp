@@ -12,7 +12,6 @@ int main()
         return -1;
     }
     std::string id(cpuid);
-    free(cpuid);
     std::cout << "CPUID for 1st core is: " << id << std::endl;
     return 0; 
 }
