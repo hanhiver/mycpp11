@@ -11,45 +11,112 @@
 #include <cpuid.h>
 #include <string.h>
 
-int main()
+//static char cpuid[512];
+
+char* get_nth_cpu_id(unsigned int nth)
 {
-    // 下面这两句，随便让一句运行，整个程序就能正常运行，
-    // 否则就在最后的printf崩溃，应该是在涉及到计算字符串长度的地方。
-    //printf("test.\n");
-    //puts("\0");
-    
     // 创建绑定cpu运行的数据结构。
-    cpu_set_t* cpusetp;
+    cpu_set_t *cpusetp;
     int num_cpus = 1;
     size_t cpuset_size;
+    char *cpuid;
 
     // 获取当前系统中配置的cpu个数。
     num_cpus = sysconf(_SC_NPROCESSORS_CONF);
+    if (nth >= num_cpus)
+    {
+        perror("nth over the system cpu number. ");
+        return NULL; 
+    }
 
     // 分配满足cpu个数的空间。
     cpusetp = CPU_ALLOC(num_cpus); 
-    //printf("There are %d cpus in the system. \n", num_cpus);
     if (NULL == cpusetp)
     {
         perror("CPU_ALLOC");
-        //exit(EXIT_FAILURE);
-        return -1;
+        return NULL;
     }
     cpuset_size = CPU_ALLOC_SIZE(num_cpus);
 
     // 清空结构，并将第一个cpu放进结构。
     CPU_ZERO_S(cpuset_size, cpusetp);
-    CPU_SET_S(0, cpuset_size, cpusetp);
-    
+    CPU_SET_S(nth, cpuset_size, cpusetp);
+
     // 设置本进程在第一个cpu中运行。
-    if (sched_setaffinity(0, CPU_SETSIZE, cpusetp) == -1)
+    if (sched_setaffinity(0, cpuset_size, cpusetp) == -1)
     {
-        printf("failed to set thread affinity, exit...\n");
-        //exit(EXIT_FAILURE);
-        return -1;
+        perror("failed to set thread affinity.");
+        return NULL;
     }
 
-    // 崩溃会出现在这一句。
-    printf("hello world!\n");
+    // 设置cpuid获取的相关变量。
+    int ax, bx, cx, dx;
+    int level;
+    int level_max = 3;
+    int len = 0;
+    int size; 
+
+    // 清理cpuid内存块
+    //memset(cpuid, '\0', sizeof(cpuid)*sizeof(char));
+    cpuid = (char*)malloc(sizeof(char)*512);
+    if (NULL == cpuid)
+    {
+        perror("malloc error.");
+        return NULL;
+    }
+
+    // 获取完整的cpuid。
+    for (level = 0; level < level_max; ++level)
+    {
+        __cpuid(level, ax, bx, cx, dx);
+
+        if (0 == level)
+        {
+            size = sprintf(cpuid + len, "%08X", ax);
+        }
+        else if (1 == level)
+        {
+            size = sprintf(cpuid + len, "%08X-%08X-%08X", ax, cx, dx);
+        }
+        else if (2 == level)
+        {
+            size = sprintf(cpuid + len, "%08X-%08X-%08X", ax, bx, dx);
+        }
+
+        len += size;
+        cpuid[len] = '_';
+        ++len;
+    }
+    cpuid[len - 1] = 0;
     
+    return cpuid;
+}
+
+
+int main()
+{
+    // 创建绑定cpu运行的数据结构。
+    cpu_set_t* cpusetp;
+    unsigned int i = 0; 
+    // 获取当前系统中配置的cpu个数。
+    int num_cpus = sysconf(_SC_NPROCESSORS_CONF);
+
+    for(i=0; i<num_cpus; ++i)
+    {
+        char *cpu_id = get_nth_cpu_id(i);
+
+        if (NULL != cpu_id)
+        {
+            printf("CPU #%d\t, ID: %s\n", i, cpu_id);
+        }
+        else
+        {
+            printf("Failed to get cpuid for core #%d.\n", i);
+            return -1;
+        }
+
+        free(cpu_id);
+    }
+
+    return 0;
 }
