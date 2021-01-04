@@ -31,8 +31,8 @@ int main()
     ifreq = (struct ifreq*)buf;
     for(i=(ifconf.ifc_len/sizeof(struct ifreq)); i>0; i--)
     {
-        if(ifreq->ifr_flags == AF_INET)             //for ipv4
-        {
+        //if(ifreq->ifr_flags == AF_INET)             //for ipv4
+        //{
             //printf("name=[%s], ifr_flags=[%s]\n", ifreq->ifr_name, ifreq->ifr_hwaddr.sa_data);
             memcpy(&freq, ifreq, sizeof(freq));
             ioctl(sockfd, SIOCGIFHWADDR, &freq);
@@ -42,7 +42,7 @@ int main()
             //printf("local addr = [%s]\n",
             //       inet_ntoa(((struct sockaddr_in*)&(ifreq->ifr_addr))->sin_addr));
             ifreq++;
-        }
+        //}
     }
     return 0;
 }
