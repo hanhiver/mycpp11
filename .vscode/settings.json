@@ -92,7 +92,8 @@
         "hash_set": "cpp",
         "cfenv": "cpp",
         "valarray": "cpp",
-        "*.ipp": "cpp"
+        "*.ipp": "cpp",
+        "source_location": "cpp"
     },
     "cmake.configureOnOpen": false,
     "python.pythonPath": "/Users/dhan/opt/anaconda3/envs/py38/bin/python"
