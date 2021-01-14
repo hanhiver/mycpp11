@@ -5,7 +5,7 @@
 #define CRYPT_MACRO(r, d, i, elem) ( elem ^ ( d - i ) )
 
 #define DEFINE_ESTRING(NAME, SEED, SEQ)\
-static const char* BOOST_PP_CAT(Get, NAME)()\
+static const char* BOOST_PP_CAT(GetEstring_, NAME)()\
 {\
     static char data[] = {\
         BOOST_PP_SEQ_ENUM(BOOST_PP_SEQ_FOR_EACH_I(CRYPT_MACRO, SEED, SEQ)),\
