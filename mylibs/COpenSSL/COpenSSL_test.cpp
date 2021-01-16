@@ -39,10 +39,13 @@ int main()
 
 	// des    
 	std::cout << "=== des加解密 ===" << std::endl;
-	std::string desKey = "12345";
+	std::string desKey = "HAgainst@sea0ftrouble5!";
 	encryptText = ssl.des_encrypt(srcText, desKey);
 	std::cout << "加密字符：" << std::endl;
 	std::cout << encryptText << std::endl;
+	std::string transferText = base64_encode((const unsigned char *)encryptText.c_str(), encryptText.length());
+	std::cout << "base64传输密文：\n" << transferText << std::endl;
+	encryptText = base64_decode(transferText);
 	decryptText = ssl.des_decrypt(encryptText, desKey);
 	std::cout << "解密字符：" << std::endl;
 	std::cout << decryptText << std::endl << std::endl;
@@ -58,7 +61,7 @@ int main()
 	encryptText = ssl.rsa_pub_encrypt(srcText, key[0]);
 	std::cout << "加密字符：" << std::endl;
 	std::cout << encryptText << std::endl;
-	std::string transferText = base64_encode((const unsigned char *)encryptText.c_str(), encryptText.length());
+	transferText = base64_encode((const unsigned char *)encryptText.c_str(), encryptText.length());
 	std::cout << "base64传输密文：\n" << transferText << std::endl;
 	encryptText = base64_decode(transferText);
 	decryptText = ssl.rsa_pri_decrypt(encryptText, key[1]);

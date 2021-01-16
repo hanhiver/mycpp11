@@ -46,6 +46,12 @@ public:
 	// ecb解密:     
 	std::string des_decrypt(const std::string &cipherText, const std::string &key);
 
+	// ---- aes对称加密 ---- //    
+	// aes加密:  
+	std::string aes_encrypt(const std::string &clearText, const std::string &key);
+	// aes解密:     
+	std::string aes_decrypt(const std::string &cipherText, const std::string &key);
+
 	// 生成RSA秘钥对函数，strKey[0]为公钥，strKey[1]为私钥
 	void generateRSAKey(std::string strKey[2]);
 

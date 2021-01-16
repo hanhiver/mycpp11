@@ -9,49 +9,50 @@ import sys
 
 SEC_CODE = "0x1e"
 
-if len(sys.argv) != 2:
+if len(sys.argv) < 2:
     print("Usage: ", sys.argv[0], " <input_file>")
     exit(-1)
 
-input_file_name = sys.argv[1]
-output_file_name = input_file_name.rsplit('.', maxsplit = 1)[0]
+for input_file_name in sys.argv[1:]:
+    print("Generate estring head file from: ", input_file_name)
+    output_file_name = input_file_name.rsplit('.', maxsplit = 1)[0]
 
-with open(input_file_name, 'r') as input_file:
-    str_list = input_file.readlines()
+    with open(input_file_name, 'r') as input_file:
+        str_list = input_file.readlines()
 
-output_str = ""
-gen_code = ""
-line_index = 0
-
-for str_item in str_list:
-    # 去除字符串前后的空格换行等
-    str_effective = str_item.strip()
-    # 如果是空行，则跳过。
-    if len(str_effective) == 0:
-        continue
-
-    for char in str_effective:
-        if char == '\\':
-            gen_code += "('\\\\')"
-        else:
-            gen_code += "('" + char + "')"
-    gen_code += "('\\n')"
-
-    output_str += "DEFINE_ESTRING({}, {}, {})\n".format(output_file_name + str(line_index), SEC_CODE, gen_code)
+    output_str = ""
     gen_code = ""
-    line_index += 1
+    line_index = 0
 
-output_str += "#define {} {}\n".format(output_file_name + "_length", str(line_index))
-output_str += 'std::string GetEstring_{}()\n'.format(output_file_name)
-output_str += '{\n\tstd::string pub_str = "";\n'
-for index in range(line_index):
-    output_str += '\tpub_str += std::string(GetEstring_{}());\n'.format(output_file_name + str(index))
+    for str_item in str_list:
+        # 去除字符串前后的空格换行等
+        str_effective = str_item.strip()
+        # 如果是空行，则跳过。
+        if len(str_effective) == 0:
+            continue
 
-output_str += '\treturn pub_str;\n}\n'
+        for char in str_effective:
+            if char == '\\':
+                gen_code += "('\\\\')"
+            else:
+                gen_code += "('" + char + "')"
+        gen_code += "('\\n')"
 
-with open(output_file_name + '.h', 'w') as output_file:
-    output_file.write('#include <string>\n')
-    output_file.write('#include "estring.h"\n')
-    output_file.write(output_str)
+        output_str += "DEFINE_ESTRING({}, {}, {})\n".format(output_file_name + str(line_index), SEC_CODE, gen_code)
+        gen_code = ""
+        line_index += 1
 
-print(output_str)
+    output_str += "#define {} {}\n".format(output_file_name + "_length", str(line_index))
+    output_str += 'std::string GetEstring_{}()\n'.format(output_file_name)
+    output_str += '{\n\tstd::string pub_str = "";\n'
+    for index in range(line_index):
+        output_str += '\tpub_str += std::string(GetEstring_{}());\n'.format(output_file_name + str(index))
+
+    output_str += '\treturn pub_str;\n}\n'
+
+    with open(output_file_name + '.h', 'w') as output_file:
+        output_file.write('#include <string>\n')
+        output_file.write('#include "estring.h"\n')
+        output_file.write(output_str)
+
+    #print(output_str, '\n\n\n')
