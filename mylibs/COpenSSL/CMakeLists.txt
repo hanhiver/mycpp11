@@ -41,4 +41,10 @@ target_link_libraries(3des_test
     #PRIVATE ${THREADS_PREFER_PTHREAD_FLAG} 
     PRIVATE ${OPENSSL_CRYPTO_LIBRARIES})
 
+add_executable(rsa_test rsa_test.cpp)
+target_link_libraries(rsa_test
+    PRIVATE copenssl 
+    PRIVATE ${THREADS_PREFER_PTHREAD_FLAG} 
+    PRIVATE ${OPENSSL_CRYPTO_LIBRARIES})
+
 add_subdirectory(src)
