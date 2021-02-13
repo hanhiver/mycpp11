@@ -32,7 +32,8 @@ int main()
 {
 
 	// 原始明文
-	std::string srcText = "{\"longFuncName\":\"shumiaozusuanfa\",\"callCountAgain\":1212121}";
+	//std::string srcText = "{\"longFuncName\":\"shumiaozusuanfa\",\"callCountAgain\":1212121}";
+	std::string srcText = "0000000D_00050654-FFFA3203-1F8BFBFF_76036301-00F0B5FF-00C30000i-8vb9b97xf7msxi4k6tgx";
 
 	std::string encryptText;
 	std::string encryptHexText;
@@ -41,7 +42,7 @@ int main()
 	COpenSSL ssl;
 
 	std::cout << "=== 明文信息 ===" << std::endl;
-	std::cout << srcText << std::endl << std::endl;
+	std::cout << srcText << ", length: " << srcText.size() << std::endl << std::endl;
 
 	// md5    
 	std::cout << "=== md5哈希 ===" << std::endl;
@@ -92,11 +93,11 @@ int main()
 	
 	decryptText = ssl.rsa_pri_decrypt(encryptText, key[1]);
 	std::cout << "解密字符：" << std::endl;
-	std::cout << decryptText << std::endl << std::endl;
+	std::cout << decryptText << ", length: " << decryptText.size() << std::endl << std::endl;
 
 	//rsa+md5签名验证
-	//std::string signature = ssl.signMessage(key[1], srcText);
-	std::string signature = "cWedxjfVOmveUUOVj8S04x6rRIRSUgNnt6qHH0bL0SoOtd0oCR7OcReIfu+qa63fWiWXXfwy865nZ7KGSTjXTYOtBOdmSk0JpmLu9q0dan22W9P1eVCHanHqfxhHLfcK5L4Mhte+TSX1DRskb9mSb2HKBcZykQFjrBSIMOIZtsM=";
+	std::string signature = ssl.signMessage(key[1], srcText);
+	//std::string signature = "cWedxjfVOmveUUOVj8S04x6rRIRSUgNnt6qHH0bL0SoOtd0oCR7OcReIfu+qa63fWiWXXfwy865nZ7KGSTjXTYOtBOdmSk0JpmLu9q0dan22W9P1eVCHanHqfxhHLfcK5L4Mhte+TSX1DRskb9mSb2HKBcZykQFjrBSIMOIZtsM=";
 	//std::cout << "签名base64-decode: " << base64_encode((unsigned char*)srcText.c_str(), srcText.length());
 	std::cout << "签名base64字符：" << std::endl;
 	std::cout << signature << std::endl;
