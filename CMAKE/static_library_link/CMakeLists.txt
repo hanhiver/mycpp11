@@ -1,6 +1,11 @@
 # 源代码的依赖关系为: main->hello->world
 # 将world和hello分别编译为静态库，hello静态库直接连接到world静态库
 # 检查对于main函数是否只需要连接hello静态库就可以。 
+# g++ -c world.cpp -fPIC
+# g++ -c hello.cpp -fPIC
+# ar -qcs libhello.a hello.o world.o
+# g++ -c main.cpp -fPIC
+# g++ -o main main.o -lhello -L. 
 cmake_minimum_required(VERSION 3.18)
 
 project(main
