@@ -4,7 +4,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 project(bind_host_test
     VERSION 0.1.1
-    LANGUAGES CXX)
+    LANGUAGES C CXX)
 
 string(TIMESTAMP BUILD_TIME [%Y-%m-%d_%H:%M:%S])
 message(STATUS "BUILD_TIME: " ${BUILD_TIME})
@@ -42,4 +42,15 @@ target_link_libraries(main
 	PUBLIC ${OPENSSL_LIBRARIES})
 #    PUBLIC /usr/lib/x86_64-linux-gnu/libdl.a)
 
+
+add_executable(sigtest sigtest.cpp)
+target_link_libraries(sigtest 
+#	PUBLIC libcrypto.a
+	PRIVATE OpenSSL::SSL OpenSSL::Crypto)
+#    PUBLIC /usr/lib/x86_64-linux-gnu/libdl.a)
 #add_subdirectory(src)
+
+#add_executable(pkcs7 pkcs7_aliyun.c)
+#target_link_libraries(pkcs7 
+#	PUBLIC libcrypto.a
+#	PRIVATE OpenSSL::SSL OpenSSL::Crypto)

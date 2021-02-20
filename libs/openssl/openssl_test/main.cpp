@@ -101,7 +101,7 @@ int main()
 	std::cout << "签名base64字符：" << std::endl;
 	std::cout << signature << std::endl;
 	std::cout << "验证签名字符串：";
-	bool authentic = ssl.verifySignature(key[0], srcText, signature);
+	bool authentic = ssl.verifySignature(key[0], srcText, signature); 
 	if (authentic) {
 		std::cout << "验证成功！" << std::endl << std::endl;
 	}

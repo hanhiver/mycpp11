@@ -54,11 +54,13 @@ int main()
 	std::string key[2];
 	//ssl.generateRSAKey(key);
 	
-	key[0] = readKeyFile("/home/hd275562/myprog/mycpp11/libs/openssl/genkey/ppub.pem");
+	//key[0] = readKeyFile("/home/hd275562/myprog/mycpp11/libs/openssl/genkey/ppub.pem");
+	key[0] = readKeyFile("/home/hd275562/myprog/mycpp11/libs/openssl/openssl_cmake318/new.pem");
 	key[1] = readKeyFile("/home/hd275562/myprog/mycpp11/libs/openssl/genkey/pri.pem");
 
 	std::cout << "公钥：" << std::endl;
 	std::cout << key[0] << std::endl;
+	std::cout << "检测公钥： " << ssl.rsa_verify_pubkey(key[0]) << std::endl;
 	std::cout << "私钥：" << std::endl;
 	std::cout << key[1] << std::endl;
 	encryptText = ssl.rsa_pub_encrypt(srcText, key[0]);
@@ -102,7 +104,12 @@ int main()
 	std::cout << "签名base64字符：" << std::endl;
 	std::cout << signature << std::endl;
 	std::cout << "验证签名字符串：";
-	bool authentic = ssl.verifySignature(key[0], srcText, signature);
+	//bool authentic = ssl.verifySignature(key[0], srcText, signature);
+
+	std::string document = "{\"zone-id\":\"cn-zhangjiakou-c\",\"serial-number\":\"4453b924-c169-45a7-9478-0dcdd94628b3\",\"instance-id\":\"i-8vb9b97xf7msxi4k6tgx\",\"region-id\":\"cn-zhangjiakou\",\"private-ipv4\":\"11.160.137.194\",\"owner-account-id\":\"1900050632443592\",\"mac\":\"00:16:3e:0b:5c:f8\",\"image-id\":\"m-8vbipaljoi4ep0rcxght\",\"instance-type\":\"ecs.gn6v-c8g1.8xlarge\",\"audience\":\"abc\"}";
+	signature = "MIIDLwYJKoZIhvcNAQcCoIIDIDCCAxwCAQExCzAJBgUrDgMCGgUAMIIBaQYJKoZIhvcNAQcBoIIBWgSCAVZ7InpvbmUtaWQiOiJjbi16aGFuZ2ppYWtvdS1jIiwic2VyaWFsLW51bWJlciI6IjQ0NTNiOTI0LWMxNjktNDVhNy05NDc4LTBkY2RkOTQ2MjhiMyIsImluc3RhbmNlLWlkIjoiaS04dmI5Yjk3eGY3bXN4aTRrNnRneCIsInJlZ2lvbi1pZCI6ImNuLXpoYW5namlha291IiwicHJpdmF0ZS1pcHY0IjoiMTEuMTYwLjEzNy4xOTQiLCJvd25lci1hY2NvdW50LWlkIjoiMTkwMDA1MDYzMjQ0MzU5MiIsIm1hYyI6IjAwOjE2OjNlOjBiOjVjOmY4IiwiaW1hZ2UtaWQiOiJtLTh2YmlwYWxqb2k0ZXAwcmN4Z2h0IiwiaW5zdGFuY2UtdHlwZSI6ImVjcy5nbjZ2LWM4ZzEuOHhsYXJnZSIsImF1ZGllbmNlIjoiYWJjIn0xggGbMIIBlwIBATB0MGwxEDAOBgNVBAYTB1Vua25vd24xEDAOBgNVBAgTB1Vua25vd24xEDAOBgNVBAcTB1Vua25vd24xEDAOBgNVBAoTB1Vua25vd24xEDAOBgNVBAsTB1Vua25vd24xEDAOBgNVBAMTB1Vua25vd24CBGZm0YcwCQYFKw4DAhoFADANBgkqhkiG9w0BAQEFAASCAQBC6YahjbbGPJHMN71fuSD9swtAYd+FpCEWf906WFbRgScdxJTB07IQxuaEUHhUTso2Q2FQOhMrHnLFr5e9MceutOKWv7L3RNxOnmbBGILu1i/B4Dth7DbaVaPsF8YC/ksEX7RtKiPS+J9haPfAREbtlVvOv4GZ9NV7TD9cizTTFTwowmCKSO6nYlBiqDZoSqq5J2aJE0ffiJysIngDIGYQRLRe15fAbMGiJishuwiO0dzt/4Z+ac9rqr467mo6vTZLdeXyKXEqj8kM05gnE7S8nmfPXLrur5hcMslCcQoRJv+zoxwwzVk13o6Aoj7I2w2b+JwkwNsnFmP3+WCO+ZA5";
+	std::string ali_key = readKeyFile("/home/hd275562/myprog/mycpp11/libs/openssl/openssl_cmake318/aliyun.pub");
+	bool authentic = ssl.verifySignature(ali_key, document, signature);
 	if (authentic) {
 		std::cout << "验证成功！" << std::endl << std::endl;
 	}

@@ -1,69 +1,198 @@
+/**
+ *  包装openssl类库，支持C++方式调用加密解密签名鉴权的各个功能。
+ *  Copyright (C) 2020 Alibaba Dong HAN
+ *
+ *  This file is part of public tools class for the sdk online manager project.
+ *
+ *  @file     COpenSSL.hpp
+ *  @brief    提供加密解密签名鉴权各项服务功能。
+ *  使用C++包装openssl类库，提供对于信息的哈希，对称加密，对称解密，签名和签名验证功能。
+ *  目前版本支持如下功能：
+ *  1. md5哈希
+ *  2. sha哈希，256位，384位和512位
+ *  3. des对称加密解密
+ *  4. RSA的非对称加密，解密，签名，认证功能。（默认RSA秘钥为1024位）
+ *
+ *  @author   Dong Han @ Alibaba
+ *  @email    hd275562@alibaba-inc.com
+ *  @version  1.0.0.1
+ *  @date     2020.10.09
+ *
+ */
+
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS
+#ifndef DAMO_SDK_ONLINE_MANAGER_COPENSSL_HPP
+#define DAMO_SDK_ONLINE_MANAGER_COPENSSL_HPP
 
 #include <string>
 #include <vector>
 #include <cassert>
 #include <cstring>
-#include <iostream> 
+#include <iostream>
+#include <fstream>
+#include <sstream>
 #include "base64.h"
-#include "openssl/md5.h" 
+#include "openssl/md5.h"
 #include "openssl/sha.h"
-#include "openssl/des.h" 
-#include "openssl/rsa.h"    
-#include "openssl/pem.h" 
+#include "openssl/des.h"
+#include "openssl/rsa.h"
+#include "openssl/pem.h"
 #include "openssl/evp.h"
 
-// ---- rsa encrypt ---- //    
-#define KEY_LENGTH  1024             // length of the key
-#define PUB_KEY_FILE "pubkey.pem"    // path to the public key  
-#define PRI_KEY_FILE "prikey.pem"    // path to the private key. 
+// RSA加密参数 //
+#define KEY_LENGTH  1024             // 默认的RSA秘钥长度
+#define PUB_KEY_FILE "pubkey.pem"    // 默认的公钥存储文件  
+#define PRI_KEY_FILE "prikey.pem"    // 默认的私钥存储文件
 
 class COpenSSL
 {
 public:
-	COpenSSL();
-	~COpenSSL();
+    COpenSSL();
+    ~COpenSSL();
 
-	// ---- md5 hash ---- // 
-	void md5(const std::string &srcStr, std::string &encodedHexStr);
+    /**
+     * @brief md5哈希
+     * @param srcStr 输入字符串
+     * @param encodedHexStr 哈希结果输出字符串
+     *
+     * @return 无
+     */
+    void md5(const std::string& srcStr, std::string& encodedHexStr);
 
-	// ---- sha256 hash ---- //  
-	void sha256(const std::string &srcStr, std::string &encodedHexStr);
+    /**
+     * @brief SHA哈希（256位）
+     * @param srcStr 输入字符串
+     * @param encodedHexStr 哈希结果输出字符串
+     *
+     * @return 无
+     */
+    void sha256(const std::string& srcStr, std::string& encodedHexStr);
 
-	// ---- des symmetric encription ---- //    
-	// encrypt ecb mode:  
-	std::string des_encrypt(const std::string &clearText, const std::string &key);
-	// decrypt ecb mode:     
-	std::string des_decrypt(const std::string &cipherText, const std::string &key);
+    /**
+     * @brief SHA哈希（384位）
+     * @param srcStr 输入字符串
+     * @param encodedHexStr 哈希结果输出字符串
+     *
+     * @return 无
+     */
+    void sha384(const std::string& srcStr, std::string& encodedHexStr);
 
-	// function to generate the key pair.   
-	void generateRSAKey(std::string strKey[2]);
+    /**
+     * @brief SHA哈希（512位）
+     * @param srcStr 输入字符串
+     * @param encodedHexStr 哈希结果输出字符串
+     *
+     * @return 无
+     */
+    void sha512(const std::string& srcStr, std::string& encodedHexStr);
 
-	// command line to create private key and public key. 
-	// openssl genrsa -out prikey.pem 1024   
-	// openssl rsa - in privkey.pem - pubout - out pubkey.pem  
+    /**
+     * @brief DES对称加密，ECB加密
+     * @param srcStr 输入明文
+     * @param key 加密秘钥
+     *
+     * @return 输出密文
+     */
+    std::string des_encrypt(const std::string& clearText, const std::string& key);
 
-	// public key encription
-	std::string rsa_pub_encrypt(const std::string &clearText, const std::string &pubKey);
-	// private key decription
-	std::string rsa_pri_decrypt(const std::string &cipherText, const std::string &priKey);
+    /**
+     * @brief DES对称解密，ECB解密
+     * @param srcStr 输入密文
+     * @param key 解密秘钥
+     *
+     * @return 输出明文
+     */
+    std::string des_decrypt(const std::string& cipherText, const std::string& key);
 
-	// private key signature
-	std::string signMessage(std::string privateKey, std::string plainText);
-	// publich key verification 
-	bool verifySignature(std::string &publicKey, std::string &plainText, std::string &signatureBase64);
+    /**
+     * @brief 生成RSA秘钥对函数
+     * @param srcKey strKey[0]为公钥，strKey[1]为私钥
+     *
+     * @return 无
+     * @note
+     *     如下命令行可以生成对应的秘钥，此时prikey是PKCS1格式，pubkey是PKCS8格式
+     *     openssl genrsa -out prikey.pem 1024
+     *     openssl rsa - in privkey.pem - pubout - out pubkey.pem
+     */
+    void generateRSAKey(std::string strKey[2]);
+
+    /**
+     * @brief RSA公钥格式验证
+     * @param pubKey 输入公钥
+     *
+     * @return 输出验证结果
+     * @retval true: 公钥格式正确，false: 公钥格式错误
+     */
+    bool rsa_verify_pubkey(const std::string& pubKey);
+
+    /**
+     * @brief RSA私钥格式验证
+     * @param priKey 输入私钥
+     *
+     * @return 输出验证结果
+     * @retval true: 私钥格式正确，false: 私钥格式错误
+     */
+    bool rsa_verify_prikey(const std::string& priKey);
+
+    /**
+     * @brief RSA公钥加密信息
+     * @param clearText 输入明文
+     * @param pubKey 加密公钥
+     *
+     * @return 输出密文
+     */
+    std::string rsa_pub_encrypt(const std::string& clearText, const std::string& pubKey);
+
+    /**
+     * @brief RSA私钥解密信息
+     * @param cipherText 输入密文
+     * @param priKey 解密私钥
+     *
+     * @return 输出明文
+     */
+    std::string rsa_pri_decrypt(const std::string& cipherText, const std::string& priKey);
+
+    /**
+     * @brief RSA私钥签名信息
+     * @param privateKey 签名用私钥
+     * @param plainText 签名明文
+     *
+     * @return 输出签名信息
+     */
+    std::string signMessage(const std::string& privateKey, const std::string& plainText);
+
+    /**
+     * @brief RSA公钥验证信息
+     * @param publicKey 验证用公钥
+     * @param plainText 签名明文
+     * @param signatureBase64 签名信息
+     *
+     * @return 输出签名验证结果
+     * @retval true表示签名验证成功，false表示签名验证失败
+     */
+    bool verifySignature(const std::string& publicKey, const std::string& plainText, const std::string& signatureBase64);
+
+    /**
+     * @brief 从文件中读取Key字符串
+     * @param filename 储存key的文件全路径
+     *
+     * @return 从文件中读取的key字符串
+     * @retval 从文件中读取的key字符串
+     */
+    std::string readKeyFile(const std::string& filename);
 
 private:
-	RSA* createPrivateRSA(std::string key);
-	RSA* createPublicRSA(std::string key);
-	bool RSASign(RSA* rsa, const unsigned char* Msg, size_t MsgLen, unsigned char** EncMsg, size_t* MsgLenEnc);
-	bool RSAVerifySignature(RSA* rsa, unsigned char* MsgHash, size_t MsgHashLen, const char* Msg, size_t MsgLen, bool* Authentic);
+    RSA* createPrivateRSA(std::string key);
+    RSA* createPublicRSA(std::string key);
+    bool RSASign(RSA* rsa, const unsigned char* Msg, size_t MsgLen, unsigned char** EncMsg, size_t* MsgLenEnc);
+    bool RSAVerifySignature(RSA* rsa, unsigned char* MsgHash, size_t MsgHashLen, const char* Msg, size_t MsgLen, bool* Authentic);
 
-	void printHex(const char *title, const unsigned char *s, int len);
+    void printHex(const char *title, const unsigned char *s, int len);
 
 public:
-	std::string privateKey;
-	std::string publicKey;
+    // 测试用RSA秘钥对
+    std::string privateKey;
+    std::string publicKey;
 };
 
+#endif  // DAMO_SDK_ONLINE_MANAGER_COPENSSL_HPP

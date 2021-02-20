@@ -3,6 +3,7 @@ using namespace std;
 
 COpenSSL::COpenSSL()
 {
+    // RSA key pairs for test. 
 	privateKey = "-----BEGIN RSA PRIVATE KEY-----\n"\
 		"MIICXgIBAAKBgQDT3YXzRLSdzbNpNS8QfujfY33MpONEPVMYsDzDIhSVuWvYYy6c\n"\
 		"nmzSZrWsWLa6vrdZur0Gsf4tKJsZwVeWgXIiD0fuD+s2jxgR731jbsYoeAZuNqoV\n"\
@@ -31,8 +32,8 @@ COpenSSL::COpenSSL()
 COpenSSL::~COpenSSL()
 {
 }
-   
-void COpenSSL::md5(const std::string &srcStr, std::string &encodedHexStr)
+
+void COpenSSL::md5(const std::string& srcStr, std::string& encodedHexStr)
 {
 	// call md5 hash.    
 	unsigned char mdStr[33] = { 0 };
@@ -50,7 +51,7 @@ void COpenSSL::md5(const std::string &srcStr, std::string &encodedHexStr)
 	encodedHexStr = std::string(buf);
 }
   
-void COpenSSL::sha256(const std::string &srcStr, std::string &encodedHexStr)
+void COpenSSL::sha256(const std::string& srcStr, std::string& encodedHexStr)
 {
 	// call sha256 hash.    
 	unsigned char mdStr[65] = { 0 };
@@ -64,13 +65,50 @@ void COpenSSL::sha256(const std::string &srcStr, std::string &encodedHexStr)
 		sprintf(tmp, "%02x", mdStr[i]);
 		strcat(buf, tmp);
 	}
-	buf[128] = '\0'; // '\0' after 32 chars.
+	buf[128] = '\0'; // '\0' after 128 chars.
 	encodedHexStr = std::string(buf);
 }
 
-std::string COpenSSL::des_encrypt(const std::string &clearText, const std::string &key)
+void COpenSSL::sha384(const std::string& srcStr, std::string& encodedHexStr)
 {
-	std::string cipherText; // encripted string.
+	// call sha256 hash.    
+	unsigned char mdStr[97] = { 0 };
+	SHA384((const unsigned char *)srcStr.c_str(), srcStr.length(), mdStr);
+
+	// Hex chars 48bytes after hash. 
+	char buf[385] = { 0 };
+	char tmp[3] = { 0 };
+	for (int i = 0; i < 48; i++)
+	{
+		sprintf(tmp, "%02x", mdStr[i]);
+		strcat(buf, tmp);
+	}
+	buf[384] = '\0'; // '\0' after 256 chars.
+	encodedHexStr = std::string(buf);
+}
+
+void COpenSSL::sha512(const std::string& srcStr, std::string& encodedHexStr)
+{
+	// call sha256 hash.    
+	unsigned char mdStr[129] = { 0 };
+	SHA512((const unsigned char *)srcStr.c_str(), srcStr.length(), mdStr);
+
+	// Hex chars 64bytes after hash. 
+	char buf[257] = { 0 };
+	char tmp[3] = { 0 };
+	for (int i = 0; i < 64; i++)
+	{
+		sprintf(tmp, "%02x", mdStr[i]);
+		strcat(buf, tmp);
+	}
+	buf[256] = '\0'; // '\0' after 256 chars.
+	encodedHexStr = std::string(buf);
+}
+
+std::string COpenSSL::des_encrypt(const std::string& clearText, const std::string& key)
+{
+    // encripted string.
+	std::string cipherText;
 
 	DES_cblock keyEncrypt;
 	memset(keyEncrypt, 0, 8);
@@ -91,7 +129,7 @@ std::string COpenSSL::des_encrypt(const std::string &clearText, const std::strin
 	std::vector<unsigned char> vecCiphertext;
 	unsigned char tmp[8];
 
-	for (int i = 0; i < clearText.length() / 8; i++)
+	for (unsigned int i = 0; i < clearText.length() / (unsigned int)8; i++)
 	{
 		memcpy(inputText, clearText.c_str() + i * 8, 8);
 		DES_ecb_encrypt(&inputText, &outputText, &keySchedule, DES_ENCRYPT);
@@ -121,9 +159,10 @@ std::string COpenSSL::des_encrypt(const std::string &clearText, const std::strin
 	return cipherText;
 }
 
-std::string COpenSSL::des_decrypt(const std::string &cipherText, const std::string &key)
+std::string COpenSSL::des_decrypt(const std::string& cipherText, const std::string& key)
 {
-	std::string clearText; // clear test. 
+    // clear text. 
+	std::string clearText; 
 
 	DES_cblock keyEncrypt;
 	memset(keyEncrypt, 0, 8);
@@ -141,7 +180,7 @@ std::string COpenSSL::des_decrypt(const std::string &cipherText, const std::stri
 	std::vector<unsigned char> vecCleartext;
 	unsigned char tmp[8];
 
-	for (int i = 0; i < cipherText.length() / 8; i++)
+	for (unsigned int i = 0; i < cipherText.length() / 8; i++)
 	{
 		memcpy(inputText, cipherText.c_str() + i * 8, 8);
 		DES_ecb_encrypt(&inputText, &outputText, &keySchedule, DES_DECRYPT);
@@ -182,22 +221,22 @@ void COpenSSL::generateRSAKey(std::string strKey[2])
 	// generate key pair. 
 	// deprecated: 
 	// RSA *keypair = RSA_generate_key(KEY_LENGTH, RSA_3, NULL, NULL);
-	RSA *keypair = RSA_new();
+	RSA* keypair = RSA_new();
 	BIGNUM* bne = BN_new();
-	BN_set_word(bne,RSA_3);
+	BN_set_word(bne, RSA_3);
 	int res = RSA_generate_key_ex(keypair, KEY_LENGTH, bne, NULL);
 	if (res != 1)
 	{
-		std::cerr << "Error when generate key pair. " << std::endl; 
-		exit(-1);
+        assert(false);
+		return;
 	}
 
 	BIO *pri = BIO_new(BIO_s_mem());
 	BIO *pub = BIO_new(BIO_s_mem());
 
 	PEM_write_bio_RSAPrivateKey(pri, keypair, NULL, NULL, 0, NULL, NULL);
-	// PEM_write_bio_RSAPublicKey(pub, keypair);
-	PEM_write_bio_RSA_PUBKEY(pub, keypair);
+	// PEM_write_bio_RSAPublicKey(pub, keypair); // Write pub key with pkcs1 format. 
+	PEM_write_bio_RSA_PUBKEY(pub, keypair); // write pub key with pkcs8 format. 
 
 	// get length. 
 	pri_len = BIO_pending(pri);
@@ -245,21 +284,45 @@ void COpenSSL::generateRSAKey(std::string strKey[2])
 	free(pub_key);
 }
 
-std::string COpenSSL::rsa_pub_encrypt(const std::string &clearText, const std::string &pubKey)
+bool COpenSSL::rsa_verify_pubkey(const std::string& pubKey)
+{
+	RSA *rsa = NULL;
+	BIO *keybio = BIO_new_mem_buf((unsigned char *)pubKey.c_str(), -1);
+	rsa = PEM_read_bio_RSA_PUBKEY(keybio, &rsa, NULL, NULL); 
+
+	if (rsa == NULL)
+		return false;
+	else
+		return true;
+}
+
+bool COpenSSL::rsa_verify_prikey(const std::string& priKey)
+{
+	RSA *rsa = NULL;
+	BIO *keybio;
+	keybio = BIO_new_mem_buf((unsigned char *)priKey.c_str(), -1);
+	rsa = PEM_read_bio_RSAPrivateKey(keybio, &rsa, NULL, NULL);
+	
+	if (rsa == NULL)
+		return false;
+	else
+		return true;
+}
+
+std::string COpenSSL::rsa_pub_encrypt(const std::string& clearText, const std::string& pubKey)
 {
 	std::string strRet;
-	RSA *rsa = NULL;
+	RSA *rsa = RSA_new();
 	BIO *keybio = BIO_new_mem_buf((unsigned char *)pubKey.c_str(), -1);
 	
 	// Here we have 3 metheod:
 	// 1. Read the key pair from memory, then generate the rsa in memory. 
 	// 2. Read the key pair from file, then generate the rsa in memory.
 	// 3. Generate rsa directly in memory.  
-	RSA* pRSAPublicKey = RSA_new();
 	// -----BEGIN RSA PUBLIC KEY----- 
-	// rsa = PEM_read_bio_RSAPublicKey(keybio, &rsa, NULL, NULL);
+	// rsa = PEM_read_bio_RSAPublicKey(keybio, &rsa, NULL, NULL); // If the key is PKCS1 format
 	// -----BEGIN PUBLIC KEY-----
-	rsa = PEM_read_bio_RSA_PUBKEY(keybio, &rsa, NULL, NULL);
+	rsa = PEM_read_bio_RSA_PUBKEY(keybio, &rsa, NULL, NULL); // If the key is is PKCS8 format
 
 	int len = RSA_size(rsa);
 	char *encryptedText = (char *)malloc(len + 1);
@@ -277,7 +340,7 @@ std::string COpenSSL::rsa_pub_encrypt(const std::string &clearText, const std::s
 	return strRet;
 }
 
-std::string COpenSSL::rsa_pri_decrypt(const std::string &cipherText, const std::string &priKey)
+std::string COpenSSL::rsa_pri_decrypt(const std::string& cipherText, const std::string& priKey)
 {
 	std::string strRet;
 	RSA *rsa = RSA_new();
@@ -289,9 +352,7 @@ std::string COpenSSL::rsa_pri_decrypt(const std::string &cipherText, const std::
 	// 2. Read the key pair from file, then generate the rsa in memory.
 	// 3. Generate rsa directly in memory.  
 	// -----BEGIN RSA PRIVATE KEY-----
-	rsa = PEM_read_bio_RSAPrivateKey(keybio, &rsa, NULL, NULL);
-	// -----BEGIN PRIVATE KEY-----
-	//rsa = PEM_read_bio_PrivateKey(keybio, &rsa, NULL, NULL);
+	rsa = PEM_read_bio_RSAPrivateKey(keybio, &rsa, NULL, NULL); // Ensure the key is PKCS1 format
 
 	int len = RSA_size(rsa);
 	char *decryptedText = (char *)malloc(len + 1);
@@ -309,7 +370,7 @@ std::string COpenSSL::rsa_pri_decrypt(const std::string &cipherText, const std::
 	return strRet;
 }
 
-std::string COpenSSL::signMessage(std::string privateKey, std::string plainText)
+std::string COpenSSL::signMessage(const std::string& privateKey, const std::string& plainText)
 {
 	RSA* privateRSA = createPrivateRSA(privateKey);
 	unsigned char* encMessage;
@@ -322,10 +383,9 @@ std::string COpenSSL::signMessage(std::string privateKey, std::string plainText)
 	return signbase64;
 }
 
-bool COpenSSL::verifySignature(std::string &publicKey, std::string &plainText, std::string &signatureBase64)
+bool COpenSSL::verifySignature(const std::string& publicKey, const std::string& plainText, const std::string& signatureBase64)
 {
 	RSA* publicRSA = createPublicRSA(publicKey);
-	unsigned char* encMessage;
 	bool authentic;
 	std::string encMessageTmp = base64_decode((char *)signatureBase64.c_str());
 	bool result = RSAVerifySignature(publicRSA, (unsigned char*)encMessageTmp.c_str(), encMessageTmp.size(), plainText.c_str(), plainText.length(), &authentic);
@@ -422,4 +482,18 @@ void COpenSSL::printHex(const char *title, const unsigned char *s, int len)
 	}
 	printf("\n");
 
+}
+
+std::string COpenSSL::readKeyFile(const std::string& filename)
+{
+	std::ifstream inputFile;
+	inputFile.open(filename, std::ios_base::out);
+	std::ostringstream buf;
+	char ch;
+	while(buf && inputFile.get(ch))
+	{
+		buf.put(ch);
+	}
+	inputFile.close();
+	return buf.str();
 }

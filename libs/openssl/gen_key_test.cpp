@@ -7,7 +7,7 @@ int main()
     int ret = 0;
     BIGNUM* bne = BN_new();
     ret=BN_set_word(bne,RSA_F4);
-    ret = RSA_generate_key_ex(rsa,512,bne,NULL);
+    ret = RSA_generate_key_ex(rsa,1024,bne,NULL);
     if(ret!=1)
     {
         printf("Error to generate key. \n");
