@@ -98,22 +98,16 @@ int main()
         }
     }
 
-    std::string multi_line = R"(
-    {
-        "str" : "test_str",
-        "ary" : "i have multi-line \\\\input, but I am still a \\nstring. "
-    }
-    )";
+    j["ary"] = std::string("replaced.");
+    std::cout << "JNEW: " << j.dump(4) << std::endl; 
 
-    try
+    json j2; 
+    for (const auto& item : j.items())
     {
-        j = nlohmann::json::parse(multi_line.c_str());
+        j2[item.key()] = item.value();
     }
-    catch(const std::exception& e)
-    {
-        std::cerr << e.what() << '\n';
-    }
-    std::cout << j.dump(4) << std::endl; 
+    std::cout <<"J2: \n" << j2.dump(4) << std::endl; 
+    //std::cout << j["text"] << std::endl; 
 
     //std::cout << j.at("str").size() << ", " << (j.at("str") == json::value_t::string) << std::endl; 
     //std::cout << j.at("ary").size() << ", " << (j.at("str") == json::value_t::array) << std::endl; 

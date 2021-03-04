@@ -1,0 +1,31 @@
+{
+    "sys_params": 
+    {
+        "server_address": "http://abc.com/v1",
+        "log_file_root": "/temp",
+        "log_level": 2,
+        "log_file_max_size": 100,
+        "comm_retry_count": 3,
+        "default_report_call_count": 500,
+        "default_report_countdown_time": 1,
+        "communicate_protocol_version": 1, 
+        "user_name": "miaoxiu"
+    }, 
+    "key_info": 
+    {
+        "key_id": "ID20210224-001",
+        "due_date": "2021-02-28",
+        "sdk_name": "raw2jpg", 
+        "vendor_name": "miaoxiu", 
+        "key": "abcdefght"
+    },
+	"debug_option":
+	{},
+    "debug_options":
+    {
+        "update_server_unit_millisecond": false,
+        "log_redirect_stderr": false,
+        "log_also_log_stderr": false,
+        "log_stderr_threshold": 2
+    }
+}

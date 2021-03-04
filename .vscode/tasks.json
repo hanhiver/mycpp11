@@ -14,11 +14,11 @@
                 "${fileDirname}/${fileBasenameNoExtension}.out",
                 "${file}",
                 "-pthread", 
-                "-I /usr/local/include", 
-                "-L /usr/local/lib", 
+                "-I/usr/local/include", 
                 "-lboost_context", 
                 "-lboost_regex", 
-                "-lboost_filesystem"
+                "-lboost_filesystem",
+                "-L/usr/local/lib"
             ],
             "group": {
                 "kind": "build",
