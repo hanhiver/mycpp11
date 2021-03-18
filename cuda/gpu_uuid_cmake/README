@@ -1,0 +1,7 @@
+#Compile the test_uuid with shared libuuid.so
+g++ -fPIC -c uuid.cpp -I/usr/local/cuda/include
+ar -qcs libuuid.a libuuid.o
+g++ -shared -fPIC -o libuuid.so uuid.o -L/usr/local/cuda/lib64 -lcudart_static -ldl -pthread -lrt
+g++ -c test_uuid.cpp
+g++ -o test_uuid test_uuid.o -L. -luuid -L/usr/local/cuda/lib64 -lcudart_static -ldl -pthread -lrt
+
